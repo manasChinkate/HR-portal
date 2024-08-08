@@ -4,6 +4,7 @@ const port = 3000;
 app.use(express.json());
 
 const login = require('./controller/logincontrol');
+const AddnewCompany = require('./controller/NewCompanyController')
 const mongoose = require('mongoose');
 
 // Connect to MongoDB
@@ -17,6 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/login', login);
+app.post('/addnewcompany', AddnewCompany);
 
 // Start server
 app.listen(port, () => {
