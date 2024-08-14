@@ -5,6 +5,9 @@ import Dashboard from './Pages/Dashboard/Dashboard';
 import Sidebar from './Pages/Sidebar/Sidebar';
 import AddnewCompany from './components/AddnewCompany/AddnewCompany';
 import Login from './Pages/Login/Login';
+import Protected from '../src/Protected'
+import SessionOut from './Pages/SessionOut/SessionOut';
+import AddnewEmployee from './components/AddnewEmployee/AddnewEmployee';
 
 const App = () => {
   const Layout = () => {
@@ -12,11 +15,11 @@ const App = () => {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     return (
       <>
-      
+
         <div className='  border-b  '>
           <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
         </div>
-        <div className="grid grid-cols-10 max-h-[90vh]  bg-black">
+        <div className="grid grid-cols-10 max-h-[90vh]  bg-white">
           <div className={`${showMenu ? "col-span-2" : "hidden"}`}>
             {
               showMenu && (
@@ -29,7 +32,7 @@ const App = () => {
             <Outlet />
           </div>
         </div>
-        
+
       </>
     );
   };
@@ -43,19 +46,33 @@ const App = () => {
         {
           path: "/",
           element: (
+          <Protected>
             <Dashboard />
+          </Protected>
           ),
         },
         {
           path: "/main-master",
           element: (
-            <Dashboard />
+            <Protected>
+              <Dashboard />
+            </Protected>
           ),
         },
         {
           path: "/add-new-comapny",
           element: (
-            <AddnewCompany />
+            <Protected>
+              <AddnewCompany />
+            </Protected>
+          ),
+        },
+        {
+          path: "/add-employee/",
+          element: (
+            <Protected>
+              <AddnewEmployee />
+            </Protected>
           ),
         },
       ]
@@ -64,6 +81,12 @@ const App = () => {
       path: "/login",
       element: (
         <Login />
+      ),
+    },
+    {
+      path: "/session-out",
+      element: (
+        <SessionOut />
       ),
     },
 

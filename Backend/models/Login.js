@@ -4,7 +4,8 @@ const loginSchema = new mongoose.Schema({
     authority:String,
     email:String,
     name:String,
-    password:String
+    password:String,
+    companyName:String
 }, { collection: 'logindata' })
 
  const LoginSchema = mongoose.model('login', loginSchema)

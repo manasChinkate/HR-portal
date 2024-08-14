@@ -1,6 +1,9 @@
 import { TiThMenu } from 'react-icons/ti';
 import logo from '../../assets/logo.png'
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../app/store';
+import { cleanUp } from '../../../app/authslice';
 
 
 
@@ -13,10 +16,19 @@ import { useNavigate } from 'react-router-dom';
 
 const Navbar = ({ setShowMenu, showMenu }) => {
 
+  const name = useSelector((state: RootState) => state.auth.name)
+  const dispatch = useDispatch()
+
   const navigate = useNavigate()
 
   const sidebartoggle = () => {
     setShowMenu(!showMenu)
+  }
+
+  const handleLogout = () =>{
+    localStorage.removeItem('token');
+    dispatch(cleanUp())
+    navigate('/login')
   }
 
   return (
@@ -30,16 +42,16 @@ const Navbar = ({ setShowMenu, showMenu }) => {
             showMenu ?<></> :
          
 
-        <img className=' h-7' src={logo} alt="logo" /> }
+        <img className=' h-7 hidden md:visible ' src={logo} alt="logo" /> }
       </div>
 
       <div>
-        <h1>
-          Hello, Welcome back (user)
+        <h1 className='text-sm sm:text-base'>
+          Hello, Welcome back, {name}
         </h1>
       </div>
 
-      <button className=' p-1 px-3 bg-[#2E6D6A] rounded-lg text-white ' onClick={()=>navigate('/login')}>
+      <button className=' p-1 sm:px-3 px-1 bg-[#2E6D6A] rounded-lg text-white ' onClick={handleLogout}>
         Logout
       </button>
 

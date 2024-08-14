@@ -1,45 +1,63 @@
-const mongoose = require('mongoose')
-const LoginSchema = require('../models/Login')
-const jwt = require('jsonwebtoken')
+const mongoose = require('mongoose');
+const LoginSchema = require('../models/Login');
+const jwt = require('jsonwebtoken');
 
-const login =async (req,res) =>{
-    const {email, password, authority} = req.body;
+// Sidebar data moved outside the function
+const adminData = [
+    { name: 'Home', icon: 'IoHome ', link: '/' },
+    { name: 'Add New Company', icon: 'FaBuilding ', link: '/add-new-company' },
+    { name: 'Main master', icon: 'GrDomain ', link: '/main-master' },
+    { name: 'Project master', icon: '<RiProjectorLine />', link: '/project-master' },
+    { name: 'HelpDesk', icon: 'SiHelpdesk ', link: '/helpDesk' },
+];
 
-    // const user = LoginSchema.find({email:email})
-    const user = await LoginSchema.findOne({email:email})
-    // console.log("user",user)
- 
- 
-    if(user){
-        
-        if(user.password == password){
-            console.log("password found")
-           try {
-            const token = jwt.sign(
-                { email: user.email, username: user.name, },
-                "jwt-secret-key",
-                { expiresIn: '1d' }
+const MasteradminData = [
+    { name: 'Home', icon: 'IoHome ', link: '/' },
+    { name: 'Add New Company', icon: 'FaBuilding ', link: '/add-new-company' },
+    { name: 'HelpDesk', icon: 'SiHelpdesk ', link: '/helpDesk' },
+];
 
-            );
-            console.log("Token :", token)
-            res.status(200)
-            res.json({
-                authority:user.authority,
-                email:user.email,
-                name:user.name
+const login = async (req, res) => {
+    const { email, password } = req.body;
 
-            })
-           } catch (error) {
-            console.log("err :", error)
-           }
-            // localStorage.setItem("token",token)
-        }else{
-            res.status(500).send("Password is Incorrect")
+    try {
+        const user = await LoginSchema.findOne({ email });
+
+        if (user) {
+            console.log('user :', user)
+            if (user.password === password) {
+                console.log("Password matched");
+
+                // Generate JWT token
+                const token = jwt.sign(
+                    { email: user.email, username: user.name },
+                    process.env.JWT_SECRET || "jwt-secret-key",
+                    { expiresIn: '1d' }
+                );
+
+                console.log("Token:", token);
+                res.status(200);
+                res.json({
+                    authority: user.authority,
+                    email: user.email,
+                    name: user.name,
+                    token: token,
+                    companyName:user.companyName
+                })
+
+                // Respond based on user authority
+                
+            } else {
+                res.status(401).send("Password is incorrect");
+            }
+        } else {
+            res.status(404).send("User not found");
+            console.log("User not found");
         }
-    }else{
-        res.status(500).send("User not exist")
-        console.log("User not exist")
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).send("Internal server error");
     }
-}
+};
 
-module.exports = login
+module.exports = login;

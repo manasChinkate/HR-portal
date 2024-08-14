@@ -5,17 +5,18 @@ const LoginSchema = require('../models/Login')
 const AddnewCompany = async(req,res) =>{
 
     const Companydata = {...req.body,
-        authority:"masterAdmin",
+        authority:"Admin",
     }
 
     const LoginData = {
         name:req.body.fullname,
         email:req.body.email,
-        authority:"masterAdmin",
-        password:"admin"
+        authority:"Admin",
+        password:"admin",
+        companyName:req.body.CompanyName
     }
     
-    try {
+    try { 
        await CompanySchema.create(Companydata)
        await LoginSchema.create(LoginData)
        

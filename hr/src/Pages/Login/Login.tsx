@@ -2,45 +2,74 @@ import React, { useState } from 'react'
 import loginsvg from '../../assets/loginsvg.svg'
 import login2 from '../../assets/login2.svg'
 import logo from '../../assets/logo.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io'
+import axios from 'axios'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { BASE_URL } from '../../constants'
+import { RootState } from '../../../app/store'
+import { useDispatch } from 'react-redux'
+import { setauthority, setName , setSidebar,setCompany } from '../../../app/authslice'
+
+
+
+type Inputs = {
+    email: string,
+    password: string
+}
+
+interface response {
+
+    authority: string,
+    email: string,
+    name: string,
+    token: string
+
+}
 
 
 const Login = () => {
+
+    
+    const [resdata, setresdata] = useState<response[]>([])
+    const navigate = useNavigate() 
+    const dispatch = useDispatch() 
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm<Inputs>()
+
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        try {
+            const res = await axios.post(`${BASE_URL}/login`, data);
+
+            if (res.status === 200 && res?.data?.token) {
+                // setResData(res.data); // Assuming setResData is a function to update state
+                dispatch(setauthority(res.data.authority))
+                dispatch(setName(res.data.name))
+                dispatch(setCompany(res.data.companyName))
+                localStorage.setItem('token', res.data.token);
+                navigate('/')
+
+            } else {
+                localStorage.removeItem('token');
+            }
+
+            console.log(res?.data);
+        } catch (error) {
+            console.error("Error during login:", error);
+            localStorage.removeItem('token'); // In case of an error, ensure the token is not stored
+        }
+    };
+
+
+
+
     const [hideEye, setHideEye] = useState(true);
     return (
-        // <div className=' grid grid-cols-2 w-full h-screen'>
-        //     <div className=' h-full bg-blue-500 object-contain flex items-center justify-center border-r-2'>
-        //         <img className=' h-96 ' src={loginsvg} alt="" />
-        //     </div>
-        //     <div className=' h-full bg-white flex items-center justify-center'>
 
-        //         <div className=' h-auto w-auto p-7  shadow-md flex items-center justify-center flex-col'>
-        //             <img className=' w-52' src={logo} alt="" />
-        //             <div className=' flex items-center flex-col justify-center'>
-        //                 <h1 className=' text-2xl font-semibold text-blue-500'>Log In</h1>
-        //                 <p className=' text-xs text-gray-400'>Login below with respecitve username</p>
-        //             </div>
-        //             <form>
-        //                 <div className=' grid grid-cols-1 gap-4 mt-6 w-full text-sm '>
-        //                     <div className=' flex flex-col gap-2 '>
-        //                         <label>Username</label>
-        //                         <input className=' placeholder:text-xs hover:border-gray-400    ease-in-out duration-500 py-2 pl-1 border rounded-md border-gray-200' placeholder=' Input 1'></input>
-        //                     </div>
-        //                     <div className=' flex flex-col gap-2'>
-        //                         <label>Password</label>
-        //                         <input className=' placeholder:text-xs hover:border-gray-400 ease-in-out duration-500 py-2 pl-1 border rounded-md border-gray-200' placeholder=' Input 1'></input>
-        //                     </div>
-        //                     <button className=' hover:bg-white hover:text-black hover:  bg-[#2E6D6A] py-2 text-white  rounded-md'>
-        //                         Log In
-        //                     </button>
-        //                 </div>
-        //             </form>
-        //         </div>
-
-        //     </div>
-
-        // </div>
         <div className="grid grid-cols-1 lg:grid-cols-2">
             <img
                 src={login2}
@@ -56,7 +85,7 @@ const Login = () => {
                 <div className="w-full lg:w-[45vw] md:w-[50vw] border-none ">
                     {/* <div className="w-[90%] rounded-lg bg-card text-card-foreground shadow-sm"> */}
                     <form
-                        //   onSubmit={handleSubmit(onSubmit)}
+                        onSubmit={handleSubmit(onSubmit)}
                         className="space-y-4 p-5 shadow-sm"
                     >
                         <div>
@@ -72,7 +101,7 @@ const Login = () => {
                             </label>
                             <div className="mt-2">
                                 <input
-                                    // {...register("username", { required: true })}
+                                    {...register("email", { required: true })}
                                     id="email"
                                     type="text"
                                     autoComplete="email"
@@ -95,7 +124,7 @@ const Login = () => {
                             </div>
                             <div className="mt-2 flex relative">
                                 <input
-                                    //   {...register("password", { required: true })}
+                                    {...register("password", { required: true })}
                                     id="password"
                                     type={hideEye ? "password" : "text"}
                                     autoComplete="current-password"

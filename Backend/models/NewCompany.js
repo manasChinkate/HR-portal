@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 
 const NewCompnay = new mongoose.Schema({
+    fromdate:String,
+    todate:String,
     fullname:String,
     email:String,
     MobileNo:String,
@@ -16,6 +18,11 @@ const NewCompnay = new mongoose.Schema({
     pincode:Number,
     address:String,
     authority:String,
+    createdDate: {
+        type: Date,
+        default: Date.now
+    }
+    
     
     
 
