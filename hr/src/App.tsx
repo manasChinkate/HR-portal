@@ -8,6 +8,8 @@ import Login from './Pages/Login/Login';
 import Protected from '../src/Protected'
 import SessionOut from './Pages/SessionOut/SessionOut';
 import AddnewEmployee from './components/AddnewEmployee/AddnewEmployee';
+import AddDesignation from './components/AddDesignation/AddDesignation';
+import AddHoliday from './components/AddHoliday/AddHoliday';
 
 const App = () => {
   const Layout = () => {
@@ -68,10 +70,26 @@ const App = () => {
           ),
         },
         {
-          path: "/add-employee/",
+          path: "/add-employee",
           element: (
             <Protected>
               <AddnewEmployee />
+            </Protected>
+          ),
+        },
+        {
+          path: "/designation",
+          element: (
+            <Protected>
+              <AddDesignation />
+            </Protected>
+          ),
+        },
+        {
+          path: "/holidays",
+          element: (
+            <Protected>
+              <AddHoliday />
             </Protected>
           ),
         },

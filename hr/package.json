@@ -10,13 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-popover": "^1.1.1",
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@reduxjs/toolkit": "^2.2.7",
     "@typescript-eslint/visitor-keys": "^7.18.0",
+    "ag-grid-react": "^32.1.0",
     "axios": "^1.7.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "json-as-xlsx": "^2.5.6",
     "lucide-react": "^0.426.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -24,6 +27,7 @@
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.26.0",
     "react-spinners": "^0.14.1",
+    "react-table": "^7.8.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7"
   },

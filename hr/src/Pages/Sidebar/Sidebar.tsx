@@ -1,36 +1,26 @@
 import React, { useState } from 'react';
-import { FaAngleDown, FaAngleUp, FaBuilding } from 'react-icons/fa';
-import { GrDomain } from 'react-icons/gr';
+import { FaAngleDown, FaAngleUp, FaBuilding, FaRegCalendarCheck } from 'react-icons/fa';
+import { GrDomain, GrUserWorker } from 'react-icons/gr';
 import { IoMdExit } from 'react-icons/io';
 import { IoHome } from 'react-icons/io5';
+import { BsPersonWorkspace } from 'react-icons/bs';
 import { RiProjectorLine } from 'react-icons/ri';
 import { SiHelpdesk } from 'react-icons/si';
 import { Link, useNavigate } from 'react-router-dom';
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { cleanUp } from '../../../app/authslice';
 import { RootState } from '../../../app/store';
 
-const iconMapping: Record<string, JSX.Element> = {
-  'IoHome': <IoHome />,
-  'FaBuilding': <FaBuilding />,
-  'GrDomain': <GrDomain />,
-  'RiProjectorLine': <RiProjectorLine />,
-  'SiHelpdesk': <SiHelpdesk />,
-  'IoMdExit': <IoMdExit />
-};
-
-
 const Sidebar = () => {
-  const [activeParent, setActiveParent] = useState(null);
+  const [activeParent, setActiveParent] = useState<number | null>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const sidebar = useSelector((state: RootState) => state.auth.sidebar)
-  const Role = useSelector((state: RootState) => state.auth.authority)
-  console.log(sidebar)
+  const sidebar = useSelector((state: RootState) => state.auth.sidebar);
+  const Role = useSelector((state: RootState) => state.auth.authority);
 
-  const handleParentClick = (index, link, hasChildren) => {
+  const handleParentClick = (index: number, link: string, hasChildren: boolean) => {
     if (hasChildren) {
       setActiveParent(activeParent === index ? null : index);
     } else {
@@ -40,31 +30,32 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    dispatch(cleanUp())
-    navigate('/login')
-  }
+    dispatch(cleanUp());
+    navigate('/login');
+  };
+
+  const navData = Role === 'masterAdmin' ? MasterAdminNavData : Role === 'Admin' ? AdminNavData : [];
 
   return (
-    <div className='w-full h-full bg-[#ffffff] text-sm py-2 flex flex-col justify-between'>
+    <div className='w-full h-full bg-white text-sm py-2 flex flex-col justify-between'>
       <div>
-        <div className=' w-full flex items-center justify-center mb-4 '>
+        <div className='w-full flex items-center justify-center mb-4'>
           <img className='h-7' src={logo} alt="logo" />
         </div>
-        <p className='px-4 pb-2'>Menu</p>
+        <p className='px-4 pb-2 font-semibold'>Menu</p>
 
-        {(
-          Role ==='masterAdmin' ? MasterAdminNavData :
-          Role ==='Admin' ? AdminNavData : []
-        ).map((data, index)=>(
+        {navData.map((data, index) => (
           <div key={index}>
             <div
-              className='mx-2 shadow-inner py-3 hover:bg-[#2E6D6A] hover:text-white ease-out duration-200 bg-[#e0e1e6] rounded mb-1 flex items-center gap-4 px-4 cursor-pointer'
+              className={`mx-2 shadow-md py-3 rounded mb-1 flex items-center gap-4 px-4 cursor-pointer transition-colors duration-200 ${
+                activeParent === index ? 'bg-teal-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
+              }`}
               onClick={() => handleParentClick(index, data.link, !!data.children)}
             >
               {data.icon} {data.name}
               {data.children && (
                 <div className='ml-auto'>
-                  {activeParent === index ? <FaAngleUp /> : <FaAngleDown />}
+                  {activeParent === index ? <FaAngleDown /> : <FaAngleUp />}
                 </div>
               )}
             </div>
@@ -73,7 +64,7 @@ const Sidebar = () => {
                 {data.children.map((child, childIndex) => (
                   <Link to={child.link} key={childIndex} className='no-underline'>
                     <div
-                      className='mx-2 shadow-inner py-3 bg-[#e5e7ec] hover:bg-[#e0e1e6] rounded mb-1 flex items-center gap-4 pl-8 cursor-pointer'
+                      className='mx-2 shadow-md py-3 bg-gray-300 hover:bg-gray-400 hover:text-white rounded mb-1 flex items-center gap-4 pl-8 cursor-pointer'
                     >
                       {child.icon} {child.name}
                     </div>
@@ -82,44 +73,12 @@ const Sidebar = () => {
               </div>
             )}
           </div>
-        )
-
-        )
-        
-        }
-
-
-        {/* {NavData.map((data, index) => (
-          <div key={index}>
-            <div
-              className='mx-2 shadow-inner py-3 hover:bg-[#2E6D6A] hover:text-white ease-out duration-200 bg-[#e0e1e6] rounded mb-1 flex items-center gap-4 px-4 cursor-pointer'
-              onClick={() => handleParentClick(index, data.link, !!data.children)}
-            >
-              {data.icon} {data.name}
-              {data.children && (
-                <div className='ml-auto'>
-                  {activeParent === index ? <FaAngleUp /> : <FaAngleDown />}
-                </div>
-              )}
-            </div>
-            {data.children && activeParent === index && (
-              <div>
-                {data.children.map((child, childIndex) => (
-                  <Link to={child.link} key={childIndex} className='no-underline'>
-                    <div
-                      className='mx-2 shadow-inner py-3 bg-[#e5e7ec] hover:bg-[#e0e1e6] rounded mb-1 flex items-center gap-4 pl-8 cursor-pointer'
-                    >
-                      {child.icon} {child.name}
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-        ))} */}
-        
+        ))}
       </div>
-      <button onClick={handleLogout} className='mx-2 shadow-inner py-3 hover:bg-[#2E6D6A] hover:text-white ease-out duration-200 bg-[#e0e1e6] rounded mb-1 flex items-center gap-4 px-4 cursor-pointer text-sm'>
+      <button
+        onClick={handleLogout}
+        className='mx-2 shadow-md py-3 bg-gray-200 hover:bg-gray-300 rounded mb-1 flex items-center gap-4 px-4 cursor-pointer text-sm transition-colors duration-200'
+      >
         <IoMdExit />
         Logout
       </button>
@@ -138,7 +97,7 @@ const MasterAdminNavData = [
   {
     name: 'Add New Company',
     icon: <FaBuilding />,
-    link: '/add-new-comapny',
+    link: '/add-new-company',
   },
   {
     name: 'HelpDesk',
@@ -146,6 +105,7 @@ const MasterAdminNavData = [
     link: '/helpDesk',
   },
 ];
+
 const AdminNavData = [
   {
     name: 'Home',
@@ -153,30 +113,30 @@ const AdminNavData = [
     link: '/',
   },
   {
-    name: 'Add Employee',
-    icon: <FaBuilding />,
-    link: '/add-employee/',
-  },
-  {
-    name: 'Main master',
+    name: 'Main Master',
     icon: <GrDomain />,
     children: [
       {
-        name: 'Project master',
-        icon: <RiProjectorLine />,
-        link: '/project-master',
+        name: 'Add Designation',
+        icon: <GrUserWorker />,
+        link: '/designation',
       },
       {
-        name: 'Project master',
-        icon: <RiProjectorLine />,
-        link: '/project-master',
+        name: 'Add Holiday',
+        icon: <FaRegCalendarCheck />,
+        link: '/holidays',
       },
     ],
   },
   {
-    name: 'Project master',
+    name: 'Project Master',
     icon: <RiProjectorLine />,
     link: '/project-master',
+  },
+  {
+    name: 'Add Employee',
+    icon: <BsPersonWorkspace />,
+    link: '/add-employee',
   },
   {
     name: 'HelpDesk',

@@ -35,10 +35,14 @@ type Inputs = {
 interface reportingmanager{
     fullname:string
 }
+interface designation{
+    designation:string
+}
 
 const AddnewEmployee = () => {
 
     const [reportingmanager, setreportingmanager] =  useState<reportingmanager[]>([])
+    const [desigantion, setDesignation] =  useState<designation[]>([])
 
     const {
         register,
@@ -65,9 +69,20 @@ const AddnewEmployee = () => {
         }
     }
 
-    useEffect(()=>{
-        getReportingManager()
-    },[])
+    const getDesignation = async()=>{
+        try {
+            const res = await axios.get(`${BASE_URL}/designation/${companyName}`);
+            // Handle the response, e.g., store in state or display the data
+            console.log(res.data);
+            setDesignation(res.data)
+
+        } catch (error) {
+            // Handle any errors that occur during the request
+            console.error('Error fetching Designations:', error);
+        }
+    }
+
+   
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         console.log(data)
@@ -82,6 +97,11 @@ const AddnewEmployee = () => {
             reset()
         }
     }
+
+    useEffect(()=>{
+        getReportingManager()
+        getDesignation()
+    },[])
 
     return (
         <div className='w-full max-h-[90vh] bg-[#e5e7ec] p-2 overflow-y-auto'>
@@ -202,8 +222,13 @@ const AddnewEmployee = () => {
                                 className={`hover:border-gray-400 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
                             >
                                 <option value="">Select</option>
-                                <option value="frontend">Front End Developer</option>
-                                <option value="backend">Back End Developer</option>
+                                {
+                                    desigantion.map((data)=>{
+                                        return(
+                                            <option value={data.designation}>{data.designation}</option>
+                                        )
+                                    })
+                                }
 
 
 
