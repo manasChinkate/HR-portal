@@ -10,6 +10,8 @@ import SessionOut from './Pages/SessionOut/SessionOut';
 import AddnewEmployee from './components/AddnewEmployee/AddnewEmployee';
 import AddDesignation from './components/AddDesignation/AddDesignation';
 import AddHoliday from './components/AddHoliday/AddHoliday';
+import EmployeeTable from './components/AddnewEmployee/EmployeeTable';
+
 
 const App = () => {
   const Layout = () => {
@@ -74,6 +76,14 @@ const App = () => {
           element: (
             <Protected>
               <AddnewEmployee />
+            </Protected>
+          ),
+        },
+        {
+          path: "/employee-table",
+          element: (
+            <Protected>
+              <EmployeeTable />
             </Protected>
           ),
         },

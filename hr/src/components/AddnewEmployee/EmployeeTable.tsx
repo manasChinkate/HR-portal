@@ -1,7 +1,5 @@
-import { Button } from '../ui/button';
-import axios from 'axios'
-import { useForm, SubmitHandler } from 'react-hook-form'
 import { BASE_URL } from '../../constants';
+import { Button } from '../ui/button';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../app/store'
 import { useEffect, useMemo, useState } from 'react';
@@ -36,23 +34,10 @@ import {
 import Checkbox from '../Checkbox';
 
 
-type Inputs = {
-    holiday: string;
-    from_date:string;
-    to_date:string
-}
 
-const AddDesignation = () => {
-    const [holiday, setHoliday] = useState<Inputs[]>([])
+
+const EmployeeTable = () => {
     const [loading, setloading] = useState(true)
-    const {
-        register,
-        handleSubmit,
-        watch,
-        reset,
-        formState: { errors },
-    } = useForm<Inputs>()
-
 
     const columns: any = useMemo(() => COLUMNS, []);
     const data = useMemo(() => holiday, [holiday]);
@@ -62,6 +47,7 @@ const AddDesignation = () => {
             Filter: ColumnFiltering,
         };
     }, []);
+
     const {
         getTableProps,
         getTableBodyProps,
@@ -101,79 +87,8 @@ const AddDesignation = () => {
 
     const companyName = useSelector((state: RootState) => state.auth.companyName)
 
-    const getHoliday = async () => {
-        try {
-            const res = await axios.get(`${BASE_URL}/holiday/${companyName}`);
-            // Handle the response, e.g., store in state or display the data
-            console.log(res.data);
-            setHoliday(res.data)
-            setloading(false)
-
-        } catch (error) {
-            // Handle any errors that occur during the request
-            console.error('Error fetching Designations:', error);
-        }
-    }
-
-    const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        console.log(data)
-        const formdata = {
-            ...data,
-            companyName: companyName
-        }
-
-        const res = await axios.post(`${BASE_URL}/holiday`, formdata)
-
-        if (res.status === 201) {
-            reset()
-            getHoliday()
-        }
-    }
-
-    useEffect(() => {
-        getHoliday()
-    }, [])
-
-    return (
-        <div className='w-full max-h-[90vh] bg-[#e5e7ec] p-2 overflow-y-auto'>
-            <div className=' bg-white  rounded-lg w-full p-4 text-sm' >
-
-                <div className=' border-b border-gray-200 pb-2'>
-                    <h1 className=' text-2xl font-bold     '>Add Holiday</h1>
-                    <p className=' text-gray-500 text-sm'>Add new Holiday for your employees</p>
-                </div>
-                <form onSubmit={handleSubmit(onSubmit)} >
-                    <div className=' grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-4 mb-5 '>
-
-                        {/* <p className=' col-span-full border-b-2 pb-1 font-semibold'>Add Details</p> */}
-                        <div className=' flex flex-col gap-2'>
-                            <label>Add Holiday</label>
-                            <input
-                                {...register("holiday")}
-                                className=' hover:border-gray-400    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='holiday'></input>
-                        </div>
-                        <div className=' flex flex-col gap-2'>
-                            <label>From Date</label>
-                            <input
-                            
-                                {...register("from_date")}
-                                
-                                className=' hover:border-gray-400    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder='holiday'></input>
-                        </div>
-                        <div className=' flex flex-col gap-2'>
-                            <label>To Date</label>
-                            <input
-                                {...register("to_date")}
-                                className=' hover:border-gray-400    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder='holiday'></input>
-                        </div>
-                    </div>
-                    <Button type='submit'>
-                        Add 
-                    </Button>
-                </form>
-            </div>
-            
-            <div className="bg-white md:p-4 p-2 rounded-md shadow-lg my-4">
+  return (
+    <div className="bg-white md:p-4 p-2 rounded-md shadow-lg my-4">
                 <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
                     <div>
                         <h1 className=' text-2xl font-bold     '>Holiday List</h1>
@@ -383,11 +298,7 @@ const AddDesignation = () => {
                     </div>
                 </div>
             </div>
-
-
-
-        </div>
-    )
+  )
 }
 
-export default AddDesignation
+export default EmployeeTable

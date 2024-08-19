@@ -18,12 +18,12 @@ export interface Account {
 
 export const COLUMNS: Column<Account>[] = [
   {
-    Header: "Occasion",
-    accessor: "holiday",
+    Header: "Designation",
+    accessor: "designation",
   },
   {
-    Header: "From Day",
-    accessor: "from_date",
+    Header: "Created Date",
+    accessor: "createdAt",
     Cell: ({ value }) => {
       const convertDate = (isoDate: string) => {
         const date = new Date(isoDate);
@@ -37,38 +37,6 @@ export const COLUMNS: Column<Account>[] = [
       return <span>{convertDate(value)}</span>;
     },
   },
-  {
-    Header: "To Day",
-    accessor: "to_date",
-    Cell: ({ value }) => {
-      const convertDate = (isoDate: string) => {
-        const date = new Date(isoDate);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
-        const year = date.getFullYear();
-
-        return `${day}/${month}/${year}`;
-      };
-
-      return <span>{convertDate(value)}</span>;
-    },
-  },
-  // {
-  //   Header: "Created Date",
-  //   accessor: "createdAt",
-  //   Cell: ({ value }) => {
-  //     const convertDate = (isoDate: string) => {
-  //       const date = new Date(isoDate);
-  //       const day = String(date.getDate()).padStart(2, '0');
-  //       const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
-  //       const year = date.getFullYear();
-
-  //       return `${day}/${month}/${year}`;
-  //     };
-
-  //     return <span>{convertDate(value)}</span>;
-  //   },
-  // },
  
 
 //   {

@@ -6,6 +6,7 @@ import { BASE_URL } from '../../constants';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../app/store'
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 type Inputs = {
     // Personal Details
@@ -32,17 +33,17 @@ type Inputs = {
     address: string;
 };
 
-interface reportingmanager{
-    fullname:string
+interface reportingmanager {
+    fullname: string
 }
-interface designation{
-    designation:string
+interface designation {
+    designation: string
 }
 
 const AddnewEmployee = () => {
 
-    const [reportingmanager, setreportingmanager] =  useState<reportingmanager[]>([])
-    const [desigantion, setDesignation] =  useState<designation[]>([])
+    const [reportingmanager, setreportingmanager] = useState<reportingmanager[]>([])
+    const [desigantion, setDesignation] = useState<designation[]>([])
 
     const {
         register,
@@ -56,7 +57,7 @@ const AddnewEmployee = () => {
 
 
 
-    const getReportingManager = async()=>{
+    const getReportingManager = async () => {
         try {
             const res = await axios.get(`${BASE_URL}/reportingmanager/${companyName}`);
             // Handle the response, e.g., store in state or display the data
@@ -69,7 +70,7 @@ const AddnewEmployee = () => {
         }
     }
 
-    const getDesignation = async()=>{
+    const getDesignation = async () => {
         try {
             const res = await axios.get(`${BASE_URL}/designation/${companyName}`);
             // Handle the response, e.g., store in state or display the data
@@ -82,14 +83,14 @@ const AddnewEmployee = () => {
         }
     }
 
-   
+
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         console.log(data)
 
         const formdata = {
             ...data,
-            companyName:companyName
+            companyName: companyName
         }
         const res = await axios.post(`${BASE_URL}/addnewemployee`, formdata)
 
@@ -98,10 +99,10 @@ const AddnewEmployee = () => {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getReportingManager()
         getDesignation()
-    },[])
+    }, [])
 
     return (
         <div className='w-full max-h-[90vh] bg-[#e5e7ec] p-2 overflow-y-auto'>
@@ -110,6 +111,14 @@ const AddnewEmployee = () => {
                 <div className=' '>
                     <h1 className=' text-2xl font-bold     '>Add Employee</h1>
                     <p className=' text-gray-500 text-sm'>Add new employees to your company</p>
+                </div>
+                <div className='flex justify-end mt-4'>
+                    <Link
+                        to={'/employee-table'}
+                        className='inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md'
+                    >
+                        Employee List
+                    </Link>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} >
                     <div className=' grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-6 mb-5 '>
@@ -223,8 +232,8 @@ const AddnewEmployee = () => {
                             >
                                 <option value="">Select</option>
                                 {
-                                    desigantion.map((data)=>{
-                                        return(
+                                    desigantion.map((data) => {
+                                        return (
                                             <option value={data.designation}>{data.designation}</option>
                                         )
                                     })
@@ -245,8 +254,8 @@ const AddnewEmployee = () => {
                             >
                                 <option value="">Select</option>
                                 {
-                                    reportingmanager.map((data)=>{
-                                        return(
+                                    reportingmanager.map((data) => {
+                                        return (
                                             <option value={data.fullname}>{data.fullname}</option>
                                         )
                                     })
