@@ -1,18 +1,27 @@
-const mongoose = require('mongoose')
-const LoginSchema = require('../models/Login')
-const EmployeeModel = require('../models/NewEmployee')
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');  // Ensure jwt is required
+const LoginSchema = require('../models/Login');
+const EmployeeModel = require('../models/NewEmployee');
 
 const ReportingManager = async (req, res) => {
+    console.log(req.headers.token)
     try {
-        // Extract companyName from URL parameters
-        const  companyName  =  req.params.companyname;
-        console.log('companyName :',companyName)
+        // Extract the token from the Authorization header
+        const token = req.headers.token;
+        if (!token) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
 
-        // Query the database to find reporting managers for the given company€
+        // Verify and decode the token to get the companyName
+        const decodedToken = jwt.verify(token, 'jwt-secret-key'); // Replace 'jwt-secret-key' with your actual secret key
+        console.log(decodedToken)
+        const companyName = decodedToken.companyName; // Assuming companyName is stored in the token payload
+        console.log('decoded companyName:', companyName);
+
+        // Query the database to find reporting managers for the given company
         const reportingManagers = await EmployeeModel.find({ companyName });
-        console.log(reportingManagers)
+        console.log(reportingManagers);
 
-        
         if (reportingManagers.length === 0) {
             return res.status(404).json({ message: 'No reporting managers found for this company.' });
         }
@@ -20,9 +29,9 @@ const ReportingManager = async (req, res) => {
         // Send the found reporting managers as the response
         res.status(200).json(reportingManagers);
     } catch (error) {
-        // Handle any errors that occur during the query
+        // Handle any errors that occur during the query or token verification
         res.status(500).json({ message: 'Error fetching reporting managers', error: error.message });
     }
 };
 
-module.exports = ReportingManager
+module.exports = ReportingManager;

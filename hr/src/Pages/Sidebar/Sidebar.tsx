@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaAngleDown, FaAngleUp, FaBuilding, FaRegCalendarCheck } from 'react-icons/fa';
+import { FaAngleDown, FaAngleRight, FaAngleUp, FaBuilding, FaRegCalendarCheck } from 'react-icons/fa';
 import { GrDomain, GrUserWorker } from 'react-icons/gr';
 import { IoMdExit } from 'react-icons/io';
 import { IoHome } from 'react-icons/io5';
@@ -52,12 +52,12 @@ const Sidebar = () => {
               }`}
               onClick={() => handleParentClick(index, data.link, !!data.children)}
             >
-              {data.icon} {data.name}
               {data.children && (
-                <div className='ml-auto'>
-                  {activeParent === index ? <FaAngleDown /> : <FaAngleUp />}
+                <div className=' '>
+                  {activeParent === index ? <FaAngleDown /> : <FaAngleRight />}
                 </div>
               )}
+              {data.icon} {data.name}
             </div>
             {data.children && activeParent === index && (
               <div>

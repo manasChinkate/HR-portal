@@ -19,11 +19,11 @@ const GetDesignation = async(req,res)=>{
     try {
         // Extract companyName from URL parameters
         const  companyName  =  req.params.companyname;
-        console.log('companyName :',companyName)
+        // console.log('companyName :',companyName)
 
         // Query the database to find reporting managers for the given company€
         const designations = await DesignationModel.find({ companyName });
-        console.log(designations)
+        // console.log(designations)
 
         
         if (designations.length === 0) {

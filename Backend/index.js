@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 //Module Imports 
 const login = require('./controller/logincontrol');
 const AddnewCompany = require('./controller/NewCompanyController')
-const AddnewEmployee = require('./controller/NewEmployeeController')
+const {AddnewEmployee,getEmployeeData} = require('./controller/NewEmployeeController')
 const ReportingManager = require('./controller/ReportingManager')
 const {Designation,GetDesignation} = require('./controller/DesignationController');
 const { Holiday, GetHoliday } = require('./controller/HolidayController');
@@ -33,11 +33,13 @@ app.get('/', (req, res) => {
 app.post('/login', login);
 app.post('/addnewcompany', AddnewCompany);
 app.post('/addnewemployee', AddnewEmployee);
-app.get('/reportingmanager/:companyname', ReportingManager);
+app.get('/employee ', getEmployeeData);
+app.get('/reportingmanager', ReportingManager);
 app.post('/designation', Designation);
 app.get('/designation/:companyname', GetDesignation);
 app.post('/holiday', Holiday);
 app.get('/holiday/:companyname', GetHoliday);
+
 // app.get('/protected',protected)
 
 // Start server

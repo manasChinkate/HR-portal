@@ -47,7 +47,7 @@ const AddnewEmployee = () => {
 
     const {
         register,
-        handleSubmit,
+        handleSubmit,   
         watch,
         reset,
         formState: { errors },
@@ -59,7 +59,7 @@ const AddnewEmployee = () => {
 
     const getReportingManager = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/reportingmanager/${companyName}`);
+            const res = await axios.get(`${BASE_URL}/reportingmanager`);
             // Handle the response, e.g., store in state or display the data
             console.log(res.data);
             setreportingmanager(res.data)
