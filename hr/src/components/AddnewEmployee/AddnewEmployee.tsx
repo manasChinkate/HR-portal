@@ -47,7 +47,7 @@ const AddnewEmployee = () => {
 
     const {
         register,
-        handleSubmit,   
+        handleSubmit,
         watch,
         reset,
         formState: { errors },
@@ -72,7 +72,7 @@ const AddnewEmployee = () => {
 
     const getDesignation = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/designation/${companyName}`);
+            const res = await axios.get(`${BASE_URL}/designation`);
             // Handle the response, e.g., store in state or display the data
             console.log(res.data);
             setDesignation(res.data)

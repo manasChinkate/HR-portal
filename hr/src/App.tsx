@@ -8,10 +8,14 @@ import Login from './Pages/Login/Login';
 import Protected from '../src/Protected'
 import SessionOut from './Pages/SessionOut/SessionOut';
 import AddnewEmployee from './components/AddnewEmployee/AddnewEmployee';
-import AddDesignation from './components/AddDesignation/AddDesignation';
-import AddHoliday from './components/AddHoliday/AddHoliday';
+import AddDesignation from './components/MainMaster/AddDesignation/AddDesignation';
+import AddHoliday from './components/MainMaster/AddHoliday/AddHoliday';
 import EmployeeTable from './components/AddnewEmployee/EmployeeTable';
 import axios from 'axios';
+import CompanyTable from './components/AddnewCompany/CompanyTable';
+import AddClient from './components/MainMaster/AddClient/AddClient';
+import LeaveType from './components/LeaveManagement/LeaveType/LeaveType';
+import ManageLeave from './components/LeaveManagement/ManageLeave/ManageLeave';
 
 
 const App = () => {
@@ -36,13 +40,13 @@ const App = () => {
       <>
 
         <div className='  border-b  '>
-          <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
+        <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
         </div>
         <div className="grid grid-cols-10 max-h-[90vh]  bg-white">
           <div className={`${showMenu ? "col-span-2" : "hidden"}`}>
             {
               showMenu && (
-                <Sidebar />
+                <Sidebar showMenu={showMenu} setShowMenu={setShowMenu} />
               )
             }
           </div>
@@ -103,6 +107,15 @@ const App = () => {
           ),
         },
         {
+          path: "/company-table",
+          element: (
+            <Protected>
+              <CompanyTable />
+            </Protected>
+          ),
+        },
+       
+        {
           path: "/designation",
           element: (
             <Protected>
@@ -115,6 +128,30 @@ const App = () => {
           element: (
             <Protected>
               <AddHoliday />
+            </Protected>
+          ),
+        },
+        {
+          path: "/client",
+          element: (
+            <Protected>
+              <AddClient />
+            </Protected>
+          ),
+        },
+        {
+          path: "/leavetype",
+          element: (
+            <Protected>
+              <LeaveType />
+            </Protected>
+          ),
+        },
+        {
+          path: "/manageleave",
+          element: (
+            <Protected>
+              <ManageLeave />
             </Protected>
           ),
         },

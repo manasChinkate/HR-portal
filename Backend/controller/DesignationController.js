@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const DesignationModel = require('../models/Designation')
+const jwt  = require('jsonwebtoken')
 
 const Designation = async(req,res)=>{
     const designation = req.body
@@ -18,7 +19,17 @@ const Designation = async(req,res)=>{
 const GetDesignation = async(req,res)=>{
     try {
         // Extract companyName from URL parameters
-        const  companyName  =  req.params.companyname;
+        // const  companyName  =  req.params.companyname;
+        const token = req.headers.token;
+        if (!token) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
+
+        // Verify and decode the token to get the companyName
+        const decodedToken = jwt.verify(token, 'jwt-secret-key'); // Replace 'jwt-secret-key' with your actual secret key
+        console.log(decodedToken)
+        const companyName = decodedToken.companyName; // Assuming companyName is stored in the token payload
+        console.log('decoded companyName:', companyName);
         // console.log('companyName :',companyName)
 
         // Query the database to find reporting managers for the given company€

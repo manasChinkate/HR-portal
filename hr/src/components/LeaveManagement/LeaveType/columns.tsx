@@ -8,109 +8,23 @@ import axios from "axios";
 // import { useEffect, useState } from "react";
 import { BASE_URL } from "@/components/Constants";
 
-interface Employee {
+interface Company {
   _id: string;
-  fullname: string;
-  email: string;
-  mobileNo: string;
-  gender: string;
-  maritialStatus: string;
-  adhaarNo: string;
-  panNo: string;
-  joiningDate: string; // or Date if you prefer
-  probationPeriod: string;
-  authority: string;
-  designation: string;
-  reportingManager: string;
-  city: string;
+  clientName: string;
   state: string;
   country: string;
-  pincode: number;
-  address: string;
   companyName: string;
-  createdDate: string; // or Date if you prefer
+  createdAt: string; // ISO 8601 date string
   __v: number;
 }
 
 
 
 
-export const COLUMNS: Column<Account>[] = [
+export const COLUMNS: Column<Company>[] = [
   {
-    Header: "Full Name",
-    accessor: "fullname",
-  },
-  {
-    Header: "Email",
-    accessor: "email",
-    // Cell: ({ value }) => {
-    //   const convertDate = (isoDate: string) => {
-    //     const date = new Date(isoDate);
-    //     const day = String(date.getDate()).padStart(2, '0');
-    //     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
-    //     const year = date.getFullYear();
-
-    //     return `${day}/${month}/${year}`;
-    //   };
-
-    //   return <span>{convertDate(value)}</span>;
-    // },
-  },
-  {
-    Header: "Mobile No.",
-    accessor: "mobileNo",
-  },
-  {
-    Header: "Gender",
-    accessor: "gender",
-  },
-  {
-    Header: "Maritial Status",
-    accessor: "maritialStatus",
-  },
-  {
-    Header: "Adhaar No.",
-    accessor: "adhaarNo",
-  },
-  {
-    Header: "Pan No.",
-    accessor: "panNo",
-  },
-  {
-    Header: "Joining Date",
-    accessor: "joiningDate",
-    Cell: ({ value }) => {
-      const convertDate = (isoDate: string) => {
-        const date = new Date(isoDate);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
-        const year = date.getFullYear();
-
-        return `${day}/${month}/${year}`;
-      };
-
-      return <span>{convertDate(value)}</span>;
-    },
-  },
-  {
-    Header: "Probation Period",
-    accessor: "probationPeriod",
-  },
-  {
-    Header: "Authority",
-    accessor: "authority",
-  },
-  {
-    Header: "Designation",
-    accessor: "designation",
-  },
-  {
-    Header: "Reporting Manager",
-    accessor: "reportingManager",
-  },
-  {
-    Header: "City",
-    accessor: "city",
+    Header: "Client Name",
+    accessor: "clientName",
   },
   {
     Header: "State",
@@ -121,16 +35,8 @@ export const COLUMNS: Column<Account>[] = [
     accessor: "country",
   },
   {
-    Header: "Pincode",
-    accessor: "pincode",
-  },
-  {
-    Header: "Address",
-    accessor: "address",
-  },
-  {
-    Header: "Created at",
-    accessor: "createdDate",
+    Header: "Created At",
+    accessor: "createdAt",
     Cell: ({ value }) => {
       const convertDate = (isoDate: string) => {
         const date = new Date(isoDate);
@@ -144,6 +50,7 @@ export const COLUMNS: Column<Account>[] = [
       return <span>{convertDate(value)}</span>;
     },
   },
+
  
 
 //   {

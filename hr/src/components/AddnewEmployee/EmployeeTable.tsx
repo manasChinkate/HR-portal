@@ -92,7 +92,7 @@ const EmployeeTable = () => {
 
 
     const getData = async () => {
-        const res = axios.get(`${BASE_URL}employee/${companyName}`)
+        const res = await axios.get(`${BASE_URL}/reportingmanager`)
         setEmployee(res.data)
         console.log("Employee",Employee)
     }
@@ -106,7 +106,7 @@ const EmployeeTable = () => {
         <div className="bg-white md:p-4 p-2 rounded-md shadow-lg my-4">
             <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
                 <div>
-                    <h1 className=' text-2xl font-bold     '>Holiday List</h1>
+                    <h1 className=' text-2xl font-bold     '>Employee List</h1>
                     <p className="text-xs text-muted-foreground">
                         Here&apos;s a list of Holidays.
                     </p>

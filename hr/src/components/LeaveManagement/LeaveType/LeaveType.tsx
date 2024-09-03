@@ -1,11 +1,11 @@
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 import axios from 'axios'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { BASE_URL } from '../../constants';
+import { BASE_URL } from '../../../constants';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../app/store'
+import { RootState } from '../../../../app/store'
 import { useEffect, useMemo, useState } from 'react';
-import { exportToExcel } from "../xlsx";
+import { exportToExcel } from "../../xlsx";
 import {
     useTable,
     useSortBy,
@@ -14,7 +14,7 @@ import {
     usePagination,
 } from "react-table";
 
-import '../table.css'
+import '../../table.css'
 
 import {
     Popover,
@@ -23,8 +23,8 @@ import {
 } from "@radix-ui/react-popover";
 
 import { COLUMNS } from "./columns";
-import ColumnFiltering from "../ColumnFiltering";
-import GlobalFiltering from "../GlobalFiltering";
+import ColumnFiltering from "../../ColumnFiltering";
+import GlobalFiltering from "../../GlobalFiltering";
 import { FaFileExcel } from 'react-icons/fa';
 import {
     RxChevronLeft,
@@ -33,17 +33,16 @@ import {
     RxDoubleArrowRight,
     RxMixerHorizontal,
 } from "react-icons/rx";
-import Checkbox from '../Checkbox';
+import Checkbox from '../../Checkbox';
 
 
 type Inputs = {
-    holiday: string;
-    from_date:string;
-    to_date:string
+    leavetype: string;
+    count:string;
 }
 
-const AddDesignation = () => {
-    const [holiday, setHoliday] = useState<Inputs[]>([])
+const LeaveType = () => {
+    const [leavetype, setLeavetype] = useState<Inputs[]>([])
     const [loading, setloading] = useState(true)
     const {
         register,
@@ -55,7 +54,7 @@ const AddDesignation = () => {
 
 
     const columns: any = useMemo(() => COLUMNS, []);
-    const data = useMemo(() => holiday, [holiday]);
+    const data = useMemo(() => leavetype, [leavetype]);
 
     const defaultColumn: any = useMemo(() => {
         return {
@@ -101,17 +100,17 @@ const AddDesignation = () => {
 
     const companyName = useSelector((state: RootState) => state.auth.companyName)
 
-    const getHoliday = async () => {
+    const getClient = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/holiday/${companyName}`);
+            const res = await axios.get(`${BASE_URL}/getclient`);
             // Handle the response, e.g., store in state or display the data
             console.log(res.data);
-            setHoliday(res.data)
+            setLeavetype(res.data.clients)
             setloading(false)
 
         } catch (error) {
             // Handle any errors that occur during the request
-            console.error('Error fetching Designations:', error);
+            console.error('Error fetching Clients:', error);
         }
     }
 
@@ -122,16 +121,16 @@ const AddDesignation = () => {
             companyName: companyName
         }
 
-        const res = await axios.post(`${BASE_URL}/holiday`, formdata)
+        const res = await axios.post(`${BASE_URL}/addclient`, formdata)
 
         if (res.status === 201) {
             reset()
-            getHoliday()
+            getClient()
         }
     }
 
     useEffect(() => {
-        getHoliday()
+        getClient()
     }, [])
 
     return (
@@ -139,33 +138,28 @@ const AddDesignation = () => {
             <div className=' bg-white  rounded-lg w-full p-4 text-sm' >
 
                 <div className=' border-b border-gray-200 pb-2'>
-                    <h1 className=' text-2xl font-bold     '>Add Holiday</h1>
-                    <p className=' text-gray-500 text-sm'>Add new Holiday for your employees</p>
+                    <h1 className=' text-2xl font-bold     '>Leave Type</h1>
+                    <p className=' text-gray-500 text-sm'>Add leave types for your employees</p>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} >
                     <div className=' grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-4 mb-5 '>
 
                         {/* <p className=' col-span-full border-b-2 pb-1 font-semibold'>Add Details</p> */}
                         <div className=' flex flex-col gap-2'>
-                            <label>Add Holiday</label>
+                            <label>Leave Type</label>
                             <input
-                                {...register("holiday")}
-                                className=' hover:border-gray-400    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='holiday'></input>
+                                {...register("leaveType")}
+                                className=' hover:border-gray-400    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='name'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
-                            <label>From Date</label>
+                            <label>state</label>
                             <input
                             
-                                {...register("from_date")}
+                                {...register("count")}
                                 
-                                className=' hover:border-gray-400    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder='holiday'></input>
+                                className=' hover:border-gray-400    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' ></input>
                         </div>
-                        <div className=' flex flex-col gap-2'>
-                            <label>To Date</label>
-                            <input
-                                {...register("to_date")}
-                                className=' hover:border-gray-400    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder='holiday'></input>
-                        </div>
+                        
                     </div>
                     <Button type='submit'>
                         Add 
@@ -173,12 +167,12 @@ const AddDesignation = () => {
                 </form>
             </div>
             
-            <div className="bg-white md:p-4 p-2 rounded-md shadow-lg my-4">
+            <div className="bg-white md:p-4 p-2 rounded-md shadow-lg my-2">
                 <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
                     <div>
-                        <h1 className=' text-2xl font-bold     '>Holiday List</h1>
+                        <h1 className=' text-2xl font-bold     '>Leave types list</h1>
                         <p className="text-xs text-muted-foreground">
-                            Here&apos;s a list of Holidays.
+                            Here&apos;s a list of leave types.
                         </p>
                     </div>
 
@@ -390,4 +384,4 @@ const AddDesignation = () => {
     )
 }
 
-export default AddDesignation
+export default LeaveType

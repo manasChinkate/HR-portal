@@ -3,6 +3,7 @@ import { Button } from '../ui/button'
 import axios from 'axios'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { BASE_URL } from '../../constants';
+import { Link } from 'react-router-dom';
 
 type Inputs =  {
     fromdate: string;
@@ -52,6 +53,14 @@ const AddnewCompany = () => {
                 <div className=' '>
                     <h1 className=' text-2xl font-bold     '>Create Company</h1>
                     <p className=' text-gray-500 text-sm'>create your new company</p>
+                </div>
+                <div className='flex justify-end mt-4'>
+                    <Link
+                        to={'/company-table'}
+                        className='inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md'
+                    >
+                        Companies List
+                    </Link>
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)}>

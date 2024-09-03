@@ -1,21 +1,22 @@
 /* Table Container */
 table {
   width: 100%;
-  /* margin-top: 1rem; */
   border-collapse: collapse; /* Remove double borders */
-  border: 1px solid #e0e0e0; /* Add border around the table */
-  
+  border: 1px solid #ddd; /* Light border around the table */
+  border-radius: 8px; /* Rounded corners for a modern look */
+  overflow: hidden; /* Ensures rounded corners are applied to the table */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation effect */
 }
 
 /* Table Headers */
 table th {
   text-align: left; /* Align text to the left for better readability */
-  background-color: #f4f6f8; /* Softer, professional background color */
+  background-color:#e0f7fa ;/* Gradient background for headers */
   color: #333; /* Darker text for better contrast */
   font-size: 0.9rem;
   font-weight: 600; /* Slightly bolder text */
-  padding: 10px; /* Increased padding for better spacing */
-  border-bottom: 2px solid #d1d5db; /* Border at the bottom of headers */
+  padding: 12px 15px; /* Increased padding for better spacing */
+  border-bottom: 2px solid #b0bec5; /* Softer border color */
 }
 
 /* Table Rows */
@@ -25,29 +26,34 @@ table tr {
 
 /* Alternate Row Backgrounds */
 table tr:nth-child(even) {
-  background-color: #fafafa; /* Lighter, more neutral alternate row color */
+  background-color: #f9f9f9; /* Very light gray for alternate rows */
 }
 
 /* Hover Effect */
 table tr:hover {
-  background-color: #f0f4f8; /* Subtle hover color for rows */
+  background-color: #e0f7fa; /* Light cyan for hover effect */
 }
 
 /* Table Cells */
 table td {
   font-size: 0.85rem; /* Slightly larger text for readability */
-  padding: 10px; /* Increased padding for better spacing */
+  padding: 12px 15px; /* Increased padding for better spacing */
   color: #555; /* Softer text color */
-  border-bottom: 1px solid #e0e0e0; /* Add bottom border to cells */
+  border-bottom: 1px solid #ddd; /* Add bottom border to cells */
 }
 
 /* Additional Styling for the Table */
 table td:first-child,
 table th:first-child {
-  padding-left: 15px; /* Extra padding on the left for the first column */
+  padding-left: 20px; /* Extra padding on the left for the first column */
 }
 
 table td:last-child,
 table th:last-child {
-  padding-right: 15px; /* Extra padding on the right for the last column */
+  padding-right: 20px; /* Extra padding on the right for the last column */
+}
+
+/* Zebra Striping Effect */
+table tr:nth-child(odd) {
+  background-color: #ffffff; /* White for odd rows for a clean look */
 }

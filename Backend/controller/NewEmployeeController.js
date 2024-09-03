@@ -3,13 +3,14 @@ const LoginSchema = require('../models/Login')
 
 const AddnewEmployee = async (req, res) => {
 
-    loginemployee = {
-        name:req.body.fullname,
-        email:req.body.email,
-        authority:req.body.authority,
-        password:"123456",
-        companyName:req.body.companyName
-    }
+    const loginemployee = {
+        name: req.body.fullname,
+        email: req.body.email,
+        authority: req.body.authority,
+        password: req.body.authority === 'ProjectManager' ? `${req.body.fullname}@123` : '123456',
+        companyName: req.body.companyName
+    };
+    
 
     const employee = req.body;
     try {

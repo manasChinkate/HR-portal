@@ -7,11 +7,12 @@ const mongoose = require('mongoose');
 
 //Module Imports 
 const login = require('./controller/logincontrol');
-const AddnewCompany = require('./controller/NewCompanyController')
+const {AddnewCompany,GetCompany} = require('./controller/NewCompanyController')
 const {AddnewEmployee,getEmployeeData} = require('./controller/NewEmployeeController')
 const ReportingManager = require('./controller/ReportingManager')
 const {Designation,GetDesignation} = require('./controller/DesignationController');
 const { Holiday, GetHoliday } = require('./controller/HolidayController');
+const { AddClient, GetClient } = require('./controller/ClientController');
 // const GetDesignation = require('./controller/DesignationController')
 
 
@@ -32,13 +33,16 @@ app.get('/', (req, res) => {
 });
 app.post('/login', login);
 app.post('/addnewcompany', AddnewCompany);
+app.get('/getcompanies', GetCompany);
 app.post('/addnewemployee', AddnewEmployee);
-app.get('/employee ', getEmployeeData);
+app.get('/employee', getEmployeeData);
 app.get('/reportingmanager', ReportingManager);
 app.post('/designation', Designation);
-app.get('/designation/:companyname', GetDesignation);
+app.get('/designation', GetDesignation);
 app.post('/holiday', Holiday);
-app.get('/holiday/:companyname', GetHoliday);
+app.get('/holiday', GetHoliday);
+app.post('/addclient', AddClient);
+app.get('/getclient', GetClient);
 
 // app.get('/protected',protected)
 

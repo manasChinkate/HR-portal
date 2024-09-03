@@ -8,77 +8,74 @@ import axios from "axios";
 // import { useEffect, useState } from "react";
 import { BASE_URL } from "@/components/Constants";
 
-interface Employee {
+interface Company {
   _id: string;
+  fromdate: string;
+  todate: string;
   fullname: string;
   email: string;
-  mobileNo: string;
-  gender: string;
-  maritialStatus: string;
-  adhaarNo: string;
-  panNo: string;
-  joiningDate: string; // or Date if you prefer
-  probationPeriod: string;
-  authority: string;
-  designation: string;
-  reportingManager: string;
+  MobileNo: string;
+  Gender: string;
+  AadharNumber: number;
+  PanNumber: string;
+  CompanyName: string;
+  CompanyPrefix: string;
+  NoofEmployee: number;
   city: string;
   state: string;
   country: string;
   pincode: number;
   address: string;
-  companyName: string;
-  createdDate: string; // or Date if you prefer
+  authority: string;
+  createdDate: string;
   __v: number;
 }
 
 
 
 
-export const COLUMNS: Column<Account>[] = [
+
+export const COLUMNS: Column<Company>[] = [
   {
-    Header: "Full Name",
+    Header: "Company Name",
+    accessor: "CompanyName",
+  },
+  {
+    Header: "No. of Employees",
+    accessor: "NoofEmployee",
+  },
+  {
+    Header: "Admin Name",
     accessor: "fullname",
   },
   {
     Header: "Email",
     accessor: "email",
-    // Cell: ({ value }) => {
-    //   const convertDate = (isoDate: string) => {
-    //     const date = new Date(isoDate);
-    //     const day = String(date.getDate()).padStart(2, '0');
-    //     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
-    //     const year = date.getFullYear();
 
-    //     return `${day}/${month}/${year}`;
-    //   };
-
-    //   return <span>{convertDate(value)}</span>;
-    // },
   },
   {
     Header: "Mobile No.",
-    accessor: "mobileNo",
+    accessor: "MobileNo",
   },
   {
     Header: "Gender",
-    accessor: "gender",
-  },
-  {
-    Header: "Maritial Status",
-    accessor: "maritialStatus",
+    accessor: "Gender",
   },
   {
     Header: "Adhaar No.",
-    accessor: "adhaarNo",
+    accessor: "AadharNumber",
   },
   {
     Header: "Pan No.",
-    accessor: "panNo",
+    accessor: "PanNumber",
   },
   {
-    Header: "Joining Date",
-    accessor: "joiningDate",
+    Header: "Company Prefix",
+    accessor: "CompanyPrefix",
+  },
+  {
+    Header: "From Date",
+    accessor: "fromdate",
     Cell: ({ value }) => {
       const convertDate = (isoDate: string) => {
         const date = new Date(isoDate);
@@ -93,20 +90,25 @@ export const COLUMNS: Column<Account>[] = [
     },
   },
   {
-    Header: "Probation Period",
-    accessor: "probationPeriod",
+    Header: "To Date",
+    accessor: "todate",
+    Cell: ({ value }) => {
+      const convertDate = (isoDate: string) => {
+        const date = new Date(isoDate);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
+        const year = date.getFullYear();
+
+        return `${day}/${month}/${year}`;
+      };
+
+      return <span>{convertDate(value)}</span>;
+    },
   },
+ 
   {
     Header: "Authority",
     accessor: "authority",
-  },
-  {
-    Header: "Designation",
-    accessor: "designation",
-  },
-  {
-    Header: "Reporting Manager",
-    accessor: "reportingManager",
   },
   {
     Header: "City",
@@ -125,7 +127,7 @@ export const COLUMNS: Column<Account>[] = [
     accessor: "pincode",
   },
   {
-    Header: "Address",
+    Header: "Company Address",
     accessor: "address",
   },
   {
