@@ -38,13 +38,13 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
     setShowMenu(false); // Close sidebar on logout
   };
 
-  const navData = Role === 'masterAdmin' ? MasterAdminNavData : Role === 'Admin' ? AdminNavData : [];
+  const navData = Role === 'masterAdmin' ? MasterAdminNavData : Role === 'Admin' ? AdminNavData : Role === 'Employee' ? EmployeeNavData  : [];
 
   return (
     <div className="relative">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-white text-sm py-2 transition-transform duration-300 transform lg:transform-none lg:relative lg:translate-x-0 z-20 ${showMenu ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`fixed inset-y-0 left-0 w-64 bg-white dark:bg-[#121212] dark:text-white text-sm py-2 transition-transform duration-300 transform lg:transform-none lg:relative lg:translate-x-0 z-20 ${showMenu ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div>
           <div className='w-full flex items-center justify-center mb-4'>
@@ -66,7 +66,7 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
                 {data.icon} {data.name}
 
                 <div
-                  className="absolute bottom-0 left-0 h-[1px] bg-gray-500 w-0 group-hover:w-full transition-all duration-300"
+                  className="absolute bottom-0 left-0 h-[1px] bg-gray-500  w-0 group-hover:w-full transition-all duration-300"
                 ></div>
               </div>
               {data.children && activeParent === index && (
@@ -74,11 +74,11 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
                   {data.children.map((child, childIndex) => (
                     <Link to={child.link} key={childIndex} className='no-underline'>
                       <div
-                        className='mx-2 py-3 bg-slate-100 rounded flex items-center gap-4 pl-8 cursor-pointer relative group'
+                        className='mx-2 py-3 bg-slate-100 dark:bg-[#121212] rounded flex items-center gap-4 pl-8 cursor-pointer relative group'
                       >
                         {child.icon} {child.name}
                         <div
-                          className="absolute bottom-0 left-0 h-[1px] bg-gray-500 w-0 group-hover:w-full transition-all duration-300"
+                          className="absolute bottom-0 left-0 h-[1px] bg-gray-500  w-0 group-hover:w-full transition-all duration-300"
                         ></div>
                       </div>
                     </Link>
@@ -169,6 +169,40 @@ const AdminNavData = [
         icon: <MdManageHistory />,
         link: '/manageleave',
       }
+    ]
+  },
+  {
+    name: 'Project Master',
+    icon: <RiProjectorLine />,
+    link: '/project-master',
+  },
+  {
+    name: 'Add Employee',
+    icon: <BsPersonWorkspace />,
+    link: '/add-employee',
+  },
+  {
+    name: 'HelpDesk',
+    icon: <SiHelpdesk />,
+    link: '/helpDesk',
+  },
+];
+const EmployeeNavData = [
+  {
+    name: 'Home',
+    icon: <IoHome />,
+    link: '/',
+  },
+  
+  {
+    name: 'Leave Management',
+    icon: <MdOutlineTimeToLeave />,
+    children:[
+      {
+        name: 'Apply Leave ',
+        icon: <MdMergeType />,
+        link: '/applyleave',
+      },
     ]
   },
   {

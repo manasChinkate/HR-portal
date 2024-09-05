@@ -34,11 +34,12 @@ import {
     RxMixerHorizontal,
 } from "react-icons/rx";
 import Checkbox from '../../Checkbox';
+import toast from 'react-hot-toast';
 
 
 type Inputs = {
-    leavetype: string;
-    count:string;
+    leaveType: string;
+    count: string;
 }
 
 const LeaveType = () => {
@@ -102,10 +103,10 @@ const LeaveType = () => {
 
     const getClient = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/getclient`);
+            const res = await axios.get(`${BASE_URL}/getleavetype`);
             // Handle the response, e.g., store in state or display the data
             console.log(res.data);
-            setLeavetype(res.data.clients)
+            setLeavetype(res.data)
             setloading(false)
 
         } catch (error) {
@@ -120,13 +121,18 @@ const LeaveType = () => {
             ...data,
             companyName: companyName
         }
+        try {
+            const res = await axios.post(`${BASE_URL}/addleavetype`, formdata)
 
-        const res = await axios.post(`${BASE_URL}/addclient`, formdata)
-
-        if (res.status === 201) {
-            reset()
-            getClient()
+            if (res.status === 201) {
+                toast.success("Added successfully")
+                reset()
+                getClient()
+            }
+        } catch (error) {
+            toast.error("Failed adding leaveType")
         }
+
     }
 
     useEffect(() => {
@@ -134,8 +140,8 @@ const LeaveType = () => {
     }, [])
 
     return (
-        <div className='w-full max-h-[90vh] bg-[#e5e7ec] p-2 overflow-y-auto'>
-            <div className=' bg-white  rounded-lg w-full p-4 text-sm' >
+        <div className='w-full min-h-[90vh] bg-[#e5e7ec] dark:bg-primary1 p-2 overflow-y-auto'>
+            <div className=' bg-white dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
 
                 <div className=' border-b border-gray-200 pb-2'>
                     <h1 className=' text-2xl font-bold     '>Leave Type</h1>
@@ -149,25 +155,25 @@ const LeaveType = () => {
                             <label>Leave Type</label>
                             <input
                                 {...register("leaveType")}
-                                className=' hover:border-gray-400    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='name'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='name'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
-                            <label>state</label>
+                            <label>Count</label>
                             <input
-                            
+
                                 {...register("count")}
-                                
-                                className=' hover:border-gray-400    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' ></input>
+
+                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='days' ></input>
                         </div>
-                        
+
                     </div>
-                    <Button type='submit'>
-                        Add 
+                    <Button className=' dark:bg-[#3b5ae4] dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md  ' type='submit'>
+                        Add
                     </Button>
                 </form>
             </div>
-            
-            <div className="bg-white md:p-4 p-2 rounded-md shadow-lg my-2">
+
+            <div className="bg-white dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg my-2">
                 <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
                     <div>
                         <h1 className=' text-2xl font-bold     '>Leave types list</h1>
@@ -196,14 +202,14 @@ const LeaveType = () => {
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        className="ml-auto hidden h-8 lg:flex"
+                                        className="ml-auto hidden h-8 lg:flex dark:bg-[#121212]"
                                     >
                                         <RxMixerHorizontal className="mr-2 h-4 w-4" />
                                         View
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="bg-white py-2 px-3 text-[0.8rem] shadow-lg rounded-md">
-                                    <div className=" bg-gray-50 font-semibold py-1 flex items-center gap-2">
+                                <PopoverContent className="bg-white dark:bg-[#121212] py-2 px-3 text-[0.8rem] shadow-lg rounded-md">
+                                    <div className=" bg-gray-50 dark:bg-[#121212] font-semibold py-1 flex items-center gap-2">
                                         <Checkbox {...getToggleHideAllColumnsProps()} />
                                         Toggle All
                                     </div>
@@ -317,11 +323,11 @@ const LeaveType = () => {
                     <div className="text-sm sm:text-base flex justify-between items-center gap-5">
                         <span className="text-sm text-muted-foreground">
                             Page{` `}
-                            <strong className="text-sm text-black">
+                            <strong className="text-sm text-black dark:text-white">
                                 {pageIndex + 1} - {pageOptions.length}
                             </strong>
                             {` `}
-                            of <strong className="text-sm text-black">
+                            of <strong className="text-sm text-black dark:text-white">
                                 {rows.length}
                             </strong>{" "}
                             data
@@ -337,7 +343,7 @@ const LeaveType = () => {
                                         : 0;
                                     gotoPage(pageNumber);
                                 }}
-                                className="w-[50px] border-gray-400 border-[1px] border-solid rounded-sm p-[0.1rem_0.3rem] text-[0.8rem]"
+                                className="w-[50px] border-gray-400 dark:bg-secondary1 border-[1px] border-solid rounded-sm p-[0.1rem_0.3rem] text-[0.8rem]"
                             />
                         </span>
                     </div>

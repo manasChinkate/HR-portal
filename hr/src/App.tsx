@@ -16,6 +16,7 @@ import CompanyTable from './components/AddnewCompany/CompanyTable';
 import AddClient from './components/MainMaster/AddClient/AddClient';
 import LeaveType from './components/LeaveManagement/LeaveType/LeaveType';
 import ManageLeave from './components/LeaveManagement/ManageLeave/ManageLeave';
+import ApplyLeave from './components/LeaveManagement/ApplyLeave/ApplyLeave';
 
 
 const App = () => {
@@ -39,11 +40,11 @@ const App = () => {
     return (
       <>
 
-        <div className='  border-b  '>
-        <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
+        <div className=' dark:border-0 dark:shadow-md  border-b dark:bg-[#121212]  '>
+          <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
         </div>
-        <div className="grid grid-cols-10 max-h-[90vh]  bg-white">
-          <div className={`${showMenu ? "col-span-2" : "hidden"}`}>
+        <div className="grid grid-cols-10 max-h-[90vh]  bg-white ">
+          <div className={`${showMenu ? "col-span-2" : "hidden"} dark:bg-[#121212]`}>
             {
               showMenu && (
                 <Sidebar showMenu={showMenu} setShowMenu={setShowMenu} />
@@ -69,9 +70,9 @@ const App = () => {
         {
           path: "/",
           element: (
-          <Protected>
-            <Dashboard />
-          </Protected>
+            <Protected>
+              <Dashboard />
+            </Protected>
           ),
         },
         {
@@ -114,7 +115,7 @@ const App = () => {
             </Protected>
           ),
         },
-       
+
         {
           path: "/designation",
           element: (
@@ -152,6 +153,14 @@ const App = () => {
           element: (
             <Protected>
               <ManageLeave />
+            </Protected>
+          ),
+        },
+        {
+          path: "/applyleave",
+          element: (
+            <Protected>
+              <ApplyLeave />
             </Protected>
           ),
         },

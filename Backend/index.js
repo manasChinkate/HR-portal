@@ -13,6 +13,8 @@ const ReportingManager = require('./controller/ReportingManager')
 const {Designation,GetDesignation} = require('./controller/DesignationController');
 const { Holiday, GetHoliday } = require('./controller/HolidayController');
 const { AddClient, GetClient } = require('./controller/ClientController');
+const { LeaveType, getLeaveType } = require('./controller/LeaveTypeController');
+const { AddLeave, GetLeaveData } = require('./controller/LeaveController');
 // const GetDesignation = require('./controller/DesignationController')
 
 
@@ -43,6 +45,10 @@ app.post('/holiday', Holiday);
 app.get('/holiday', GetHoliday);
 app.post('/addclient', AddClient);
 app.get('/getclient', GetClient);
+app.post('/addleavetype', LeaveType);
+app.get('/getleavetype', getLeaveType);
+app.post('/applyleave', AddLeave);
+app.get('/getapplyleave', GetLeaveData);
 
 // app.get('/protected',protected)
 

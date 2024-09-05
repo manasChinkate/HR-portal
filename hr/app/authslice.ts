@@ -5,20 +5,17 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 export interface AuthState {
     authority: string | null;
     name: string | null;
-    sidebar: sidebarData[];
-    companyName:string | null
+ 
+    companyName:string | null;
+    email:string | null;
   }
-  interface sidebarData {
-    name:string,
-    icon:string,
-    link:string
-  }
+ 
 
   const initialState: AuthState = {
   
     authority: null,
     name: null,
-    sidebar:[],
+  
     companyName:null
    
   };
@@ -33,9 +30,10 @@ export interface AuthState {
           setName: (state, action: PayloadAction<string>) => {
             state.name = action.payload;
           },
-          setSidebar: (state, action: PayloadAction<Array<string>>) => {
-            state.sidebar = action.payload;
+          setEmail: (state, action: PayloadAction<string>) => {
+            state.email = action.payload;
           },
+         
           setCompany: (state, action: PayloadAction<string>) => {
             state.companyName = action.payload;
           },
@@ -51,7 +49,7 @@ export const {
     setauthority,
     setName,
     cleanUp,
-    setSidebar,
+    setEmail,
     setCompany
   } = authSlice.actions;
   

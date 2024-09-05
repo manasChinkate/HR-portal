@@ -2,17 +2,12 @@
 
 import { Column } from "react-table";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
-// import toast from "react-hot-toast";
-// import { useEffect, useState } from "react";
-import { BASE_URL } from "@/components/Constants";
 
-interface Company {
+
+interface LeaveRecord {
   _id: string;
-  clientName: string;
-  state: string;
-  country: string;
+  leaveType: string;
+  count: string;
   companyName: string;
   createdAt: string; // ISO 8601 date string
   __v: number;
@@ -21,18 +16,15 @@ interface Company {
 
 
 
-export const COLUMNS: Column<Company>[] = [
+
+export const COLUMNS: Column<LeaveRecord>[] = [
   {
-    Header: "Client Name",
-    accessor: "clientName",
+    Header: "Leave type",
+    accessor: "leaveType",
   },
   {
-    Header: "State",
-    accessor: "state",
-  },
-  {
-    Header: "Country",
-    accessor: "country",
+    Header: "Count",
+    accessor: "count",
   },
   {
     Header: "Created At",

@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../app/store'
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 type Inputs = {
     // Personal Details
@@ -96,6 +97,9 @@ const AddnewEmployee = () => {
 
         if (res.status === 201) {
             reset()
+            
+        }else{
+            
         }
     }
 

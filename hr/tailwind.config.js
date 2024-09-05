@@ -8,6 +8,7 @@ module.exports = {
     './src/**/*.{ts,tsx}',
   ],
   prefix: "",
+  darkMode:'class',
   theme: {
     container: {
       center: true,
@@ -18,6 +19,16 @@ module.exports = {
     },
     extend: {
       colors: {
+        primary1: "black",
+        secondary1: '#121212',
+        button:'#3b5ae4',
+
+
+
+
+
+
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

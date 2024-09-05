@@ -38,11 +38,18 @@ import toast from 'react-hot-toast';
 
 
 type Inputs = {
-    designation: string
+    leaveType: string;
+    count: string;
+    reason:string,
+    from_date:string,
+    to_date:string,
+    department:string
 }
 
-const AddDesignation = () => {
-    const [desigantion, setDesignation] = useState<Inputs[]>([])
+const ApplyLeave = () => {
+    const [leave, setLeave] = useState<Inputs[]>([])
+    const [leavetypes, setLeavetypes] = useState<Inputs[]>([])
+    const [department, setDepartment] = useState<Inputs[]>([])
     const [loading, setloading] = useState(true)
     const {
         register,
@@ -54,7 +61,7 @@ const AddDesignation = () => {
 
 
     const columns: any = useMemo(() => COLUMNS, []);
-    const data = useMemo(() => desigantion, [desigantion]);
+    const data = useMemo(() => leave, [leave]);
 
     const defaultColumn: any = useMemo(() => {
         return {
@@ -100,71 +107,165 @@ const AddDesignation = () => {
 
     const companyName = useSelector((state: RootState) => state.auth.companyName)
 
-    const getDesignation = async () => {
+    const getLeaves = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/designation`);
+            const res = await axios.get(`${BASE_URL}/getapplyleave`);
             // Handle the response, e.g., store in state or display the data
             console.log(res.data);
-            setDesignation(res.data)
+            setLeave(res.data)
             setloading(false)
 
         } catch (error) {
             // Handle any errors that occur during the request
-            console.error('Error fetching Designations:', error);
+            console.error('Error fetching Leaves:', error);
+        }
+    }
+
+    const getleavetype = async()=>{
+        try {
+            const res = await axios.get(`${BASE_URL}/getleavetype`);
+            // Handle the response, e.g., store in state or display the data
+            console.log(res.data);
+            setLeavetypes(res.data)
+            setloading(false)
+
+        } catch (error) {
+            // Handle any errors that occur during the request
+            console.error('Error fetching LeavesTypes:', error);
+        }
+    }
+    const getDepartment = async()=>{
+        try {
+            const res = await axios.get(`${BASE_URL}/getleavetype`);
+            // Handle the response, e.g., store in state or display the data
+            console.log(res.data);
+            setDepartment(res.data)
+            setloading(false)
+
+        } catch (error) {
+            // Handle any errors that occur during the request
+            console.error('Error fetching Departments:', error);
         }
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         console.log(data)
-        const formdata = {
-            ...data,
-            companyName: companyName
+        
+        try {
+            const res = await axios.post(`${BASE_URL}/applyleave`, data)
+
+            if (res.status === 201) {
+                toast.success("Added successfully")
+                reset()
+                getLeaves()
+            }
+        } catch (error) {
+            toast.error("Failed adding leaveType")
         }
 
-        const res = await axios.post(`${BASE_URL}/designation`, formdata)
-
-        if (res.status === 201) {
-            toast.success("Added Successfully")
-            reset()
-            getDesignation()
-        }
     }
 
     useEffect(() => {
-        getDesignation()
+        getLeaves()
+        getleavetype()
+        getDepartment()
     }, [])
 
     return (
-        <div className='w-full max-h-[90vh] bg-[#e5e7ec] flex flex-col gap-2 dark:bg-black p-2 overflow-y-auto'>
-            <div className=' bg-white dark:bg-[#121212]  rounded-lg w-full p-4 text-sm' >
+        <div className='w-full min-h-[90vh] bg-[#e5e7ec] dark:bg-primary1 p-2 overflow-y-auto'>
+            <div className=' bg-white dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
 
-                <div className=' border-b border-gray-200 dark:border-0 pb-2'>
-               
-                    <h1 className=' text-2xl font-bold dark:text-gray-100     '>Add Designation</h1>
-                    <p className=' text-gray-500 text-sm'>Add new designations for your employees</p>
+                <div className=' border-b border-gray-200 pb-2'>
+                    <h1 className=' text-2xl font-bold     '>Apply Leave</h1>
+                    <p className=' text-gray-500 text-sm'>Apply for leaves here</p>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} >
                     <div className=' grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-4 mb-5 '>
 
                         {/* <p className=' col-span-full border-b-2 pb-1 font-semibold'>Add Details</p> */}
                         <div className=' flex flex-col gap-2'>
-                            <label>Add Designation</label>
-                            <input
-                                {...register("designation")}
-                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='designation'></input>
+                            <label>Leave Type</label>
+                            <select
+                                {...register("leaveType")}
+                                id="clientname"
+                                className={`hover:border-gray-400 dark:bg-secondary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
+                            >
+                                <option value="">Select</option>
+                                {
+                                    leavetypes.map((e)=>{
+                                        return(
+                                            <option value={e.leaveType}>{e.leaveType}</option>
+                                        )
+                                    })
+                                }
+
+                                
+
+
+
+                            </select>
                         </div>
+                        <div className=' flex flex-col gap-2'>
+                            <label>Department</label>
+                            <select
+                                {...register("department")}
+                                id="clientname"
+                                className={`hover:border-gray-400 dark:bg-secondary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
+                            >
+                                <option className='dark:text-white' value="">Select</option>
+                                {department.map((e)=>{
+                                    return(
+                                        <option value={e.department}>{e.department}</option>
+                                    )
+                                })}
+                                
+
+
+
+                            </select>
+                        </div>
+                        <div className=' flex flex-col gap-2'>
+                            <label>Count</label>
+                            <input
+
+                                {...register("count")}
+
+                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='days' ></input>
+                        </div>
+                        <div className=' flex flex-col gap-2'>
+                            <label>From Date</label>
+                            <input
+
+                                {...register("from_date")}
+
+                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder='holiday'></input>
+                        </div>
+                        <div className=' flex flex-col gap-2'>
+                            <label>To Date</label>
+                            <input
+                                {...register("to_date")}
+                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder='holiday'></input>
+                        </div>
+                        <div className=' flex flex-col gap-2 col-span-2'>
+                            <label>Reason</label>
+                            <textarea
+                                {...register("reason")}
+                                className=' hover:border-gray-400 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 text-sm placeholder:text-sm  ' placeholder=' address'></textarea>
+                        </div>
+
                     </div>
-                    <Button className=' dark:bg-[#000000] dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md  ' type='submit'>
-                        Add Designation
+                    <Button className=' dark:bg-[#3b5ae4] dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md  ' type='submit'>
+                        Add
                     </Button>
                 </form>
             </div>
-            <div className="bg-white dark:bg-[#121212] md:p-4 p-2 rounded-md shadow-lg ">
+
+            <div className="bg-white dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg my-2">
                 <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
                     <div>
-                        <h1 className=' text-2xl font-bold     '>Designation List</h1>
+                        <h1 className=' text-2xl font-bold     '>My leaves</h1>
                         <p className="text-xs text-muted-foreground">
-                            Here&apos;s a list of Designations.
+                            Here&apos;s a list of leave types.
                         </p>
                     </div>
 
@@ -376,4 +477,4 @@ const AddDesignation = () => {
     )
 }
 
-export default AddDesignation
+export default ApplyLeave

@@ -9,7 +9,8 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { BASE_URL } from '../../constants'
 import { RootState } from '../../../app/store'
 import { useDispatch } from 'react-redux'
-import { setauthority, setName , setSidebar,setCompany } from '../../../app/authslice'
+import { setauthority, setName ,setEmail,setCompany } from '../../../app/authslice'
+import toast from 'react-hot-toast'
 
 
 
@@ -46,21 +47,31 @@ const Login = () => {
             const res = await axios.post(`${BASE_URL}/login`, data);
 
             if (res.status === 200 && res?.data?.token) {
+                toast.success("Login Successfully")
                 // setResData(res.data); // Assuming setResData is a function to update state
                 dispatch(setauthority(res.data.authority))
                 dispatch(setName(res.data.name))
                 dispatch(setCompany(res.data.companyName))
+                dispatch(setEmail(res.data.email))
                 localStorage.setItem('token', res.data.token);
                 navigate('/')
 
-            } else {
+            } else if(res.status === 401) {
+                console.log("error")
                 localStorage.removeItem('token');
+                toast.error(res.data)
             }
 
-            console.log(res?.data);
-        } catch (error) {
-            console.error("Error during login:", error);
-            localStorage.removeItem('token'); // In case of an error, ensure the token is not stored
+            // console.log(res?.data);
+        } catch (error: any) { // Catch the error as any type, since axios errors have a response object
+            if (error.response && error.response.status === 401) {
+                toast.error(error.response.data || "Unauthorized"); // Show the error message from the response
+                localStorage.removeItem('token');
+            } else {
+                console.error("Error during login:", error);
+                localStorage.removeItem('token');
+                toast.error("An unexpected error occurred");
+            }
         }
     };
 
