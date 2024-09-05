@@ -85,3 +85,36 @@ table tr:nth-child(odd) {
 .dark table tr:nth-child(odd) {
   background-color: #121212; /* Darker background for odd rows */
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 5px  
+               /* Width of the scrollbar */
+}
+.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 5px  
+               /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;       /* Track color */
+}
+.dark ::-webkit-scrollbar-track {
+  background: #121212;       /* Track color */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;    /* Scrollbar color */
+  border-radius: 10px;       /* Rounded corners for the scrollbar */
+  /* border: 3px solid #f1f1f1; Add padding around the scrollbar */
+}
+.dark ::-webkit-scrollbar-thumb {
+  background-color: #555;    /* Scrollbar color */
+  border-radius: 10px;       /* Rounded corners for the scrollbar */
+  /* border: 3px solid #f1f1f1; Add padding around the scrollbar */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #124219;          /* Color when hovering over scrollbar */
+}

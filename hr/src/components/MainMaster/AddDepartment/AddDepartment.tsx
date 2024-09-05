@@ -38,12 +38,11 @@ import toast from 'react-hot-toast';
 
 
 type Inputs = {
-    leavetype: string;
-    count: string;
+    department: string
 }
 
-const ManageLeave = () => {
-    const [leaves, setLeaves] = useState<Inputs[]>([])
+const AddDepartment = () => {
+    const [department, setDepartment] = useState<Inputs[]>([])
     const [loading, setloading] = useState(true)
     const {
         register,
@@ -55,7 +54,7 @@ const ManageLeave = () => {
 
 
     const columns: any = useMemo(() => COLUMNS, []);
-    const data = useMemo(() => leaves, [leaves]);
+    const data = useMemo(() => department, [department]);
 
     const defaultColumn: any = useMemo(() => {
         return {
@@ -101,37 +100,71 @@ const ManageLeave = () => {
 
     const companyName = useSelector((state: RootState) => state.auth.companyName)
 
-    const getLeaves = async () => {
+    const getDepartment = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/getapplyleave`);
+            const res = await axios.get(`${BASE_URL}/getdepartment`);
             // Handle the response, e.g., store in state or display the data
             console.log(res.data);
-            setLeaves(res.data)
+            setDepartment(res.data)
             setloading(false)
 
         } catch (error) {
             // Handle any errors that occur during the request
-            console.error('Error fetching Clients:', error);
-            toast.error('error')
+            console.error('Error fetching Departments:', error);
         }
     }
 
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        console.log(data)
+       
+        const formdata = {
+            ...data,
+            companyName:companyName
+        }
+        const res = await axios.post(`${BASE_URL}/department`, formdata)
 
+        if (res.status === 201) {
+            toast.success("Added Successfully")
+            reset()
+            getDepartment()
+        }
+    }
 
     useEffect(() => {
-        getLeaves()
+        getDepartment()
     }, [])
 
     return (
-        <div className='w-full min-h-[90vh] bg-[#e5e7ec] dark:bg-primary1 p-2 overflow-y-auto'>
+        <div className='w-full max-h-[90vh] bg-[#e5e7ec] flex flex-col gap-2 dark:bg-black p-2 overflow-y-auto'>
+            <div className=' bg-white dark:bg-[#121212]  rounded-lg w-full p-4 text-sm' >
 
+                <div className=' border-b border-gray-200 dark:border-0 pb-2'>
+               
+                    <h1 className=' text-2xl font-bold dark:text-gray-100     '>Add Department</h1>
+                    <p className=' text-gray-500 text-sm'>Add new designations for your employees</p>
+                </div>
+                <form onSubmit={handleSubmit(onSubmit)} >
+                    <div className=' grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-4 mb-5 '>
 
-            <div className="bg-white dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg ">
+                        {/* <p className=' col-span-full border-b-2 pb-1 font-semibold'>Add Details</p> */}
+                        <div className=' flex flex-col gap-2'>
+                            <label>Add Department</label>
+                            <input
+                                {...register("department")}
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='designation'></input>
+                        </div>
+                    </div>
+                    <Button className=' dark:bg-[#000000] dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md  ' type='submit'>
+                        Add Department
+                    </Button>
+                </form>
+            </div>
+            <div className="bg-white dark:bg-[#121212] md:p-4 p-2 rounded-md shadow-lg ">
                 <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
                     <div>
-                        <h1 className=' text-2xl font-bold     '>Manage Leave</h1>
+                        <h1 className=' text-2xl font-bold     '>Department List</h1>
                         <p className="text-xs text-muted-foreground">
-                            Here&apos;s a list of applided leaves.
+                            Here&apos;s a list of Departments.
                         </p>
                     </div>
 
@@ -258,7 +291,7 @@ const ManageLeave = () => {
                                                 {row.cells.map((cell: any) => {
                                                     return (
                                                         <td {...cell.getCellProps()}>
-                                                            {cell.render("Cell", {getLeaves})}
+                                                            {cell.render("Cell")}
                                                         </td>
                                                     );
                                                 })}
@@ -343,4 +376,4 @@ const ManageLeave = () => {
     )
 }
 
-export default ManageLeave
+export default AddDepartment

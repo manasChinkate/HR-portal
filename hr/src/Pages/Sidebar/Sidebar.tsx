@@ -13,6 +13,8 @@ import { RiProjectorLine } from 'react-icons/ri';
 import { GrUserWorker, GrDomain } from 'react-icons/gr';
 import { LuAppWindow } from "react-icons/lu";
 import { MdManageHistory, MdMergeType, MdOutlineTimeToLeave } from 'react-icons/md';
+import { PiBuildingOfficeLight } from "react-icons/pi";
+
 
 
 const Sidebar = ({ showMenu, setShowMenu }) => {
@@ -88,13 +90,13 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
             </div>
           ))}
         </div>
-        <button
+        {/* <button
           onClick={handleLogout}
           className='mx-2 shadow-md py-3 bg-gray-200 hover:bg-gray-300 rounded mb-1 flex items-center gap-4 px-4 cursor-pointer text-sm transition-colors duration-200'
         >
           <IoMdExit />
           Logout
-        </button>
+        </button> */}
       </div>
 
       {/* Overlay */}
@@ -152,6 +154,11 @@ const AdminNavData = [
         name: 'Add Client',
         icon: <LuAppWindow />,
         link: '/client',
+      },
+      {
+        name: 'Add Department',
+        icon: <PiBuildingOfficeLight />,
+        link: '/department',
       },
     ],
   },

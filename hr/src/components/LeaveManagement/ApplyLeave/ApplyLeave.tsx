@@ -136,7 +136,7 @@ const ApplyLeave = () => {
     }
     const getDepartment = async()=>{
         try {
-            const res = await axios.get(`${BASE_URL}/getleavetype`);
+            const res = await axios.get(`${BASE_URL}/getdepartment`);
             // Handle the response, e.g., store in state or display the data
             console.log(res.data);
             setDepartment(res.data)
@@ -176,7 +176,7 @@ const ApplyLeave = () => {
             <div className=' bg-white dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
 
                 <div className=' border-b border-gray-200 pb-2'>
-                    <h1 className=' text-2xl font-bold     '>Apply Leave</h1>
+                    <h1 className=' text-2xl font-bold      '>Apply Leave</h1>
                     <p className=' text-gray-500 text-sm'>Apply for leaves here</p>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} >
@@ -188,7 +188,7 @@ const ApplyLeave = () => {
                             <select
                                 {...register("leaveType")}
                                 id="clientname"
-                                className={`hover:border-gray-400 dark:bg-secondary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
+                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-gray-700 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
                             >
                                 <option value="">Select</option>
                                 {
@@ -210,7 +210,7 @@ const ApplyLeave = () => {
                             <select
                                 {...register("department")}
                                 id="clientname"
-                                className={`hover:border-gray-400 dark:bg-secondary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
+                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-gray-700 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
                             >
                                 <option className='dark:text-white' value="">Select</option>
                                 {department.map((e)=>{
@@ -230,7 +230,7 @@ const ApplyLeave = () => {
 
                                 {...register("count")}
 
-                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='days' ></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-gray-700 dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='days' ></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>From Date</label>
@@ -238,19 +238,19 @@ const ApplyLeave = () => {
 
                                 {...register("from_date")}
 
-                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder='holiday'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-gray-700 dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder='holiday'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>To Date</label>
                             <input
                                 {...register("to_date")}
-                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder='holiday'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-gray-700 dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder='holiday'></input>
                         </div>
                         <div className=' flex flex-col gap-2 col-span-2'>
                             <label>Reason</label>
                             <textarea
                                 {...register("reason")}
-                                className=' hover:border-gray-400 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 text-sm placeholder:text-sm  ' placeholder=' address'></textarea>
+                                className=' dark:hover:border-gray-600 dark:border-gray-700 dark:border-[0.2px] dark:bg-[#121212] hover:border-gray-400 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 text-sm placeholder:text-sm  ' placeholder=' address'></textarea>
                         </div>
 
                     </div>

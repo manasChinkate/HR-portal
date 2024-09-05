@@ -17,6 +17,7 @@ import AddClient from './components/MainMaster/AddClient/AddClient';
 import LeaveType from './components/LeaveManagement/LeaveType/LeaveType';
 import ManageLeave from './components/LeaveManagement/ManageLeave/ManageLeave';
 import ApplyLeave from './components/LeaveManagement/ApplyLeave/ApplyLeave';
+import AddDepartment from './components/MainMaster/AddDepartment/AddDepartment';
 
 
 const App = () => {
@@ -43,7 +44,7 @@ const App = () => {
         <div className=' dark:border-0 dark:shadow-md  border-b dark:bg-[#121212]  '>
           <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
         </div>
-        <div className="grid grid-cols-10 max-h-[90vh]  bg-white ">
+        <div className="grid grid-cols-10 max-h-[90vh]  bg-white custom ">
           <div className={`${showMenu ? "col-span-2" : "hidden"} dark:bg-[#121212]`}>
             {
               showMenu && (
@@ -52,7 +53,7 @@ const App = () => {
             }
           </div>
           <div
-            className={`${showMenu ? "col-span-8" : "col-span-10"} `} >
+            className={`${showMenu ? "col-span-8" : "col-span-10"} custom `} >
             <Outlet />
           </div>
         </div>
@@ -161,6 +162,14 @@ const App = () => {
           element: (
             <Protected>
               <ApplyLeave />
+            </Protected>
+          ),
+        },
+        {
+          path: "/department",
+          element: (
+            <Protected>
+              <AddDepartment />
             </Protected>
           ),
         },

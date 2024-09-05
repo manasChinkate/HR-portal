@@ -89,9 +89,19 @@ export const COLUMNS: Column<LeaveRecord>[] = [
     accessor: "status",
     Cell: ({ row }) => {
       return (
-        <p className="bg-cyan-100 mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2 rounded-lg text-cyan-600 w-fit text-xs">
-          {row.original.status}
-        </p>
+          <>
+            {
+              row.original.status === "Accepted" ? ( <p className="bg-cyan-100 mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2 rounded-lg dark:bg-secondary1 dark:border-blue-600 dark:border text-blue-600 w-fit text-xs">
+                {row.original.status}
+              </p>) : (
+                 <p className="bg-cyan-100 mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2 rounded-lg dark:bg-secondary1 dark:border-red-600 dark:border text-red-600 w-fit text-xs">
+                 {row.original.status}
+               </p>
+              )
+            }
+          </>
+        
+       
       )
     }
   },

@@ -14,13 +14,14 @@ const {Designation,GetDesignation} = require('./controller/DesignationController
 const { Holiday, GetHoliday } = require('./controller/HolidayController');
 const { AddClient, GetClient } = require('./controller/ClientController');
 const { LeaveType, getLeaveType } = require('./controller/LeaveTypeController');
-const { AddLeave, GetLeaveData } = require('./controller/LeaveController');
+const { AddLeave, GetLeaveData, StatusChange } = require('./controller/LeaveController');
+const { Department, GetDepartment } = require('./controller/DepartmentController');
 // const GetDesignation = require('./controller/DesignationController')
 
 
 app.use(cors({
   origin: 'http://localhost:5173', // Allow requests from this origin
-  methods: ['GET', 'POST', 'DELETE', 'PUT'],
+  methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
   credentials: true // Allow cookies to be sent cross-origin
 }));
 
@@ -49,6 +50,14 @@ app.post('/addleavetype', LeaveType);
 app.get('/getleavetype', getLeaveType);
 app.post('/applyleave', AddLeave);
 app.get('/getapplyleave', GetLeaveData);
+
+app.patch('/leaves/:status/:id', StatusChange);
+
+
+
+
+app.post('/department', Department);
+app.get('/getdepartment', GetDepartment);
 
 // app.get('/protected',protected)
 
