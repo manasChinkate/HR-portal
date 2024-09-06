@@ -66,82 +66,82 @@ export const COLUMNS: Column<Employee>[] = [
                     {row.original.fullname}<span> Details</span>
                   </h1>
                 </div>
-                <div className="grid md:grid-cols-2 grid-cols-1  gap-4 p-4">
+                <div   className="grid md:grid-cols-3 grid-cols-1  gap-10 p-4">
                   <div>
-                    <label className="font-semibold ">Full Name</label>
+                    <label className="font-semibold dark:text-blue-300 ">Full Name</label>
                     <p>{row.original.fullname}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">Email</label>
+                    <label className="font-semibold dark:text-blue-300">Email</label>
                     <p>{row.original.email}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">Mobile No.</label>
+                    <label className="font-semibold dark:text-blue-300">Mobile No.</label>
                     <p>{row.original.mobileNo}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">Gender</label>
+                    <label className="font-semibold dark:text-blue-300">Gender</label>
                     <p>{row.original.gender}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">Marital Status</label>
+                    <label className="font-semibold dark:text-blue-300">Marital Status</label>
                     <p>{row.original.maritialStatus}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">Aadhar No.</label>
+                    <label className="font-semibold dark:text-blue-300">Aadhar No.</label>
                     <p>{row.original.adhaarNo}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">PAN No.</label>
+                    <label className="font-semibold dark:text-blue-300">PAN No.</label>
                     <p>{row.original.panNo}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">Joining Date</label>
+                    <label className="font-semibold dark:text-blue-300">Joining Date</label>
                     <p>{row.original.joiningDate}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">Probation Period</label>
+                    <label className="font-semibold dark:text-blue-300">Probation Period</label>
                     <p>{row.original.probationPeriod}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">Authority</label>
+                    <label className="font-semibold dark:text-blue-300">Authority</label>
                     <p>{row.original.authority}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">Designation</label>
+                    <label className="font-semibold dark:text-blue-300">Designation</label>
                     <p>{row.original.designation}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">Reporting Manager</label>
+                    <label className="font-semibold dark:text-blue-300">Reporting Manager</label>
                     <p>{row.original.reportingManager}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">City</label>
+                    <label className="font-semibold dark:text-blue-300">City</label>
                     <p>{row.original.city}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">State</label>
+                    <label className="font-semibold dark:text-blue-300">State</label>
                     <p>{row.original.state}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">Country</label>
+                    <label className="font-semibold dark:text-blue-300">Country</label>
                     <p>{row.original.country}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">Pincode</label>
+                    <label className="font-semibold dark:text-blue-300">Pincode</label>
                     <p>{row.original.pincode}</p>
                   </div>
 
                   <div>
-                    <label className="font-semibold">Company Name</label>
+                    <label className="font-semibold dark:text-blue-300">Company Name</label>
                     <p>{row.original.companyName}</p>
                   </div>
                   <div>
-                    <label className="font-semibold">Created Date</label>
+                    <label className="font-semibold dark:text-blue-300">Created Date</label>
                     <p>{row.original.createdDate}</p>
                   </div>
-                  <div>
-                    <label className="font-semibold col-span-full">Address</label>
+                  <div className=" col-span-full">
+                    <label className="font-semibold  dark:text-blue-300">Address</label>
                     <p>{row.original.address}</p>
                   </div>
                 </div>

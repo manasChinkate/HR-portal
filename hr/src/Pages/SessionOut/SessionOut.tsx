@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 const SessionOut = () => {
     return (
-        <div className=' h-screen w-full flex flex-col  items-center justify-center bg-gradient-to-t to-white from-blue-200'>
+        <div className=' h-screen w-full flex flex-col  items-center justify-center bg-gradient-to-t dark:bg-secondary1 to-white from-blue-200'>
             <div className='flex flex-col gap-4 items-center'>
 
                 <h1 className=' text-5xl font-bold '>Session Out</h1>

@@ -57,7 +57,7 @@ const GetLeaveData = async (req,res)=>{
             email
 
         }      
-        const getData = await LeaveModel.find(authority === 'Employee' ? { companyName, email } : { companyName });
+        const getData = await LeaveModel.find(authority === 'Employee' ? { companyName, email } : authority === 'HiringManager' ? { companyName, email } :    { companyName });
         // console.log(getData)
         
 

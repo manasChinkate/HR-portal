@@ -40,7 +40,7 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
     setShowMenu(false); // Close sidebar on logout
   };
 
-  const navData = Role === 'masterAdmin' ? MasterAdminNavData : Role === 'Admin' ? AdminNavData : Role === 'Employee' ? EmployeeNavData  : [];
+  const navData = Role === 'masterAdmin' ? MasterAdminNavData : Role === 'Admin' ? AdminNavData : Role === 'Employee' ? EmployeeNavData  : Role === 'HiringManager' ? HRNavData : [];
 
   return (
     <div className="relative">
@@ -129,7 +129,6 @@ const MasterAdminNavData = [
     link: '/helpDesk',
   },
 ];
-
 const AdminNavData = [
   {
     name: 'Home',
@@ -170,6 +169,45 @@ const AdminNavData = [
         name: 'Leave Type',
         icon: <MdMergeType />,
         link: '/leavetype',
+      },
+      {
+        name: 'Manage Leave',
+        icon: <MdManageHistory />,
+        link: '/manageleave',
+      }
+    ]
+  },
+  {
+    name: 'Project Master',
+    icon: <RiProjectorLine />,
+    link: '/project-master',
+  },
+  {
+    name: 'Add Employee',
+    icon: <BsPersonWorkspace />,
+    link: '/add-employee',
+  },
+  {
+    name: 'HelpDesk',
+    icon: <SiHelpdesk />,
+    link: '/helpDesk',
+  },
+];
+const HRNavData = [
+  {
+    name: 'Home',
+    icon: <IoHome />,
+    link: '/',
+  },
+ 
+  {
+    name: 'Leave Management',
+    icon: <MdOutlineTimeToLeave />,
+    children:[
+      {
+        name: 'Apply Leave ',
+        icon: <MdMergeType />,
+        link: '/applyleave',
       },
       {
         name: 'Manage Leave',
