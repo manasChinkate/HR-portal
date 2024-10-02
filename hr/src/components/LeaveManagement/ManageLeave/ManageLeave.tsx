@@ -38,12 +38,24 @@ import toast from 'react-hot-toast';
 
 
 type Inputs = {
-    leavetype: string;
+    _id: string;
+    name: string;
+    email: string;
+    leaveType: string;
     count: string;
+    department: string;
+    from_date: string;
+    to_date: string;
+    reason: string;
+    status: string;
+    companyName: string;
+    createdAt: string;
+    __v: number;
 }
 
 const ManageLeave = () => {
     const [leaves, setLeaves] = useState<Inputs[]>([])
+    const [finalleaves, setFinalLeaves] = useState<Inputs[]>([])
     const [loading, setloading] = useState(true)
     const {
         register,
@@ -55,7 +67,7 @@ const ManageLeave = () => {
 
 
     const columns: any = useMemo(() => COLUMNS, []);
-    const data = useMemo(() => leaves, [leaves]);
+    const data = useMemo(() => finalleaves, [finalleaves]);
 
     const defaultColumn: any = useMemo(() => {
         return {
@@ -99,20 +111,28 @@ const ManageLeave = () => {
     const { pageIndex } = state;
 
 
-    const companyName = useSelector((state: RootState) => state.auth.companyName)
+    const Email = useSelector((state: RootState) => state.auth.email)
+    const Authority = useSelector((state: RootState) => state.auth.authority)
 
     const getLeaves = async () => {
         try {
             const res = await axios.get(`${BASE_URL}/getapplyleave`);
-            // Handle the response, e.g., store in state or display the data
-            console.log(res.data);
-            setLeaves(res.data)
-            setloading(false)
-
+            
+            const fetchedLeaves = res.data;
+            setLeaves(fetchedLeaves); // Set the original leaves data
+    
+            if (Authority === 'HiringManager') {
+                const filtered = fetchedLeaves.filter((e: Inputs) => e.email !== Email); // Filter the data
+                setFinalLeaves(filtered); // Set the filtered data to finalLeaves
+                console.log('Filtered:', filtered);
+            } else {
+                setFinalLeaves(fetchedLeaves); // Pass the original data if not a Hiring Manager
+            }
+    
+            setloading(false);
         } catch (error) {
-            // Handle any errors that occur during the request
-            console.error('Error fetching Clients:', error);
-            toast.error('error')
+            console.error('Error fetching leaves:', error);
+            toast.error('Error fetching leaves data');
         }
     }
 
@@ -258,7 +278,7 @@ const ManageLeave = () => {
                                                 {row.cells.map((cell: any) => {
                                                     return (
                                                         <td {...cell.getCellProps()}>
-                                                            {cell.render("Cell", {getLeaves})}
+                                                            {cell.render("Cell", { getLeaves })}
                                                         </td>
                                                     );
                                                 })}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaAngleDown, FaAngleRight, FaBuilding, FaRegCalendarCheck } from 'react-icons/fa';
-import { IoMdExit } from 'react-icons/io';
+
 import { IoHome } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { cleanUp } from '../../../app/authslice';
@@ -65,7 +65,7 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
                     {activeParent === index ? <FaAngleDown /> : <FaAngleRight />}
                   </div>
                 )}
-                {data.icon} {data.name}
+                <div className=' dark:text-blue-500 text-base'>{data.icon}</div> {data.name}
 
                 <div
                   className="absolute bottom-0 left-0 h-[1px] bg-gray-500  w-0 group-hover:w-full transition-all duration-300"
