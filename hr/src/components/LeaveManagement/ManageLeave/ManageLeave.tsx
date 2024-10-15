@@ -124,7 +124,7 @@ const ManageLeave = () => {
             if (Authority === 'HiringManager') {
                 const filtered = fetchedLeaves.filter((e: Inputs) => e.email !== Email); // Filter the data
                 setFinalLeaves(filtered); // Set the filtered data to finalLeaves
-                console.log('Filtered:', filtered);
+                // console.log('Filtered:', filtered);
             } else {
                 setFinalLeaves(fetchedLeaves); // Pass the original data if not a Hiring Manager
             }
