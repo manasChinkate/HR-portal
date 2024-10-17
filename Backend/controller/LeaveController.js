@@ -44,25 +44,33 @@ const GetLeaveData = async (req, res) => {
             return res.status(401).json({ message: 'No token provided' });
         }
 
+        const authority = req.headers.authority;
+        
+        if (!authority) {
+            return res.status(400).json({ message: 'Authority not provided' });
+        }
+        
         const decodedToken = jwt.verify(token, 'jwt-secret-key');
 
         console.log('decodedToken :',decodedToken)
         const email =  decodedToken.email;
         const companyName =  decodedToken.companyName;
-        const authority =  decodedToken.authority;
+        // const authority =  decodedToken.authority;
+        
 
-        console.log('authority :', authority)
-
+        console.log('authority :',authority)
         let getData;
 
         // Fetch all leaves for the company
-        if (authority === 'Employee') {
+        if (authority == 'Employee') {
             // If the user is an Employee, fetch leave data for that specific user in the company
             getData = await LeaveModel.find({ companyName, email});
-           
+            console.log('employee one generated')
         } else {
             // For HiringManager or any other role, fetch all leave data for the company
             getData = await LeaveModel.find({ companyName });
+            console.log('Other one generated')
+
         }
 
         // If no leave data is found

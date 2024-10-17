@@ -30,6 +30,7 @@ const App = () => {
       function (config) {
         // Do something before request is sent
         config.headers.token = localStorage.getItem("token");
+        config.headers.authority = localStorage.getItem("authority");
         return config;
       },
       function (error) {

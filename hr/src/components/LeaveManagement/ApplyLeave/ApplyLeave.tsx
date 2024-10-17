@@ -105,7 +105,12 @@ const ApplyLeave = () => {
     const { pageIndex } = state;
 
 
-    const companyName = useSelector((state: RootState) => state.auth.companyName)
+
+    const Authority = useSelector((state: RootState) => state.auth.authority)
+    // console.log(Authority)
+
+
+    localStorage.setItem( 'authority',Authority)
 
     const getLeaves = async () => {
         try {

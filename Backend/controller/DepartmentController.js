@@ -7,7 +7,7 @@ const Department = async(req,res)=>{
 
     if(department){
        const data =  await DepartmentModel.create(department) 
-        console.log(data)
+        // console.log(data)
         res.status(201).json('Created successfully')
     }else{
         res.status(500).json('Error Creating ')
@@ -27,9 +27,9 @@ const GetDepartment = async(req,res)=>{
 
         // Verify and decode the token to get the companyName
         const decodedToken = jwt.verify(token, 'jwt-secret-key'); // Replace 'jwt-secret-key' with your actual secret key
-        console.log(decodedToken)
+        // console.log(decodedToken)
         const companyName = decodedToken.companyName; // Assuming companyName is stored in the token payload
-        console.log('decoded companyName:', companyName);
+        // console.log('decoded companyName:', companyName);
         // console.log('companyName :',companyName)
 
         // Query the database to find reporting managers for the given company€
