@@ -116,7 +116,7 @@ const ManageLeave = () => {
 
     const getLeaves = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/getapplyleave`);
+            const res = await axios.get(`${BASE_URL}/getmanageleave`);
             
             const fetchedLeaves = res.data;
             setLeaves(fetchedLeaves); // Set the original leaves data

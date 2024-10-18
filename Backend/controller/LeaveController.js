@@ -44,34 +44,30 @@ const GetLeaveData = async (req, res) => {
             return res.status(401).json({ message: 'No token provided' });
         }
 
-        const authority = req.headers.authority;
-        
-        if (!authority) {
-            return res.status(400).json({ message: 'Authority not provided' });
-        }
-        
+
+
+
+
         const decodedToken = jwt.verify(token, 'jwt-secret-key');
 
-        console.log('decodedToken :',decodedToken)
-        const email =  decodedToken.email;
-        const companyName =  decodedToken.companyName;
+        console.log('decodedToken :', decodedToken)
+        const email = decodedToken.email;
+        const companyName = decodedToken.companyName;
         // const authority =  decodedToken.authority;
-        
 
-        console.log('authority :',authority)
+
+
         let getData;
 
         // Fetch all leaves for the company
-        if (authority == 'Employee') {
-            // If the user is an Employee, fetch leave data for that specific user in the company
-            getData = await LeaveModel.find({ companyName, email});
-            console.log('employee one generated')
-        } else {
-            // For HiringManager or any other role, fetch all leave data for the company
-            getData = await LeaveModel.find({ companyName });
-            console.log('Other one generated')
 
-        }
+        // If the user is an Employee, fetch leave data for that specific user in the company
+        getData = await LeaveModel.find({ companyName, email });
+        console.log('employee one generated')
+
+        // For HiringManager or any other role, fetch all leave data for the company
+
+
 
         // If no leave data is found
         if (getData.length === 0) {
@@ -81,6 +77,33 @@ const GetLeaveData = async (req, res) => {
         // Send the data as response
         res.status(200).json(getData);
 
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+const GetManageLeave = async (req, res) => {
+    try {
+        const token = req.headers.token;
+        if (!token) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
+
+        const decodedToken = jwt.verify(token, 'jwt-secret-key');
+
+        console.log('decodedToken :', decodedToken)
+        const email = decodedToken.email;
+        const companyName = decodedToken.companyName;
+
+        const getData = await LeaveModel.find({ companyName });
+
+        if (getData.length === 0) {
+            return res.status(404).json({ message: 'No leave data found for this user in the specified company' });
+        }
+
+        // Send the data as response
+        res.status(200).json(getData);
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Server error' });
@@ -123,4 +146,4 @@ const StatusChange = async (req, res) => {
 
 }
 
-module.exports = { AddLeave, GetLeaveData, StatusChange }
+module.exports = { AddLeave, GetLeaveData, StatusChange, GetManageLeave }

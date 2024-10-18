@@ -18,6 +18,7 @@ import LeaveType from './components/LeaveManagement/LeaveType/LeaveType';
 import ManageLeave from './components/LeaveManagement/ManageLeave/ManageLeave';
 import ApplyLeave from './components/LeaveManagement/ApplyLeave/ApplyLeave';
 import AddDepartment from './components/MainMaster/AddDepartment/AddDepartment';
+import ProjectDetails from './components/ProjectMaster/ProjectDetails/ProjectDetails';
 
 
 const App = () => {
@@ -171,6 +172,14 @@ const App = () => {
           element: (
             <Protected>
               <AddDepartment />
+            </Protected>
+          ),
+        },
+        {
+          path: "/projectdetails",
+          element: (
+            <Protected>
+              <ProjectDetails />
             </Protected>
           ),
         },

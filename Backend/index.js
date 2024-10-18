@@ -14,7 +14,7 @@ const {Designation,GetDesignation} = require('./controller/DesignationController
 const { Holiday, GetHoliday } = require('./controller/HolidayController');
 const { AddClient, GetClient } = require('./controller/ClientController');
 const { LeaveType, getLeaveType } = require('./controller/LeaveTypeController');
-const { AddLeave, GetLeaveData, StatusChange } = require('./controller/LeaveController');
+const { AddLeave, GetLeaveData, StatusChange, GetManageLeave } = require('./controller/LeaveController');
 const { Department, GetDepartment } = require('./controller/DepartmentController');
 // const GetDesignation = require('./controller/DesignationController')
 
@@ -50,6 +50,7 @@ app.post('/addleavetype', LeaveType);
 app.get('/getleavetype', getLeaveType);
 app.post('/applyleave', AddLeave);
 app.get('/getapplyleave', GetLeaveData);
+app.get('/getmanageleave', GetManageLeave);
 
 app.patch('/leaves/:status/:id', StatusChange);
 

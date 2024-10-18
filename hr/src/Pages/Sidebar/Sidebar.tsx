@@ -40,7 +40,7 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
     setShowMenu(false); // Close sidebar on logout
   };
 
-  const navData = Role === 'masterAdmin' ? MasterAdminNavData : Role === 'Admin' ? AdminNavData : Role === 'Employee' ? EmployeeNavData  : Role === 'HiringManager' ? HRNavData : [];
+  const navData = Role === 'masterAdmin' ? MasterAdminNavData : Role === 'Admin' ? AdminNavData : Role === 'Employee' ? EmployeeNavData  : Role === 'HiringManager' ? HRNavData  : Role === 'ProjectManager' ? ProjectManagerNavData : [];
 
   return (
     <div className="relative">
@@ -90,13 +90,7 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
             </div>
           ))}
         </div>
-        {/* <button
-          onClick={handleLogout}
-          className='mx-2 shadow-md py-3 bg-gray-200 hover:bg-gray-300 rounded mb-1 flex items-center gap-4 px-4 cursor-pointer text-sm transition-colors duration-200'
-        >
-          <IoMdExit />
-          Logout
-        </button> */}
+       
       </div>
 
       {/* Overlay */}
@@ -180,7 +174,13 @@ const AdminNavData = [
   {
     name: 'Project Master',
     icon: <RiProjectorLine />,
-    link: '/project-master',
+    children:[
+      {
+        name: 'Project Details ',
+        icon: <MdMergeType />,
+        link: '/projectdetails',
+      },
+    ]
   },
   {
     name: 'Add Employee',
@@ -253,7 +253,49 @@ const EmployeeNavData = [
   {
     name: 'Project Master',
     icon: <RiProjectorLine />,
-    link: '/project-master',
+    children:[
+      {
+        name: 'Project Details ',
+        icon: <MdMergeType />,
+        link: '/applyleave',
+      },
+    ]
+  },
+  
+  {
+    name: 'HelpDesk',
+    icon: <SiHelpdesk />,
+    link: '/helpDesk',
+  },
+];
+const ProjectManagerNavData = [
+  {
+    name: 'Home',
+    icon: <IoHome />,
+    link: '/',
+  },
+  
+  {
+    name: 'Leave Management',
+    icon: <MdOutlineTimeToLeave />,
+    children:[
+      {
+        name: 'Apply Leave ',
+        icon: <MdMergeType />,
+        link: '/applyleave',
+      },
+    ]
+  },
+  {
+    name: 'Project Master',
+    icon: <RiProjectorLine />,
+    children:[
+      {
+        name: 'Project Details ',
+        icon: <MdMergeType />,
+        link: '/applyleave',
+      },
+    ]
   },
   {
     name: 'Add Employee',

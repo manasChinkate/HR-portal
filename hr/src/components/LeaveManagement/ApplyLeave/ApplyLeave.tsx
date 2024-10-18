@@ -203,11 +203,6 @@ const ApplyLeave = () => {
                                         )
                                     })
                                 }
-
-                                
-
-
-
                             </select>
                         </div>
                         <div className=' flex flex-col gap-2'>
