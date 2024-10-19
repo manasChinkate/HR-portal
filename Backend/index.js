@@ -16,6 +16,7 @@ const { AddClient, GetClient } = require('./controller/ClientController');
 const { LeaveType, getLeaveType } = require('./controller/LeaveTypeController');
 const { AddLeave, GetLeaveData, StatusChange, GetManageLeave } = require('./controller/LeaveController');
 const { Department, GetDepartment } = require('./controller/DepartmentController');
+const { CreateProject, getProjects } = require('./controller/ProjectController');
 // const GetDesignation = require('./controller/DesignationController')
 
 
@@ -55,10 +56,13 @@ app.get('/getmanageleave', GetManageLeave);
 app.patch('/leaves/:status/:id', StatusChange);
 
 
-
-
 app.post('/department', Department);
 app.get('/getdepartment', GetDepartment);
+
+
+
+app.post('/projects', CreateProject);
+app.get('/getprojects', getProjects);
 
 // app.get('/protected',protected)
 
