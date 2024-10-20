@@ -176,7 +176,12 @@ const AdminNavData = [
     icon: <RiProjectorLine />,
     children:[
       {
-        name: 'Project Details ',
+        name: 'Create Project  ',
+        icon: <MdMergeType />,
+        link: '/projectdetails',
+      },
+      {
+        name: 'Ongoing Projects  ',
         icon: <MdMergeType />,
         link: '/projectdetails',
       },
