@@ -46,7 +46,7 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
     <div className="relative">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-white dark:bg-[#121212] dark:text-white text-sm py-2 transition-transform duration-300 transform lg:transform-none lg:relative lg:translate-x-0 z-20 ${showMenu ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`fixed inset-y-0 left-0 w-64 bg-transparent dark:bg-[#121212] dark:text-white text-sm py-2 transition-transform duration-300 transform lg:transform-none lg:relative lg:translate-x-0 z-20 ${showMenu ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div>
           <div className='w-full flex items-center justify-center mb-4'>
@@ -76,7 +76,7 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
                   {data.children.map((child, childIndex) => (
                     <Link to={child.link} key={childIndex} className='no-underline'>
                       <div
-                        className='mx-2 py-3 bg-slate-100 dark:bg-[#121212] rounded flex items-center gap-4 pl-8 cursor-pointer relative group'
+                        className='mx-2 py-3 bg-transparent  dark:bg-[#121212] rounded flex items-center gap-4 pl-8 cursor-pointer relative group'
                       >
                         {child.icon} {child.name}
                         <div
@@ -184,6 +184,22 @@ const AdminNavData = [
         name: 'Ongoing Projects  ',
         icon: <MdMergeType />,
         link: '/ongoing_projects',
+      },
+    ]
+  },
+  {
+    name: 'TimeSheet',
+    icon: <RiProjectorLine />,
+    children:[
+      {
+        name: 'Fill Timesheet  ',
+        icon: <MdMergeType />,
+        link: '/fill_timesheet',
+      },
+      {
+        name: 'Timesheet Details' ,
+        icon: <MdMergeType />,
+        link: '/timesheet',
       },
     ]
   },

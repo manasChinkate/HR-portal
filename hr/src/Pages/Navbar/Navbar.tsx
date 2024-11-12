@@ -38,7 +38,7 @@ const Navbar = ({ setShowMenu, showMenu }) => {
   };
 
   return (
-    <div className='h-[9vh] flex items-center justify-between px-5 dark:bg-[#121212] dark:text-white'>
+    <div className='h-[9vh] flex items-center justify-between px-5 bg-yellow-500 dark:bg-[#121212] dark:text-white'>
       <div className='flex gap-4 items-center'>
         <TiThMenu className='text-2xl cursor-pointer' onClick={sidebartoggle} />
         {!showMenu && (

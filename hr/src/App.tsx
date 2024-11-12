@@ -19,7 +19,8 @@ import ManageLeave from './components/LeaveManagement/ManageLeave/ManageLeave';
 import ApplyLeave from './components/LeaveManagement/ApplyLeave/ApplyLeave';
 import AddDepartment from './components/MainMaster/AddDepartment/AddDepartment';
 import ProjectDetails from './components/ProjectMaster/ProjectDetails/ProjectDetails';
-import OngoingProjects from './components/OngoingProjects/OngoingProjects';
+import OngoingProjects from './components/ProjectMaster/OngoingProjects/OngoingProjects';
+import Filltimesheet from './components/Timesheet/FIllTimesheet/Filltimesheet';
 
 
 const App = () => {
@@ -47,7 +48,7 @@ const App = () => {
         <div className=' dark:border-0 dark:shadow-md  border-b dark:bg-[#121212]  '>
           <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
         </div>
-        <div className="grid grid-cols-10 max-h-[90vh]  bg-white custom ">
+        <div className="grid grid-cols-10 max-h-[90vh]         custom ">
           <div className={`${showMenu ? "col-span-2" : "hidden"} dark:bg-[#121212]`}>
             {
               showMenu && (
@@ -189,6 +190,14 @@ const App = () => {
           element: (
             <Protected>
               <OngoingProjects />
+            </Protected>
+          ),
+        },
+        {
+          path: "/fill_timesheet",
+          element: (
+            <Protected>
+              <Filltimesheet />
             </Protected>
           ),
         },
