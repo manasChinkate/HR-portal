@@ -49,16 +49,18 @@ const ProjectDetails = () => {
         }
     }
 
-    const getPm = async () =>{
-        const res = await axios.get(`${BASE_URL}/reportingmanager`)
-        setProjectM(res.data)
-        // console.log('ProjectM :', ProjectM)
-
-         filtered = ProjectM.filter((e: Inputs) => e.authority === 'ProjectManager');
-        // console.log(filtered)
-        await setFilteredPm(filtered)
+    const getPm = async () => {
+        try {
+            const res = await axios.get(`${BASE_URL}/reportingmanager`);
+            setProjectM(res.data);
     
-    }
+            const filtered = res.data.filter((e: Inputs) => e.authority === 'ProjectManager');
+            setFilteredPm(filtered);
+        } catch (error) {
+            console.error('Error fetching project managers:', error);
+        }
+    };
+    
     const companyName = useSelector((state: RootState) => state.auth.companyName)
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         console.log(data)
