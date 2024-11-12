@@ -183,7 +183,7 @@ const AdminNavData = [
       {
         name: 'Ongoing Projects  ',
         icon: <MdMergeType />,
-        link: '/projectdetails',
+        link: '/ongoing_projects',
       },
     ]
   },

@@ -19,6 +19,7 @@ import ManageLeave from './components/LeaveManagement/ManageLeave/ManageLeave';
 import ApplyLeave from './components/LeaveManagement/ApplyLeave/ApplyLeave';
 import AddDepartment from './components/MainMaster/AddDepartment/AddDepartment';
 import ProjectDetails from './components/ProjectMaster/ProjectDetails/ProjectDetails';
+import OngoingProjects from './components/OngoingProjects/OngoingProjects';
 
 
 const App = () => {
@@ -180,6 +181,14 @@ const App = () => {
           element: (
             <Protected>
               <ProjectDetails />
+            </Protected>
+          ),
+        },
+        {
+          path: "/ongoing_projects",
+          element: (
+            <Protected>
+              <OngoingProjects />
             </Protected>
           ),
         },
