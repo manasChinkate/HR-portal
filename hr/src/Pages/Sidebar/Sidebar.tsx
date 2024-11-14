@@ -191,15 +191,11 @@ const AdminNavData = [
     name: 'TimeSheet',
     icon: <RiProjectorLine />,
     children:[
-      {
-        name: 'Fill Timesheet  ',
-        icon: <MdMergeType />,
-        link: '/fill_timesheet',
-      },
+      
       {
         name: 'Timesheet Details' ,
         icon: <MdMergeType />,
-        link: '/timesheet',
+        link: '/timesheet-history',
       },
     ]
   },
@@ -243,6 +239,22 @@ const HRNavData = [
     link: '/project-master',
   },
   {
+    name: 'TimeSheet',
+    icon: <RiProjectorLine />,
+    children:[
+      {
+        name: 'Fill Timesheet  ',
+        icon: <MdMergeType />,
+        link: '/fill_timesheet',
+      },
+      {
+        name: 'Timesheet Details' ,
+        icon: <MdMergeType />,
+        link: '/timesheet',
+      },
+    ]
+  },
+  {
     name: 'Add Employee',
     icon: <BsPersonWorkspace />,
     link: '/add-employee',
@@ -282,6 +294,22 @@ const EmployeeNavData = [
       },
     ]
   },
+  {
+    name: 'TimeSheet',
+    icon: <RiProjectorLine />,
+    children:[
+      {
+        name: 'Fill Timesheet  ',
+        icon: <MdMergeType />,
+        link: '/fill_timesheet',
+      },
+      {
+        name: 'Timesheet Details' ,
+        icon: <MdMergeType />,
+        link: '/timesheet',
+      },
+    ]
+  },
   
   {
     name: 'HelpDesk',
@@ -315,6 +343,22 @@ const ProjectManagerNavData = [
         name: 'Project Details ',
         icon: <MdMergeType />,
         link: '/applyleave',
+      },
+    ]
+  },
+  {
+    name: 'TimeSheet',
+    icon: <RiProjectorLine />,
+    children:[
+      {
+        name: 'Fill Timesheet  ',
+        icon: <MdMergeType />,
+        link: '/fill_timesheet',
+      },
+      {
+        name: 'Timesheet Details' ,
+        icon: <MdMergeType />,
+        link: '/timesheet',
       },
     ]
   },

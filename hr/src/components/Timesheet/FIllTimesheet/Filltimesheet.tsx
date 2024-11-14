@@ -7,6 +7,19 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../app/store'
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
+import toast from 'react-hot-toast';
+
+type Inputs = {
+  projectName: string;
+  task: string;
+  date: string;
+  starttime: string;
+  endtime: string;
+  totaltime: string;
+  remarks: string;
+
+}
 
 const Filltimesheet = () => {
 
@@ -20,6 +33,8 @@ const Filltimesheet = () => {
 
 
   const [totalTime, setTotalTime] = useState<string>('');
+  const [loading, setloading] = useState(false)
+
 
   const startTime = watch('starttime');
   const endTime = watch('endtime');
@@ -41,13 +56,13 @@ const Filltimesheet = () => {
 
 
   const [projects, setProjects] = useState<Inputs[]>([]);
-  const [loading, setLoading] = useState(true);
+
 
   const getProjects = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/getprojects`);
       setProjects(res.data); // Keep original dates for calculations
-      setLoading(false);
+      setloading(false);
     } catch (error) {
       console.error('Error fetching Projects:', error);
     }
@@ -56,6 +71,41 @@ const Filltimesheet = () => {
   useEffect(() => {
     getProjects();
   }, []);
+
+  const companyName = useSelector((state: RootState) => state.auth.companyName)
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    // console.log(data)
+    const convertTo12HourFormat = (time: string) => {
+      const date = new Date(`1970-01-01T${time}`);
+      return format(date, 'hh:mm a'); // Format as 12-hour with AM/PM
+    };
+
+    const formattedStartTime = convertTo12HourFormat(data.starttime);
+  const formattedEndTime = convertTo12HourFormat(data.endtime);
+
+  const formdata = {
+    ...data,
+    starttime: formattedStartTime,
+    endtime: formattedEndTime,
+    // companyName: companyName,
+    totaltime: totalTime,
+  };
+
+    console.log(formdata)
+    const res = await axios.post(`${BASE_URL}/addtimesheet`, formdata)
+
+    if (res.status === 201) {
+        reset()
+        toast.success("Added Successfully")
+    }else{
+      toast.error("Failed adding Timesheet")
+    }
+}
+
+
+
+
 
 
   return (
@@ -66,9 +116,16 @@ const Filltimesheet = () => {
           <h1 className=' text-2xl font-bold     '>Fill Timesheet</h1>
           <p className=' text-gray-500 text-sm'>Add your daily activity</p>
         </div>
-
+        <div className='flex justify-end mt-4'>
+                    <Link
+                        to={'/timesheet-history'}
+                        className='inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md'
+                    >
+                        Timesheet History
+                    </Link>
+                </div>
         <form
-
+          onSubmit={handleSubmit(onSubmit)}
         >
           <div className=' grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-6 mb-5 '>
 
@@ -94,7 +151,7 @@ const Filltimesheet = () => {
             <div className=' flex flex-col gap-2'>
               <label>Task performed</label>
               <textarea
-                {...register("Task")}
+                {...register("task")}
                 className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' placeholder=' Task performed by you today'></textarea>
             </div>
 

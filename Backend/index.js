@@ -17,6 +17,7 @@ const { LeaveType, getLeaveType } = require('./controller/LeaveTypeController');
 const { AddLeave, GetLeaveData, StatusChange, GetManageLeave } = require('./controller/LeaveController');
 const { Department, GetDepartment } = require('./controller/DepartmentController');
 const { CreateProject, getProjects } = require('./controller/ProjectController');
+const { AddTimesheet, getTimesheet } = require('./controller/TimesheetController');
 // const GetDesignation = require('./controller/DesignationController')
 
 
@@ -63,6 +64,9 @@ app.get('/getdepartment', GetDepartment);
 
 app.post('/projects', CreateProject);
 app.get('/getprojects', getProjects);
+
+app.post('/addtimesheet', AddTimesheet)
+app.get('/gettimesheet', getTimesheet)
 
 // app.get('/protected',protected)
 

@@ -21,6 +21,7 @@ import AddDepartment from './components/MainMaster/AddDepartment/AddDepartment';
 import ProjectDetails from './components/ProjectMaster/ProjectDetails/ProjectDetails';
 import OngoingProjects from './components/ProjectMaster/OngoingProjects/OngoingProjects';
 import Filltimesheet from './components/Timesheet/FIllTimesheet/Filltimesheet';
+import TimesheetTable from './components/Timesheet/FIllTimesheet/TimesheetTable';
 
 
 const App = () => {
@@ -198,6 +199,14 @@ const App = () => {
           element: (
             <Protected>
               <Filltimesheet />
+            </Protected>
+          ),
+        },
+        {
+          path: "/timesheet-history",
+          element: (
+            <Protected>
+              <TimesheetTable />
             </Protected>
           ),
         },

@@ -54,6 +54,7 @@ const Login = () => {
                 dispatch(setCompany(res.data.companyName))
                 dispatch(setEmail(res.data.email))
                 localStorage.setItem('token', res.data.token);
+                localStorage.setItem('authority', res.data.authority);
                 navigate('/')
 
             } else if(res.status === 401) {
