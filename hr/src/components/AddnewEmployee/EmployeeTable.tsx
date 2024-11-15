@@ -103,8 +103,8 @@ const EmployeeTable = () => {
 
 
     return (
-        <div className='w-full h-[90vh] dark:bg-primary1 bg-[#e5e7ec] p-2 overflow-y-auto'>
-            <div className="bg-white md:p-4 p-2 rounded-md  dark:bg-secondary1 shadow-lg">
+        <div className='w-full h-[90vh] dark:bg-primary1 bg-background2 py-2 overflow-y-auto'>
+            <div className="bg-background1 md:p-4 p-2 rounded-md  dark:bg-secondary1 shadow-lg">
                 <div className="space-y-3 sm:space-y-0 sm:flex  justify-between items-center">
                     <div>
                         <h1 className=' text-2xl font-bold     '>Employee List</h1>

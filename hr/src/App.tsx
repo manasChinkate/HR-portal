@@ -46,11 +46,9 @@ const App = () => {
     return (
       <>
 
-        <div className=' dark:border-0 dark:shadow-md  border-b dark:bg-[#121212]  '>
-          <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
-        </div>
-        <div className="grid grid-cols-10 max-h-[90vh]         custom ">
-          <div className={`${showMenu ? "col-span-2" : "hidden"} dark:bg-[#121212]`}>
+
+        <div className="grid grid-cols-10 min-h-[90vh]   custom ">
+          <div className={`${showMenu ? "col-span-2" : "hidden"} dark:bg-[#000000] bg-background2  flex items-start p-2  justify-center`}>
             {
               showMenu && (
                 <Sidebar showMenu={showMenu} setShowMenu={setShowMenu} />
@@ -59,6 +57,10 @@ const App = () => {
           </div>
           <div
             className={`${showMenu ? "col-span-8" : "col-span-10"} custom `} >
+            <div className=' dark:border-0 dark:shadow-md  border-b dark:bg-[#121212]  '>
+              <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
+            </div>
+            
             <Outlet />
           </div>
         </div>

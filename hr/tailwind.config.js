@@ -23,6 +23,9 @@ module.exports = {
         secondary1: '#121212',
         button:'#3b5ae4',
 
+        background1:"#F7F4EF",
+        background2:"#F0EBE3",
+
 
 
 

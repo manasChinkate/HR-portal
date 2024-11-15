@@ -46,7 +46,7 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
     <div className="relative">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-transparent dark:bg-[#121212] dark:text-white text-sm py-2 transition-transform duration-300 transform lg:transform-none lg:relative lg:translate-x-0 z-20 ${showMenu ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`fixed inset-y-0 left-0 w-64 bg-background1 rounded-md dark:bg-[#121212]  dark:text-white text-sm py-2 transition-transform duration-300 transform lg:transform-none lg:relative lg:translate-x-0 z-20 ${showMenu ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div>
           <div className='w-full flex items-center justify-center mb-4'>
