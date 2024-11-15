@@ -22,6 +22,7 @@ import ProjectDetails from './components/ProjectMaster/ProjectDetails/ProjectDet
 import OngoingProjects from './components/ProjectMaster/OngoingProjects/OngoingProjects';
 import Filltimesheet from './components/Timesheet/FIllTimesheet/Filltimesheet';
 import TimesheetTable from './components/Timesheet/FIllTimesheet/TimesheetTable';
+import AttendanceMark from './components/Attendance/AttendanceMark';
 
 
 const App = () => {
@@ -209,6 +210,14 @@ const App = () => {
           element: (
             <Protected>
               <TimesheetTable />
+            </Protected>
+          ),
+        },
+        {
+          path: "/mark-attendance",
+          element: (
+            <Protected>
+              <AttendanceMark />
             </Protected>
           ),
         },

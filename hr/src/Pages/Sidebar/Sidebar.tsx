@@ -238,7 +238,7 @@ const HRNavData = [
     icon: <RiProjectorLine />,
     link: '/project-master',
   },
-  {
+  { 
     name: 'TimeSheet',
     icon: <RiProjectorLine />,
     children:[
@@ -309,6 +309,11 @@ const EmployeeNavData = [
         link: '/timesheet',
       },
     ]
+  },
+  {
+    name: 'Attendance',
+    icon: <IoHome />,
+    link: '/mark-attendance',
   },
   
   {
