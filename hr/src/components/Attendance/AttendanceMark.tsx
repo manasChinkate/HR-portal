@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { BASE_URL } from '../../constants';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 
 
@@ -30,7 +31,21 @@ const AttendanceMark = () => {
         };
 
         console.log(data)
-        const res = await axios.post(`${BASE_URL}/mark-in`, data)
+
+        try {
+          const res = await axios.post(`${BASE_URL}/mark-in`, data)
+          
+          if(res.status === 400){
+            // toast.success(res.data)
+            setStatus('Already Checked In')  
+          }else{
+            toast.success("Successfully Checked In")
+          }
+          
+        } catch (error) {
+          toast.error("Already Checked In")
+        }
+       
 
         // API call to save check-in
     };
@@ -99,15 +114,15 @@ const AttendanceMark = () => {
                 <div className="mt-4">
                     <button
                         onClick={handleCheckIn}
-                        className="px-4 py-2 bg-green-500 text-white rounded-md mr-2"
-                        disabled={status === "Present"}
+                        className="px-4 py-2 bg-green-500 text-white rounded-md mr-2 disabled:opacity-45"
+                        disabled={status === "Present" || status === "Already Checked In"}
                     >
                         Check In
                     </button>
                     <button
                         onClick={handleCheckOut}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                        disabled={!checkInTime || status === "Checked Out"}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:opacity-45"
+                        disabled={!checkInTime || status === "Checked Out" || status === "Present"}
                     >
                         Check Out
                     </button>
