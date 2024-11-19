@@ -140,7 +140,7 @@ const CheckOut = async (req, res) => {
 
     // Calculate total hours worked
     const timeDiffMs = checkOutTimeParsed - checkInTimeParsed; // Difference in milliseconds
-    const totalhours = (timeDiffMs / (1000 * 60 * 60)).toFixed(2); // Convert to hours with 2 decimal places
+    const totalhours = (timeDiffMs / (1000 * 60 * 60)).toFixed(2) + ' Hours'; // Convert to hours with 2 decimal places
 
     console.log("Total Hours Calculated:", totalhours);
 
@@ -168,9 +168,41 @@ const CheckOut = async (req, res) => {
   }
 };
 
+const GetAttendance = async(req,res)=>{
+  try {
+    const token = req.headers.token;
+    if (!token) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+
+    // Verify and decode the token to get the companyName
+    const decodedToken = jwt.verify(token, 'jwt-secret-key'); // Replace 'jwt-secret-key' with your actual secret key
+    // console.log(decodedToken)
+    const email = decodedToken.email;
+    const companyName = decodedToken.companyName; // Assuming companyName is stored in the token payload
+    // console.log('decoded email:', email);
+
+    const attendace = await AttendanceModel.find({
+      email,
+      companyName,
+      
+    })
+    if(attendace){
+      return res
+      .status(200)
+      .json(attendace)
+
+    }
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).json('Internal server error')
+  }
+}
 
 
 
 
 
-module.exports = { CheckIn, CheckOut }
+
+module.exports = { CheckIn, CheckOut, GetAttendance }
