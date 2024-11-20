@@ -35,7 +35,7 @@ const OngoingProjects = () => {
   }, []);
 
   return (
-    <div className="p-6 min-h-screen bg-gray-100 dark:bg-black">
+    <div className="p-2 min-h-screen  bg-background2 dark:bg-black">
       <h2 className="text-2xl font-bold mb-6 text-gray-700 dark:text-gray-100">Ongoing Projects</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projects.map((project) => {
@@ -52,7 +52,7 @@ const OngoingProjects = () => {
           return (
             <div
               key={project._id}
-              className="bg-white dark:bg-[#121212] shadow-lg rounded-lg p-6 border border-gray-200 dark:border-gray-700"
+              className="bg-background1 dark:bg-[#121212] shadow-lg rounded-lg p-6 border border-gray-200 dark:border-gray-700"
             >
               <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">{project.projectName}</h1>
               <p className="text-gray-600 dark:text-gray-400 mb-2">{project.clientName}</p>

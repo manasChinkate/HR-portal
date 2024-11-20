@@ -188,7 +188,7 @@ const AttendanceMark = () => {
   return (
 
 
-    <div className='w-full flex flex-col gap-2  h-[90vh] dark:bg-primary1 bg-background2 py-2 overflow-y-auto'>
+    <div className='w-full flex flex-col gap-0  h-[90vh] dark:bg-primary1 bg-background2 py-2 overflow-y-auto'>
       <div className="bg-background1 md:p-4 p-2 rounded-md  dark:bg-secondary1 shadow-lg">
 
         {isModalOpen && (
@@ -221,14 +221,14 @@ const AttendanceMark = () => {
           <button
             onClick={handleCheckIn}
             className="px-4 py-2 bg-green-500 text-white rounded-md mr-2 disabled:opacity-45"
-            disabled={status === "Present"}
+            // disabled={status === "Present"}
           >
             Check In
           </button>
           <button
             onClick={handleCheckOut}
             className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:opacity-45"
-            disabled={!checkInTime || status === "Checked Out"}
+            // disabled={!checkInTime || status === "Checked Out"}
           >
             Check Out
           </button>
@@ -237,9 +237,9 @@ const AttendanceMark = () => {
       <div className="bg-white dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg my-2">
         <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
           <div>
-            <h1 className=' text-2xl font-bold     '>My leaves</h1>
+            <h1 className=' text-2xl font-bold     '>My Attendance</h1>
             <p className="text-xs text-muted-foreground">
-              Here&apos;s a list of leave types.
+              Here&apos;s a history of your attendance.
             </p>
           </div>
 

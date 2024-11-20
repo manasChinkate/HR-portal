@@ -181,6 +181,11 @@ const AdminNavData = [
         link: '/projectdetails',
       },
       {
+        name: 'Add Task  ',
+        icon: <MdMergeType />,
+        link: '/add_task',
+      },
+      {
         name: 'Ongoing Projects  ',
         icon: <MdMergeType />,
         link: '/ongoing_projects',
