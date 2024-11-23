@@ -9,6 +9,12 @@ const projectSchema = new mongoose.Schema({
     priority:String,
     description:String,
     companyName:String,
+    tasks: [
+        {
+            taskName: { type: String, required: true },
+            status: { type: String, enum: ["Pending", "In Progress", "Completed"], default: "Pending" },
+        },
+    ],
     createdAt:{
         type:Date,
         default:Date.now

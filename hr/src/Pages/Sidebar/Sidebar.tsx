@@ -241,7 +241,18 @@ const HRNavData = [
   {
     name: 'Project Master',
     icon: <RiProjectorLine />,
-    link: '/project-master',
+    children:[
+      {
+        name: 'Project Details ',
+        icon: <MdMergeType />,
+        link: '/applyleave',
+      },
+      {
+        name: 'Add Task  ',
+        icon: <MdMergeType />,
+        link: '/add_task',
+      },
+    ]
   },
   { 
     name: 'TimeSheet',
@@ -296,6 +307,11 @@ const EmployeeNavData = [
         name: 'Project Details ',
         icon: <MdMergeType />,
         link: '/applyleave',
+      },
+      {
+        name: 'Add Task  ',
+        icon: <MdMergeType />,
+        link: '/add_task',
       },
     ]
   },
@@ -353,6 +369,11 @@ const ProjectManagerNavData = [
         name: 'Project Details ',
         icon: <MdMergeType />,
         link: '/applyleave',
+      },
+      {
+        name: 'Add Task  ',
+        icon: <MdMergeType />,
+        link: '/add_task',
       },
     ]
   },
