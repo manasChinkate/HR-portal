@@ -317,7 +317,7 @@ const ShowTasks = () => {
                         <h1 className="text-2xl font-bold">View Tasks</h1>
                         <p className="text-gray-500 text-sm">view tasks here</p>
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 mb-3">
                         <label>Select Project</label>
                         <select
                             {...register("projectName", { required: true })}
@@ -551,9 +551,7 @@ const ShowTasks = () => {
                             </div>
                         </div>
                     </div>
-                    <div>
-
-                    </div>
+                   
                 </div>
 
 
