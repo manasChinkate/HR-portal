@@ -101,5 +101,38 @@ const getProjects = async (req, res) => {
     }
 }
 
+const UpdateTaskStatus = async (req, res) => {
+    const {  projectName, taskName, status } = req.body;
 
-module.exports = { CreateProject, getProjects, AddTask, getTask }
+    try {
+        const token = req.headers.token;
+
+        if (!token) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
+
+        const decodedtoken = jwt.verify(token, 'jwt-secret-key');
+        const companyName = decodedtoken.companyName;
+        
+
+        // Update the status of the specific task
+        const updatedProject = await ProjectModel.findOneAndUpdate(
+            { companyName, projectName, "tasks.taskName": taskName }, // Match the project and task
+            { $set: { "tasks.$.status": status } }, // Update the status of the matched task
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedProject) {
+            return res.status(404).json({ message: "Project or Task not found" });
+        }
+
+        return res.status(200).json({ message: "Task status updated successfully", updatedProject });
+    } catch (error) {
+        console.error("Error updating task status:", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+
+
+module.exports = { CreateProject, getProjects, AddTask, getTask, UpdateTaskStatus }

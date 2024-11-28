@@ -24,7 +24,7 @@ import {
     PopoverTrigger,
 } from "@radix-ui/react-popover";
 
-import { COLUMN1, COLUMNS } from "./columns";
+import {  COLUMNS } from "./columns";
 import ColumnFiltering from "../../ColumnFiltering";
 import GlobalFiltering from "../../GlobalFiltering";
 import { FaFileExcel } from 'react-icons/fa';
@@ -290,7 +290,10 @@ const ShowTasks = () => {
                 const res = await axios.get(`${BASE_URL}/gettask`, { params: { projectName } });
                 
                 // Check if tasks is an array and if it's defined
-                const tasks = res.data[0].tasks;
+                const tasks = res.data[0].tasks.map((task) => ({
+                    ...task,
+                    projectName, // Attach the project name to each task
+                }));
                 console.log('tasks :',tasks)
                 setTasks(tasks)
               
@@ -472,7 +475,7 @@ const ShowTasks = () => {
                                                             {row.cells.map((cell: any) => {
                                                                 return (
                                                                     <td {...cell.getCellProps()}>
-                                                                        {cell.render("Cell")}
+                                                                        {cell.render("Cell", { updater: getTasks }, selectedProject)}
                                                                     </td>
                                                                 );
                                                             })}

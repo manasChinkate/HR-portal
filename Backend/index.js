@@ -16,7 +16,7 @@ const { AddClient, GetClient } = require('./controller/ClientController');
 const { LeaveType, getLeaveType } = require('./controller/LeaveTypeController');
 const { AddLeave, GetLeaveData, StatusChange, GetManageLeave } = require('./controller/LeaveController');
 const { Department, GetDepartment } = require('./controller/DepartmentController');
-const { CreateProject, getProjects, AddTask, getTask } = require('./controller/ProjectController');
+const { CreateProject, getProjects, AddTask, getTask, UpdateTaskStatus } = require('./controller/ProjectController');
 const { AddTimesheet, getTimesheet } = require('./controller/TimesheetController');
 const { CheckIn, CheckOut, GetAttendance } = require('./controller/AttendanceController');
 // const GetDesignation = require('./controller/DesignationController')
@@ -67,6 +67,7 @@ app.post('/projects', CreateProject);
 app.get('/getprojects', getProjects);
 app.post('/addtask', AddTask);
 app.get('/gettask', getTask);
+app.post('/updatetask', UpdateTaskStatus);
 
 app.post('/addtimesheet', AddTimesheet)
 app.get('/gettimesheet', getTimesheet)
