@@ -16,6 +16,8 @@ import {
 
 import '../../table.css'
 
+
+
 import {
     Popover,
     PopoverContent,
@@ -177,7 +179,7 @@ const ApplyLeave = () => {
     }, [])
 
     return (
-        <div className='w-full min-h-[90vh] bg-[#e5e7ec] dark:bg-primary1 p-2 overflow-y-auto'>
+        <div className='w-full min-h-[90vh]  bg-[#e5e7ec] dark:bg-primary1 p-2 overflow-y-scroll'>
             <div className=' bg-white dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
 
                 <div className=' border-b border-gray-200 pb-2'>
@@ -187,7 +189,7 @@ const ApplyLeave = () => {
                 <form onSubmit={handleSubmit(onSubmit)} >
                     <div className=' grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-4 mb-5 '>
 
-                        {/* <p className=' col-span-full border-b-2 pb-1 font-semibold'>Add Details</p> */}
+                     
                         <div className=' flex flex-col gap-2'>
                             <label>Leave Type</label>
                             <select

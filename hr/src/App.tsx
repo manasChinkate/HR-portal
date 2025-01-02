@@ -45,28 +45,44 @@ const App = () => {
       }
     );
 
+     { showMenu ? console.log("showmenu") : console.log("not showmenu")}
+
     return (
       <>
 
 
-        <div className="grid grid-cols-10 min-h-[90vh]   custom ">
-          <div className={`${showMenu ? "col-span-2" : "hidden"} dark:bg-[#000000] bg-background2  flex items-start p-2  justify-center`}>
-            {
-              showMenu && (
-                <Sidebar showMenu={showMenu} setShowMenu={setShowMenu} />
-              )
-            }
-          </div>
-          <div
-            className={`${showMenu ? "col-span-8" : "col-span-10"} custom `} >
-            <div className=' dark:border-0 dark:shadow-md  border-b dark:bg-[#121212]  '>
-              <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
-            </div>
-            
-            <Outlet />
-          </div>
-        </div>
+<div className="grid grid-rows-[auto_1fr] h-screen overflow-hidden custom">
+  {/* Navbar */}
+  <div className="dark:border-0 dark:shadow-md border-b dark:bg-[#121212]">
+    <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
+  </div>
 
+  {/* Main Content */}
+  <div className="relative h-full">
+    {/* Sidebar */}
+    <div
+      className={`transition-all duration-300 ease-in-out fixed top-15 left-0 z-50 ${
+        showMenu ? "w-70" : "w-0"
+      } h-full dark:bg-[#000000] bg-background2 flex items-start p-2 justify-center`}
+      style={{ left: showMenu ? "0" : "-100%" }}
+    >
+      <Sidebar showMenu={showMenu} setShowMenu={setShowMenu} />
+    </div>
+
+    {/* Outlet */}
+    <div className={`h-full  overflow-y-auto custom ${showMenu ? "ml-64" : "ml-0"}`}>
+      <Outlet />
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+     
       </>
     );
   };

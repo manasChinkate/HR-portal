@@ -91,9 +91,8 @@ const ProjectDetails = () => {
     },[])
 
     return (
-        <div className='w-full min-h-[90vh] bg-background2 dark:bg-primary1 pt-2 overflow-y-auto'>
-        <div className='w-full min-h-[90vh] bg-background2 dark:bg-primary1  overflow-y-auto'>
-            <div className=' bg-background1 dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
+        <div className='w-full min-h-[90vh] bg-background2 dark:bg-primary1 p-2   overflow-y-auto'>
+            <div className=' bg-background1 dark:bg-secondary1  rounded-lg w-full p-8 text-sm' style={{borderRadius: "20px"}} >
                 <div className=' border-b border-gray-200 pb-2'>
                     <h1 className=' text-2xl font-bold      '>Add Project</h1>
                     <p className=' text-gray-500 text-sm'>Add Projects here</p>
@@ -186,7 +185,6 @@ const ProjectDetails = () => {
                 </form>
             </div>
             </div>
-        </div>
     )
 }
 

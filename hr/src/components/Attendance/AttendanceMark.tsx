@@ -172,8 +172,19 @@ const AttendanceMark = () => {
       checkOutTime: now.toLocaleTimeString(), // Include the check-in time in HH:MM:SS format
       date: formattedDate, // Include today's date
     };
+    try {
+      const res = await axios.post(`${BASE_URL}/mark-out`, data)
 
-    const res = await axios.post(`${BASE_URL}/mark-out`, data)
+      if(res.status === 200){
+        toast.success("Success CheckOut")
+      }else(
+        toast.error(res.data.message)
+     
+      )
+      
+    } catch (error) {
+    
+    }
 
     console.log("Checked out successfully!");
   };
@@ -184,7 +195,7 @@ const AttendanceMark = () => {
 
   useEffect(() => {
     getData()
-  }, [attendace])
+  }, [])
   return (
 
 

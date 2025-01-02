@@ -57,15 +57,11 @@ const Login = () => {
                 localStorage.setItem('authority', res.data.authority);
                 navigate('/')
 
-            } else if(res.status === 401) {
-                console.log("error")
-                localStorage.removeItem('token');
-                toast.error(res.data)
-            }
+            } 
 
             // console.log(res?.data);
         } catch (error: any) { // Catch the error as any type, since axios errors have a response object
-            if (error.response && error.response.status === 401) {
+            if (error.response && error.response.status === 404  || error.response.status === 401 ) {
                 toast.error(error.response.data || "Unauthorized"); // Show the error message from the response
                 localStorage.removeItem('token');
             } else {

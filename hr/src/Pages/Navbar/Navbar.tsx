@@ -38,7 +38,7 @@ const Navbar = ({ setShowMenu, showMenu }) => {
   };
 
   return (
-    <div className='h-[9vh] flex items-center justify-between px-5 rounded-md rounded-tl-none rounded-tr-none bg-[#A5B68D] dark:bg-[#121212] dark:text-white dark:rounded-md'>
+    <div className='h-[9vh] flex items-center justify-between px-5 rounded-md rounded-tl-none rounded-tr-none bg-background1 dark:bg-[#121212] dark:text-white dark:rounded-md'>
       <div className='flex gap-4 items-center'>
         <TiThMenu className='text-2xl cursor-pointer' onClick={sidebartoggle} />
         {!showMenu && (
@@ -53,16 +53,16 @@ const Navbar = ({ setShowMenu, showMenu }) => {
       </div>
 
       <div className=' flex items-center gap-3'>
-      <div onClick={toggleDarkMode} className=' text-2xl hover:outline-button hover:outline-1 rounded-md hover:outline px-2 py-1 hover:text-button  ease-in-out duration-400 transition-opacity'>
-        {isDarkMode ? <MdOutlineLightMode />:<MdOutlineDarkMode />}
+        <div onClick={toggleDarkMode} className=' text-2xl hover:outline-button hover:outline-1 rounded-md hover:outline px-2 py-1 hover:text-button  ease-in-out duration-400 transition-opacity'>
+          {isDarkMode ? <MdOutlineLightMode /> : <MdOutlineDarkMode />}
 
-      </div>
+        </div>
 
 
-      <button className='p-1 sm:px-3 text-2xl dark:text-white rounded-lg text-black dark:hover:bg-red-500' onClick={handleLogout}>
-        <MdLogout />
+        <button className='p-1 sm:px-3 text-2xl dark:text-white rounded-lg text-black dark:hover:bg-red-500' onClick={handleLogout}>
+          <MdLogout />
 
-      </button>
+        </button>
       </div>
     </div>
   );

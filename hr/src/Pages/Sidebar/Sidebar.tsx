@@ -14,6 +14,7 @@ import { GrUserWorker, GrDomain } from 'react-icons/gr';
 import { LuAppWindow } from "react-icons/lu";
 import { MdManageHistory, MdMergeType, MdOutlineTimeToLeave } from 'react-icons/md';
 import { PiBuildingOfficeLight } from "react-icons/pi";
+import { SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 
 
 
@@ -43,10 +44,11 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
   const navData = Role === 'masterAdmin' ? MasterAdminNavData : Role === 'Admin' ? AdminNavData : Role === 'Employee' ? EmployeeNavData  : Role === 'HiringManager' ? HRNavData  : Role === 'ProjectManager' ? ProjectManagerNavData : [];
 
   return (
+    <>
     <div className="relative">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-background1 rounded-md dark:bg-[#121212]  dark:text-white text-sm py-2 transition-transform duration-300 transform lg:transform-none lg:relative lg:translate-x-0 z-20 ${showMenu ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`fixed inset-y-0 left-0 w-64 bg-background1 rounded-md dark:bg-[#121212]  dark:text-white text-sm py-2 transition-transform h-[97vh] duration-3000 transform lg:transform-none lg:relative lg:translate-x-0 z-20 ${showMenu ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div>
           <div className='w-full flex items-center justify-center mb-4'>
@@ -101,6 +103,9 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
         ></div>
       )}
     </div>
+
+    
+    </>
   );
 };
 
