@@ -143,11 +143,11 @@ const ManageLeave = () => {
     }, [])
 
     return (
-        <div className='w-full min-h-[90vh] bg-[#e5e7ec] dark:bg-primary1 p-2 overflow-y-auto'>
+        <div className='w-full min-h-[90vh] bg-background2 dark:bg-primary1 p-2 overflow-y-auto'>
 
 
-            <div className="bg-white dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg ">
-                <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
+<div className="bg-background1 dark:bg-[#121212] md:p-4 p-2 rounded-md shadow-lg ">
+<div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
                     <div>
                         <h1 className=' text-2xl font-bold     '>Manage Leave</h1>
                         <p className="text-xs text-muted-foreground">

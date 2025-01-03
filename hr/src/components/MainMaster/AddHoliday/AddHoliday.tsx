@@ -143,8 +143,8 @@ const AddDesignation = () => {
     }, [])
 
     return (
-        <div className='w-full min-h-[90vh] bg-[#e5e7ec] dark:bg-primary1 p-2 overflow-y-auto'>
-            <div className=' bg-white dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
+        <div className='w-full min-h-[90vh] bg-background2 dark:bg-primary1 p-2 overflow-y-auto'>
+            <div className=' bg-background1 dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
 
                 <div className=' border-b border-gray-200 pb-2'>
                     <h1 className=' text-2xl font-bold     '>Add Holiday</h1>
@@ -181,7 +181,7 @@ const AddDesignation = () => {
                 </form>
             </div>
 
-            <div className="bg-white dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg my-2">
+            <div className="bg-background1 dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg my-2">
                 <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
                     <div>
                         <h1 className=' text-2xl font-bold     '>Holiday List</h1>

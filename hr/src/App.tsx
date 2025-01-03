@@ -62,7 +62,7 @@ const App = () => {
     {/* Sidebar */}
     <div
       className={`transition-all duration-300 ease-in-out fixed top-15 left-0 z-50 ${
-        showMenu ? "w-70" : "w-0"
+        showMenu ? "w-[280px]" : "w-0"
       } h-full dark:bg-[#000000] bg-background2 flex items-start p-2 justify-center`}
       style={{ left: showMenu ? "0" : "-100%" }}
     >
@@ -70,7 +70,7 @@ const App = () => {
     </div>
 
     {/* Outlet */}
-    <div className={`h-full  overflow-y-auto custom ${showMenu ? "ml-64" : "ml-0"}`}>
+    <div className={`h-full  overflow-y-auto custom ${showMenu ? "ml-[270px]" : "ml-0"}`}>
       <Outlet />
     </div>
   </div>

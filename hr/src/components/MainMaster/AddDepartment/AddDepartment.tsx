@@ -135,8 +135,8 @@ const AddDepartment = () => {
     }, [])
 
     return (
-        <div className='w-full max-h-[90vh] bg-[#e5e7ec] flex flex-col gap-2 dark:bg-black p-2 overflow-y-auto'>
-            <div className=' bg-white dark:bg-[#121212]  rounded-lg w-full p-4 text-sm' >
+        <div className='w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-black p-2 overflow-y-auto'>
+            <div className=' bg-background1 dark:bg-[#121212]  rounded-lg w-full p-4 text-sm' >
 
                 <div className=' border-b border-gray-200 dark:border-0 pb-2'>
                

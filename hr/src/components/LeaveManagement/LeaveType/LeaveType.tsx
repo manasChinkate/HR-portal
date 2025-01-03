@@ -100,7 +100,6 @@ const LeaveType = () => {
 
 
     const companyName = useSelector((state: RootState) => state.auth.companyName)
-
     const getClient = async () => {
         try {
             const res = await axios.get(`${BASE_URL}/getleavetype`);
@@ -140,8 +139,8 @@ const LeaveType = () => {
     }, [])
 
     return (
-        <div className='w-full min-h-[90vh] bg-[#e5e7ec] dark:bg-primary1 p-2 overflow-y-auto'>
-            <div className=' bg-white dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
+        <div className='w-full min-h-[90vh] bg-background2 dark:bg-primary1 p-2 overflow-y-auto'>
+            <div className=' bg-background1 dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
 
                 <div className=' border-b border-gray-200 pb-2'>
                     <h1 className=' text-2xl font-bold     '>Leave Type</h1>

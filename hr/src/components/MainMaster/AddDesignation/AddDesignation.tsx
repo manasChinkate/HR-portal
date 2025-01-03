@@ -135,11 +135,11 @@ const AddDesignation = () => {
     }, [])
 
     return (
-        <div className='w-full max-h-[90vh] bg-[#e5e7ec] flex flex-col gap-2 dark:bg-black p-2 overflow-y-auto'>
-            <div className=' bg-white dark:bg-[#121212]  rounded-lg w-full p-4 text-sm' >
+        <div className='w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-black p-2 overflow-y-auto'>
+            <div className=' bg-background1 dark:bg-[#121212]  rounded-lg w-full p-4 text-sm' >
 
                 <div className=' border-b border-gray-200 dark:border-0 pb-2'>
-               
+
                     <h1 className=' text-2xl font-bold dark:text-gray-100     '>Add Designation</h1>
                     <p className=' text-gray-500 text-sm'>Add new designations for your employees</p>
                 </div>
@@ -159,7 +159,7 @@ const AddDesignation = () => {
                     </Button>
                 </form>
             </div>
-            <div className="bg-white dark:bg-[#121212] md:p-4 p-2 rounded-md shadow-lg ">
+            <div className="bg-background1 dark:bg-[#121212] md:p-4 p-2 rounded-md shadow-lg ">
                 <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
                     <div>
                         <h1 className=' text-2xl font-bold     '>Designation List</h1>
