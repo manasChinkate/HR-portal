@@ -82,26 +82,26 @@ const Filltimesheet = () => {
     };
 
     const formattedStartTime = convertTo12HourFormat(data.starttime);
-  const formattedEndTime = convertTo12HourFormat(data.endtime);
+    const formattedEndTime = convertTo12HourFormat(data.endtime);
 
-  const formdata = {
-    ...data,
-    starttime: formattedStartTime,
-    endtime: formattedEndTime,
-    // companyName: companyName,
-    totaltime: totalTime,
-  };
+    const formdata = {
+      ...data,
+      starttime: formattedStartTime,
+      endtime: formattedEndTime,
+      // companyName: companyName,
+      totaltime: totalTime,
+    };
 
     console.log(formdata)
     const res = await axios.post(`${BASE_URL}/addtimesheet`, formdata)
 
     if (res.status === 201) {
-        reset()
-        toast.success("Added Successfully")
-    }else{
+      reset()
+      toast.success("Added Successfully")
+    } else {
       toast.error("Failed adding Timesheet")
     }
-}
+  }
 
 
 
@@ -109,21 +109,24 @@ const Filltimesheet = () => {
 
 
   return (
-    <div className='w-full min-h-[90vh] dark:bg-primary1 bg-[#e5e7ec] p-2 overflow-y-auto'>
-      <div className=' bg-white  rounded-lg w-full p-4 text-sm dark:bg-secondary1' >
+    <div className='w-full min-h-[90vh] dark:bg-primary1 bg-background2 p-2 overflow-y-auto'>
+      <div className=' bg-background1  rounded-lg w-full p-4 text-sm dark:bg-secondary1' >
 
         <div className=' '>
           <h1 className=' text-2xl font-bold     '>Fill Timesheet</h1>
           <p className=' text-gray-500 text-sm'>Add your daily activity</p>
         </div>
         <div className='flex justify-end mt-4'>
-                    <Link
-                        to={'/timesheet-history'}
-                        className='inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md'
-                    >
-                        Timesheet History
-                    </Link>
-                </div>
+          <Link
+            to={'/timesheet-history'}
+            
+          >
+            <Button className=' dark:bg-blue-600 dark:text-white' type='submit'>
+              Timesheet History
+            </Button>
+
+          </Link>
+        </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
         >
@@ -140,8 +143,8 @@ const Filltimesheet = () => {
               >
                 <option value="">Select</option>
                 {
-                  projects.map((e)=>{
-                    return(
+                  projects.map((e) => {
+                    return (
                       <option value={e.projectName}>{e.projectName}</option>
                     )
                   })
@@ -161,7 +164,7 @@ const Filltimesheet = () => {
               <input
                 {...register("date")}
                 className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder=' name'></input>
-            </div> 
+            </div>
             <div className=' flex flex-col gap-2'>
               <label>Start Time</label>
               <input

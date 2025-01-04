@@ -38,6 +38,7 @@ const CheckIn = async (req, res) => {
       status: "Present",
       email,
       companyName,
+      checkOutTime:'-'
 
     }
 

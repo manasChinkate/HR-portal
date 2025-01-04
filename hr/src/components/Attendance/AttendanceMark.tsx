@@ -177,6 +177,7 @@ const AttendanceMark = () => {
 
       if(res.status === 200){
         toast.success("Success CheckOut")
+        getData()
       }else(
         toast.error(res.data.message)
      
@@ -199,8 +200,8 @@ const AttendanceMark = () => {
   return (
 
 
-    <div className='w-full flex flex-col gap-0  h-[90vh] dark:bg-primary1 bg-background2 py-2 overflow-y-auto'>
-      <div className="bg-background1 md:p-4 p-2 rounded-md  dark:bg-secondary1 shadow-lg">
+    <div className='w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-black p-2 overflow-y-auto'>
+            <div className=' bg-background1 dark:bg-[#121212]  rounded-lg w-full p-4 text-sm' >
 
         {isModalOpen && (
           <div onClick={() => setIsModalOpen(false)} className="fixed top-0 left-0 z-50 h-full px-2 w-screen bg-[#000000b3] flex md:items-center items-center justify-center ">
@@ -245,7 +246,7 @@ const AttendanceMark = () => {
           </button>
         </div>
       </div>
-      <div className="bg-white dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg my-2">
+      <div className="bg-background1 dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg ">
         <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
           <div>
             <h1 className=' text-2xl font-bold     '>My Attendance</h1>

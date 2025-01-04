@@ -109,8 +109,8 @@ const AddnewEmployee = () => {
     }, [])
 
     return (
-        <div className='w-full max-h-[90vh] dark:bg-primary1 bg-[#e5e7ec] p-2 overflow-y-auto'>
-            <div className=' bg-white  rounded-lg w-full p-4 text-sm dark:bg-secondary1' >
+        <div className='w-full max-h-[90vh] dark:bg-primary1 bg-background2 p-2 overflow-y-auto'>
+            <div className=' bg-background1  rounded-lg w-full p-4 text-sm dark:bg-secondary1' >
 
                 <div className=' '>
                     <h1 className=' text-2xl font-bold     '>Add Employee</h1>

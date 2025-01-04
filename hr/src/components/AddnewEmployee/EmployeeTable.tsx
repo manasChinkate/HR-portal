@@ -33,6 +33,7 @@ import {
 } from "react-icons/rx";
 import Checkbox from '../Checkbox';
 import axios from 'axios';
+import BackButton from '../BackButton';
 
 
 
@@ -103,14 +104,20 @@ const EmployeeTable = () => {
 
 
     return (
-        <div className='w-full h-[90vh] dark:bg-primary1 bg-background2 py-2 overflow-y-auto'>
+        <div className='w-full h-[90vh] dark:bg-primary1 bg-background2 p-2 overflow-y-auto'>
             <div className="bg-background1 md:p-4 p-2 rounded-md  dark:bg-secondary1 shadow-lg">
                 <div className="space-y-3 sm:space-y-0 sm:flex  justify-between items-center">
+                <div className=' flex items-center gap-5'>
                     <div>
+                        <BackButton backnavigation='' />
+                    </div>
+                    <div>
+                        
                         <h1 className=' text-2xl font-bold     '>Employee List</h1>
                         <p className="text-xs text-muted-foreground">
                             Here&apos;s a list of Holidays.
                         </p>
+                    </div>
                     </div>
 
                     <div className="sm:flex justify-between items-center gap-2">

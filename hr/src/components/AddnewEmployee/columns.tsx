@@ -52,7 +52,7 @@ export const COLUMNS: Column<Employee>[] = [
 
           {show && (
             <div onClick={() => setShow(false)} className="fixed top-0 left-0 z-50 h-full px-2 w-screen bg-[#000000b3] flex md:items-center items-center justify-center ">
-              <div className="bg-white h-[80vh] overflow-y-scroll dark:bg-secondary1 overflow-auto px-4 rounded-sm w-full md:w-auto">
+              <div className="bg-background2 h-[80vh] overflow-y-scroll dark:bg-secondary1 overflow-auto px-4 rounded-sm w-full md:w-auto">
                 <span
                   className="flex items-center justify-end text-3xl font-semibold cursor-pointer"
                   onClick={() => {
@@ -62,7 +62,7 @@ export const COLUMNS: Column<Employee>[] = [
                   &times;
                 </span>
                 <div className="">
-                  <h1 className=" text-xl font-bold border text-center text-black dark:text-white  py-[7px] px-[15px] rounded-sm">
+                  <h1 className=" text-xl font-bold border text-center bg-background1 text-black dark:text-white  py-[7px] px-[15px] rounded-sm">
                     {row.original.fullname}<span> Details</span>
                   </h1>
                 </div>

@@ -159,7 +159,7 @@ const AddDepartment = () => {
                     </Button>
                 </form>
             </div>
-            <div className="bg-white dark:bg-[#121212] md:p-4 p-2 rounded-md shadow-lg ">
+            <div className="bg-background1 dark:bg-[#121212] md:p-4 p-2 rounded-md shadow-lg ">
                 <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
                     <div>
                         <h1 className=' text-2xl font-bold     '>Department List</h1>

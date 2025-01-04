@@ -33,6 +33,8 @@ import {
 } from "react-icons/rx";
 import Checkbox from '../../Checkbox';
 import axios from 'axios';
+import { IoIosArrowBack } from 'react-icons/io';
+import BackButton from '../../BackButton';
 
 
 
@@ -41,9 +43,9 @@ import axios from 'axios';
 
 const TimesheetTable = () => {
     const [loading, setloading] = useState(false)
-     
 
-    
+
+
     const [timesheet, setTimesheet] = useState<Inputs[]>([]);
 
 
@@ -92,16 +94,16 @@ const TimesheetTable = () => {
 
     const { pageIndex } = state;
 
- 
+
     const getTimesheet = async () => {
         try {
-          const res = await axios.get(`${BASE_URL}/gettimesheet`);
-          setTimesheet(res.data); // Keep original dates for calculations
-          setloading(false);
+            const res = await axios.get(`${BASE_URL}/gettimesheet`);
+            setTimesheet(res.data); // Keep original dates for calculations
+            setloading(false);
         } catch (error) {
-          console.error('Error fetching timesheet data:', error);
+            console.error('Error fetching timesheet data:', error);
         }
-      };
+    };
 
     useEffect(() => {
         getTimesheet()
@@ -109,14 +111,20 @@ const TimesheetTable = () => {
 
 
     return (
-        <div className='w-full h-[90vh] dark:bg-primary1 bg-[#e5e7ec] p-2 overflow-y-auto'>
-            <div className="bg-white md:p-4 p-2 rounded-md  dark:bg-secondary1 shadow-lg">
+        <div className='w-full h-[90vh] dark:bg-primary1 bg-background2 p-2 overflow-y-auto'>
+            <div className="bg-background1 md:p-4 p-2 rounded-md  dark:bg-secondary1 shadow-lg">
                 <div className="space-y-3 sm:space-y-0 sm:flex  justify-between items-center">
-                    <div>
+                    <div className=' flex items-center gap-5'>
+                        <div>
+                        <BackButton backnavigation='/fill_timesheet' />
+                        </div>
+                        <div>
+
                         <h1 className=' text-2xl font-bold     '>Timesheet History</h1>
                         <p className="text-xs text-muted-foreground">
                             Here&apos;s a history of your timesheet.
                         </p>
+                        </div>
                     </div>
 
                     <div className="sm:flex justify-between items-center gap-2">
@@ -145,7 +153,7 @@ const TimesheetTable = () => {
                                         View
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="bg-white dark:bg-[#121212] py-2 px-3 text-[0.8rem] shadow-lg rounded-md">
+                                <PopoverContent className=" dark:bg-[#121212] py-2 px-3 text-[0.8rem] shadow-lg rounded-md">
                                     <div className=" bg-gray-50 dark:bg-[#121212] font-semibold py-1 flex items-center gap-2">
                                         <Checkbox {...getToggleHideAllColumnsProps()} />
                                         Toggle All
