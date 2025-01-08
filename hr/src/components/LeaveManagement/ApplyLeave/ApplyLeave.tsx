@@ -42,10 +42,10 @@ import toast from 'react-hot-toast';
 type Inputs = {
     leaveType: string;
     count: string;
-    reason:string,
-    from_date:string,
-    to_date:string,
-    department:string
+    reason: string,
+    from_date: string,
+    to_date: string,
+    department: string
 }
 
 const ApplyLeave = () => {
@@ -112,7 +112,7 @@ const ApplyLeave = () => {
     // console.log(Authority)
 
 
-    localStorage.setItem( 'authority',Authority)
+    localStorage.setItem('authority', Authority)
 
     const getLeaves = async () => {
         try {
@@ -128,7 +128,7 @@ const ApplyLeave = () => {
         }
     }
 
-    const getleavetype = async()=>{
+    const getleavetype = async () => {
         try {
             const res = await axios.get(`${BASE_URL}/getleavetype`);
             // Handle the response, e.g., store in state or display the data
@@ -141,7 +141,7 @@ const ApplyLeave = () => {
             console.error('Error fetching LeavesTypes:', error);
         }
     }
-    const getDepartment = async()=>{
+    const getDepartment = async () => {
         try {
             const res = await axios.get(`${BASE_URL}/getdepartment`);
             // Handle the response, e.g., store in state or display the data
@@ -157,7 +157,7 @@ const ApplyLeave = () => {
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         console.log(data)
-        
+
         try {
             const res = await axios.post(`${BASE_URL}/applyleave`, data)
 
@@ -179,8 +179,8 @@ const ApplyLeave = () => {
     }, [])
 
     return (
-        <div className='w-full min-h-[90vh]  bg-[#e5e7ec] dark:bg-primary1 p-2 overflow-y-scroll'>
-            <div className=' bg-white dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
+        <div className='w-full min-h-[90vh] bg-background2 dark:bg-primary1 p-2   overflow-y-auto'>
+            <div className=' bg-background1 dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
 
                 <div className=' border-b border-gray-200 pb-2'>
                     <h1 className=' text-2xl font-bold      '>Apply Leave</h1>
@@ -189,7 +189,7 @@ const ApplyLeave = () => {
                 <form onSubmit={handleSubmit(onSubmit)} >
                     <div className=' grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-4 mb-5 '>
 
-                     
+
                         <div className=' flex flex-col gap-2'>
                             <label>Leave Type</label>
                             <select
@@ -199,8 +199,8 @@ const ApplyLeave = () => {
                             >
                                 <option value="">Select</option>
                                 {
-                                    leavetypes.map((e)=>{
-                                        return(
+                                    leavetypes.map((e) => {
+                                        return (
                                             <option value={e.leaveType}>{e.leaveType}</option>
                                         )
                                     })
@@ -215,12 +215,12 @@ const ApplyLeave = () => {
                                 className={`hover:border-gray-400 dark:bg-secondary1 dark:border-gray-700 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
                             >
                                 <option className='dark:text-white' value="">Select</option>
-                                {department.map((e)=>{
-                                    return(
+                                {department.map((e) => {
+                                    return (
                                         <option value={e.department}>{e.department}</option>
                                     )
                                 })}
-                                
+
 
 
 
@@ -262,7 +262,7 @@ const ApplyLeave = () => {
                 </form>
             </div>
 
-            <div className="bg-white dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg my-2">
+            <div className="bg-background1 dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg my-2">
                 <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
                     <div>
                         <h1 className=' text-2xl font-bold     '>My leaves</h1>

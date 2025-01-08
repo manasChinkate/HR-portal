@@ -28,7 +28,7 @@ import AddTask from './components/ProjectMaster/ProjectTask/AddTask';
 
 const App = () => {
   const Layout = () => {
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(false);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
 
 

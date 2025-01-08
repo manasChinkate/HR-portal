@@ -19,6 +19,7 @@ const { Department, GetDepartment } = require('./controller/DepartmentController
 const { CreateProject, getProjects, AddTask, getTask, UpdateTaskStatus } = require('./controller/ProjectController');
 const { AddTimesheet, getTimesheet } = require('./controller/TimesheetController');
 const { CheckIn, CheckOut, GetAttendance } = require('./controller/AttendanceController');
+const Checking = require('./controller/Checking');
 // const GetDesignation = require('./controller/DesignationController')
 
 
@@ -37,7 +38,10 @@ mongoose.connect('mongodb+srv://ManasDeveloper:manas14@cluster0.lck1f65.mongodb.
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
+
 app.post('/login', login);
+app.post('/checking', Checking);
+
 app.post('/addnewcompany', AddnewCompany);
 app.get('/getcompanies', GetCompany);
 app.post('/addnewemployee', AddnewEmployee);
