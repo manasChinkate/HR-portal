@@ -23,7 +23,7 @@ const Protected = ({ children }) => {
 
       if (res.status === 200) {
         dispatch(setauthority(res.data.Checked.authority));
-        dispatch(setName(res.data.Checked.name));
+        dispatch(setName(res.data.Checked.username));
         dispatch(setCompany(res.data.Checked.companyName));
         dispatch(setEmail(res.data.Checked.email));
         setLoading(false); // Stop the loader
