@@ -311,7 +311,7 @@ const EmployeeNavData = [
       {
         name: 'Project Details ',
         icon: <MdMergeType />,
-        link: '/applyleave',
+        link: '/projectdetails',
       },
       {
         name: 'Add Task  ',

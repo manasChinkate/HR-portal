@@ -179,8 +179,8 @@ const ApplyLeave = () => {
     }, [])
 
     return (
-        <div className='w-full min-h-[90vh] bg-background2 dark:bg-primary1 p-2   overflow-y-auto'>
-            <div className=' bg-background1 dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
+        <div className='w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-black p-2 overflow-y-auto'>
+            <div className=' bg-background1 dark:bg-[#121212]  rounded-lg w-full p-4 text-sm' >
 
                 <div className=' border-b border-gray-200 pb-2'>
                     <h1 className=' text-2xl font-bold      '>Apply Leave</h1>
@@ -262,7 +262,7 @@ const ApplyLeave = () => {
                 </form>
             </div>
 
-            <div className="bg-background1 dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg my-2">
+            <div className="bg-background1 dark:bg-[#121212] md:p-4 p-2 rounded-md shadow-lg ">
                 <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
                     <div>
                         <h1 className=' text-2xl font-bold     '>My leaves</h1>

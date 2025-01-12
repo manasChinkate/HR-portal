@@ -68,9 +68,9 @@ const Protected = ({ children }) => {
       </div>
     ) : (
       <div
-        className={`transition-transform duration-200 opacity-0 ease-in-out ${
-          showContent ? 'scale-100 opacity-100' : 'scale-50'
-        }`}
+        // className={`transition-transform duration-200 opacity-0 ease-in-out ${
+        //   showContent ? 'scale-100 opacity-100' : 'scale-50'
+        // }`}
       >
         {children}
       </div>

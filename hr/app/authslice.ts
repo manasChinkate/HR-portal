@@ -8,6 +8,7 @@ export interface AuthState {
  
     companyName:string | null;
     email:string | null;
+    userId: string | null
   }
  
 
@@ -15,8 +16,9 @@ export interface AuthState {
   
     authority: null,
     name: null,
-  
-    companyName:null
+    email:null,
+    companyName:null,
+    userId:null,
    
   };
 
@@ -37,9 +39,15 @@ export interface AuthState {
           setCompany: (state, action: PayloadAction<string>) => {
             state.companyName = action.payload;
           },
+          setUserId: (state, action: PayloadAction<string>) => {
+            state.userId = action.payload;
+          },
           cleanUp: (state) => {
             state.authority = null;
             state.name = null;
+            state.userId = null;
+            state.companyName = null;
+            state.email = null;
             
           },
     }
@@ -50,7 +58,8 @@ export const {
     setName,
     cleanUp,
     setEmail,
-    setCompany
+    setCompany,
+    setUserId
   } = authSlice.actions;
   
   export default authSlice.reducer;

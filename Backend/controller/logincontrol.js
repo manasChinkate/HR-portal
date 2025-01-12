@@ -30,7 +30,7 @@ const login = async (req, res) => {
 
                 // Generate JWT token
                 const token = jwt.sign(
-                    { email: user.email, username: user.name, companyName:user.companyName },
+                    { email: user.email, username: user.name, companyName:user.companyName,userId:user._id },
                      "jwt-secret-key",
                     { expiresIn: '1d' }
                 );
@@ -42,7 +42,8 @@ const login = async (req, res) => {
                     email: user.email,
                     name: user.name,
                     token: token,
-                    companyName:user.companyName
+                    companyName:user.companyName,
+                    userId:user._id
                 })
 
                 // Respond based on user authority
