@@ -24,6 +24,7 @@ import Filltimesheet from './components/Timesheet/FIllTimesheet/Filltimesheet';
 import TimesheetTable from './components/Timesheet/FIllTimesheet/TimesheetTable';
 import AttendanceMark from './components/Attendance/AttendanceMark';
 import AddTask from './components/ProjectMaster/ProjectTask/AddTask';
+import Test from './components/DynamicTextFieldsProps/Test';
 
 
 const App = () => {
@@ -258,6 +259,12 @@ const App = () => {
       path: "/session-out",
       element: (
         <SessionOut />
+      ),
+    },
+    {
+      path: "/test",
+      element: (
+        <Test />
       ),
     },
 

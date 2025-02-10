@@ -43,8 +43,11 @@ type Inputs = {
     to_date: string
 }
 
+
+
 const AddDesignation = () => {
     const [holiday, setHoliday] = useState<Inputs[]>([])
+   
     const [loading, setloading] = useState(true)
     const {
         register,
@@ -116,6 +119,8 @@ const AddDesignation = () => {
         }
     }
 
+    
+
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         console.log(data)
         const formdata = {
@@ -140,6 +145,7 @@ const AddDesignation = () => {
 
     useEffect(() => {
         getHoliday()
+        // getNotifications()
     }, [])
 
     return (

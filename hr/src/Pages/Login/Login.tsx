@@ -40,6 +40,7 @@ const Login = () => {
             dispatch(setUserId(res.data.userId))
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('authority', res.data.authority);
+            localStorage.setItem('userID', res.data.userId);
             navigate('/')
 
         } 

@@ -15,6 +15,11 @@ import { IoMdNotificationsOutline } from 'react-icons/io';
 
 
 const Navbar = ({ setShowMenu, showMenu }) => {
+
+    const [notificationData, setNotificationData] = useState<notifications[]>([])
+      const [loading, setLoading] = useState(true);
+    
+  
   const name = useSelector((state: RootState) => state.auth.name);
 
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -42,6 +47,22 @@ const Navbar = ({ setShowMenu, showMenu }) => {
     dispatch(cleanUp());
     navigate('/login');
   };
+
+  const getNotifications = async () => {
+    try {
+        const res = await axios.get(`${BASE_URL}/notifications`);
+        // Handle the response, e.g., store in state or display the data
+        console.log(res.data);
+        setNotificationData(res.data)
+        setLoading(false)
+
+    } catch (error) {
+        // Handle any errors that occur during the request
+        console.error('Error fetching Designations:', error);
+    }
+}
+
+  
 
   const notifications = [
     { id: 1, message: 'Your leave request has been approved.', time: '10 mins ago' },

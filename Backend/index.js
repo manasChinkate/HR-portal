@@ -20,6 +20,7 @@ const { CreateProject, getProjects, AddTask, getTask, UpdateTaskStatus } = requi
 const { AddTimesheet, getTimesheet } = require('./controller/TimesheetController');
 const { CheckIn, CheckOut, GetAttendance } = require('./controller/AttendanceController');
 const Checking = require('./controller/Checking');
+const { getNotifications } = require('./controller/NotificationController');
 // const GetDesignation = require('./controller/DesignationController')
 
 
@@ -41,6 +42,7 @@ app.get('/', (req, res) => {
 
 app.post('/login', login);
 app.post('/checking', Checking);
+app.get('/notifications', getNotifications);
 
 app.post('/addnewcompany', AddnewCompany);
 app.get('/getcompanies', GetCompany);

@@ -2,13 +2,25 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 
+
+interface Notification {
+  _id: string;
+  userId: string;
+  message: string;
+  read: boolean;
+  createdAt: string;
+  companyName: string;
+  __v: number;
+}
+
 export interface AuthState {
     authority: string | null;
     name: string | null;
  
     companyName:string | null;
     email:string | null;
-    userId: string | null
+    userId: string | null;
+    notifications: Notification[] 
   }
  
 
@@ -19,6 +31,7 @@ export interface AuthState {
     email:null,
     companyName:null,
     userId:null,
+    notifications:[]
    
   };
 
@@ -42,12 +55,16 @@ export interface AuthState {
           setUserId: (state, action: PayloadAction<string>) => {
             state.userId = action.payload;
           },
+          setNotifications: (state, action: PayloadAction<Notification[]>) => {
+            state.notifications = action.payload;
+          },
           cleanUp: (state) => {
             state.authority = null;
             state.name = null;
             state.userId = null;
             state.companyName = null;
             state.email = null;
+            state.notifications = [];
             
           },
     }
@@ -59,7 +76,8 @@ export const {
     cleanUp,
     setEmail,
     setCompany,
-    setUserId
+    setUserId,
+    setNotifications
   } = authSlice.actions;
   
   export default authSlice.reducer;

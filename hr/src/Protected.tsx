@@ -4,9 +4,17 @@ import { useNavigate } from 'react-router-dom';
 import { SyncLoader } from 'react-spinners';
 import axios from 'axios';
 import { BASE_URL } from './constants';
-import { setauthority, setName, setEmail, setCompany } from '../app/authslice';
+import { setauthority, setName, setEmail, setCompany, setNotifications } from '../app/authslice';
 
-const Protected = ({ children }) => {
+type notifications = {
+    userId: string
+    message: string
+    // projectId: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },
+    read: string
+    createdAt : string
+}
+
+const Protected = ({ children,  }) => {
   const [loading, setLoading] = useState(true);
   const [debouncedLoading, setDebouncedLoading] = useState(true); // For debounce
   const [showContent, setShowContent] = useState(false); // For transition effect
@@ -14,6 +22,7 @@ const Protected = ({ children }) => {
   const navigate = useNavigate();
   const authority = localStorage.getItem('authority');
   const dispatch = useDispatch();
+  const [notificationData, setNotificationData] = useState<notifications[]>([])
 
   const checking = async () => {
     const checkData = { authority };
@@ -26,6 +35,7 @@ const Protected = ({ children }) => {
         dispatch(setName(res.data.Checked.username));
         dispatch(setCompany(res.data.Checked.companyName));
         dispatch(setEmail(res.data.Checked.email));
+        dispatch(setNotifications(res.data.notifications));
         setLoading(false); // Stop the loader
       } else {
         navigate('/session-out');
@@ -36,10 +46,25 @@ const Protected = ({ children }) => {
     }
   };
 
+  const getNotifications = async () => {
+    try {
+        const res = await axios.get(`${BASE_URL}/notifications`);
+        // Handle the response, e.g., store in state or display the data
+        console.log(res.data);
+        setNotificationData(res.data)
+        setLoading(false)
+
+    } catch (error) {
+        // Handle any errors that occur during the request
+        console.error('Error fetching Designations:', error);
+    }
+}
+
   useEffect(() => {
     setLoading(true);
     setDebouncedLoading(true);
     setShowContent(false);
+    getNotifications()
     checking();
   }, [children]);
 
@@ -53,6 +78,7 @@ const Protected = ({ children }) => {
       return () => clearTimeout(timer);
     }
   }, [loading]);
+
 
   // Track dark mode
   useEffect(() => {
