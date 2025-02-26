@@ -154,7 +154,7 @@ const LeaveType = () => {
                             <label>Leave Type</label>
                             <input
                                 {...register("leaveType")}
-                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='name'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='name'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>Count</label>
@@ -162,7 +162,7 @@ const LeaveType = () => {
 
                                 {...register("count")}
 
-                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='days' ></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='days' ></input>
                         </div>
 
                     </div>
@@ -201,14 +201,14 @@ const LeaveType = () => {
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        className="ml-auto hidden h-8 lg:flex dark:bg-[#121212]"
+                                        className="ml-auto hidden h-8 lg:flex dark:bg-secondary1"
                                     >
                                         <RxMixerHorizontal className="mr-2 h-4 w-4" />
                                         View
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="bg-white dark:bg-[#121212] py-2 px-3 text-[0.8rem] shadow-lg rounded-md">
-                                    <div className=" bg-gray-50 dark:bg-[#121212] font-semibold py-1 flex items-center gap-2">
+                                <PopoverContent className="bg-white dark:bg-secondary1 py-2 px-3 text-[0.8rem] shadow-lg rounded-md">
+                                    <div className=" bg-gray-50 dark:bg-secondary1 font-semibold py-1 flex items-center gap-2">
                                         <Checkbox {...getToggleHideAllColumnsProps()} />
                                         Toggle All
                                     </div>

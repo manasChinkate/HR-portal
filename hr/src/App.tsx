@@ -24,7 +24,6 @@ import Filltimesheet from './components/Timesheet/FIllTimesheet/Filltimesheet';
 import TimesheetTable from './components/Timesheet/FIllTimesheet/TimesheetTable';
 import AttendanceMark from './components/Attendance/AttendanceMark';
 import AddTask from './components/ProjectMaster/ProjectTask/AddTask';
-import Test from './components/DynamicTextFieldsProps/Test';
 
 
 const App = () => {
@@ -46,44 +45,44 @@ const App = () => {
       }
     );
 
-     { showMenu ? console.log("showmenu") : console.log("not showmenu")}
+    { showMenu ? console.log("showmenu") : console.log("not showmenu") }
 
     return (
       <>
 
 
-<div className="grid grid-rows-[auto_1fr] h-screen overflow-hidden custom">
-  {/* Navbar */}
-  <div className="dark:border-0 dark:shadow-md border-b dark:bg-[#121212]">
-    <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
-  </div>
-
-  {/* Main Content */}
-  <div className="relative h-full">
-    {/* Sidebar */}
-    <div
-      className={`transition-all duration-300 ease-in-out fixed top-15 left-0 z-50 ${
-        showMenu ? "w-[280px]" : "w-0"
-      } h-full dark:bg-[#000000] bg-background2 flex items-start p-2 justify-center`}
-      style={{ left: showMenu ? "0" : "-100%" }}
-    >
-      <Sidebar showMenu={showMenu} setShowMenu={setShowMenu} />
-    </div>
-
-    {/* Outlet */}
-    <div className={`h-full  overflow-y-auto custom ${showMenu ? "ml-[270px]" : "ml-0"}`}>
-      <Outlet />
-    </div>
-  </div>
-</div>
+        <div className="grid grid-rows-[auto_1fr] h-screen overflow-hidden custom">
+          {/* Navbar */}
 
 
+          {/* Main Content */}
+          <div className="relative h-full">
+            {/* Sidebar */}
+            <div
+              className={`transition-all duration-300 ease-in-out fixed top-15 left-0 z-50 ${showMenu ? "w-[280px]" : "w-0"
+                } h-full dark:bg-primary1 bg-background2 flex items-start  justify-center`}
+              style={{ left: showMenu ? "0" : "-100%" }}
+            >
+              <Sidebar showMenu={showMenu} setShowMenu={setShowMenu} />
+            </div>
+
+            {/* Outlet */}
+            <div className={`h-full  overflow-y-auto custom ${showMenu ? "ml-[270px]" : "ml-0"}`}>
+              <div className="dark:border-4 dark:border-primary1 dark:shadow-md border-b dark:bg-primary1">
+                <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
+              </div>
+              <Outlet />
+            </div>
+          </div>
+        </div>
 
 
 
 
 
-     
+
+
+
       </>
     );
   };
@@ -261,12 +260,7 @@ const App = () => {
         <SessionOut />
       ),
     },
-    {
-      path: "/test",
-      element: (
-        <Test />
-      ),
-    },
+
 
   ]);
   return <RouterProvider router={router}></RouterProvider>;

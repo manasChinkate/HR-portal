@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const EmployeeModel = require('../models/NewEmployee');
 const NotificationModel = require('../models/Notifications');
 const LoginSchema = require('../models/Login');
+const { sendNotifications } = require('./NotificationController');
+
 
 const Holiday = async (req, res) => {
     const { companyName, holiday } = req.body;
@@ -19,23 +21,7 @@ const Holiday = async (req, res) => {
         console.log('Holiday created:', data);
 
         // Fetch employees for the given company
-        const employees = await LoginSchema.find({ companyName });
-        if (!employees.length) {
-            return res.status(404).json({ message: 'No employees found for this company' });
-        }
-
-        // Create notifications for employees
-        const notifications = employees.map((user) => ({
-            userId: user._id,
-            message: `A new holiday "${holiday}" has been added.`,
-            read: false,
-            createdAt: new Date(),
-            companyName:companyName
-        }));
-
-        // Insert notifications into the database
-        const notification = await NotificationModel.insertMany(notifications);
-        console.log('Notifications created:', notification);
+        await sendNotifications(companyName,`A new ${holiday} has been created`)
 
         // Send success response
         res.status(201).json({

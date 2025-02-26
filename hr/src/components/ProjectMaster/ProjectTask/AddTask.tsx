@@ -138,7 +138,7 @@ const AddTask = () => {
         (authority === 'Admin' || authority === "ProjectManager" ? 
         
         ( <div className='w-full min-h-[90vh] bg-background2 dark:bg-primary1 p-2   overflow-y-auto'>
-            <div className=' bg-background1 dark:bg-secondary1  rounded-lg w-full p-8 text-sm' 
+            <div className=' bg-background1 dark:bg-secondary1  rounded-lg w-full  text-sm' 
            
              >
                 <div className="bg-background1 dark:bg-secondary1 rounded-lg w-full p-4 text-sm">
@@ -151,7 +151,7 @@ const AddTask = () => {
                             <label>Select Project</label>
                             <select
                                 {...register("projectName", { required: true })}
-                                className="hover:border-gray-400 dark:bg-secondary1 dark:border-gray-700 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm text-sm"
+                                className="hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm text-sm"
                             >
                                 <option value="">Select</option>
                                 {projects.map((e) => (
@@ -169,7 +169,7 @@ const AddTask = () => {
                             {tasks.map((task, index) => (
                                 <div key={task.id} className="flex items-center gap-2">
                                     <input
-                                        className="flex-1 hover:border-gray-400 dark:hover:border-gray-600 dark:border-gray-700 dark:border-[0.2px] dark:bg-[#121212] ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm text-sm"
+                                        className="flex-1 hover:border-gray-400 dark:hover:border-gray-600 dark:border-primary1 dark:border-[0.2px] dark:bg-secondary1 ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm text-sm"
                                         type="text"
                                         placeholder={`Task ${index + 1}`}
                                         value={task.value}
@@ -330,7 +330,7 @@ const ShowTasks = () => {
                         <label>Select Project</label>
                         <select
                             {...register("projectName", { required: true })}
-                            className="hover:border-gray-400 dark:bg-secondary1 dark:border-gray-700 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm text-sm"
+                            className="hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm text-sm"
                         >
                             <option value="">Select</option>
                             {projects.map((e) => (
@@ -374,14 +374,14 @@ const ShowTasks = () => {
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
-                                                    className="ml-auto hidden h-8 lg:flex dark:bg-[#121212]"
+                                                    className="ml-auto hidden h-8 lg:flex dark:bg-secondary1"
                                                 >
                                                     <RxMixerHorizontal className="mr-2 h-4 w-4" />
                                                     View
                                                 </Button>
                                             </PopoverTrigger>
-                                            <PopoverContent className="bg-white dark:bg-[#121212] py-2 px-3 text-[0.8rem] shadow-lg rounded-md">
-                                                <div className=" bg-gray-50 dark:bg-[#121212] font-semibold py-1 flex items-center gap-2">
+                                            <PopoverContent className="bg-white dark:bg-secondary1 py-2 px-3 text-[0.8rem] shadow-lg rounded-md">
+                                                <div className=" bg-gray-50 dark:bg-secondary1 font-semibold py-1 flex items-center gap-2">
                                                     <Checkbox {...getToggleHideAllColumnsProps()} />
                                                     Toggle All
                                                 </div>

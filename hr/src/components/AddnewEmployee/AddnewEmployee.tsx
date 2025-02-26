@@ -132,19 +132,19 @@ const AddnewEmployee = () => {
                             <label>Full name</label>
                             <input
                                 {...register("fullname")}
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder=' name'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder=' name'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>Email</label>
                             <input
                                 {...register("email")}
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder=' email'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder=' email'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>Mobile No</label>
                             <input
                                 {...register("mobileNo")}
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder=' Mobile no'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder=' Mobile no'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>Gender</label>
@@ -152,7 +152,7 @@ const AddnewEmployee = () => {
                             <select
                                 {...register("gender", { required: true })}
                                 id="clientname"
-                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-gray-700 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
+                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
                             >
                                 <option value="">Select</option>
                                 <option value="male">Male</option>
@@ -168,7 +168,7 @@ const AddnewEmployee = () => {
                             <select
                                 {...register("maritialStatus")}
                                 id="clientname"
-                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-gray-700 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
+                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
                             >
                                 <option value="">Select</option>
                                 <option value="single">Single</option>
@@ -183,13 +183,13 @@ const AddnewEmployee = () => {
                             <label>Aadhaar Number</label>
                             <input
                                 {...register("adhaarNo")}
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='number' placeholder=' aadhaar number'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='number' placeholder=' aadhaar number'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>Pan Number</label>
                             <input
                                 {...register("panNo")}
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder=' pan number'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder=' pan number'></input>
                         </div>
 
                     </div>
@@ -201,13 +201,13 @@ const AddnewEmployee = () => {
                             <label>Joining Date</label>
                             <input
                                 {...register("joiningDate")}
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder=' name'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder=' name'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>Probation Period</label>
                             <input
                                 {...register("probationPeriod")}
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder=' in months'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder=' in months'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>Authority</label>
@@ -215,7 +215,7 @@ const AddnewEmployee = () => {
                             <select
                                 {...register("authority")}
                                 id="clientname"
-                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-gray-700 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
+                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
                             >
                                 <option value="">Select</option>
                                 <option value="Employee">Employee</option>
@@ -232,7 +232,7 @@ const AddnewEmployee = () => {
                             <select
                                 {...register("designation")}
                                 id="clientname"
-                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-gray-700 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
+                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
                             >
                                 <option value="">Select</option>
                                 {
@@ -254,7 +254,7 @@ const AddnewEmployee = () => {
                             <select
                                 {...register("reportingManager", { required: true })}
                                 id="clientname"
-                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-gray-700 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
+                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
                             >
                                 <option value="">Select</option>
                                 {
@@ -279,31 +279,31 @@ const AddnewEmployee = () => {
                             <label>City</label>
                             <input
                                 {...register("city")}
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' placeholder=' city'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' placeholder=' city'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>State</label>
                             <input
                                 {...register("state")}
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' placeholder='state'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' placeholder='state'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>Country</label>
                             <input
                                 {...register("country")}
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' placeholder='country'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' placeholder='country'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>Pincode</label>
                             <input
                                 {...register("pincode")}
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='number' placeholder='pincode'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='number' placeholder='pincode'></input>
                         </div>
                         <div className=' flex flex-col gap-2 col-span-2'>
                             <label>Address</label>
                             <textarea
                                 {...register("address")}
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' placeholder=' address'></textarea>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' placeholder=' address'></textarea>
                         </div>
 
                     </div>

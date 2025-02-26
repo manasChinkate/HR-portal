@@ -48,7 +48,7 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
     <div className="relative">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-background1 rounded-md dark:bg-[#121212]  dark:text-white text-sm py-2 transition-transform h-[97vh] duration-3000 transform lg:transform-none lg:relative lg:translate-x-0 z-20 ${showMenu ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`fixed inset-y-0 left-0 w-64 bg-background1 rounded-md dark:bg-secondary1  dark:text-white text-sm py-2 transition-transform h-[97vh] duration-3000 transform lg:transform-none lg:relative lg:translate-x-0 z-20 ${showMenu ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div>
           <div className='w-full flex items-center justify-center mb-4'>
@@ -78,7 +78,7 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
                   {data.children.map((child, childIndex) => (
                     <Link to={child.link} key={childIndex} className='no-underline'>
                       <div
-                        className='mx-2 py-3 bg-transparent  dark:bg-[#121212] rounded flex items-center gap-4 pl-8 cursor-pointer relative group'
+                        className='mx-2 py-3 bg-transparent  dark:bg-secondary1 rounded flex items-center gap-4 pl-8 cursor-pointer relative group'
                       >
                         {child.icon} {child.name}
                         <div
@@ -98,7 +98,7 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
       {/* Overlay */}
       {showMenu && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 lg:hidden z-10"
+          className="fixed inset-0 bg-primary1 bg-opacity-50 lg:hidden z-10"
           onClick={() => setShowMenu(false)}
         ></div>
       )}

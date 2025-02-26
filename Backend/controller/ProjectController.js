@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const ProjectModel = require("../models/Project");
+const { sendNotifications } = require("./NotificationController");
 
 
 const CreateProject = async (req, res) => {
@@ -37,6 +38,8 @@ const AddTask = async (req, res) => {
         const updateProject = await ProjectModel.findOneAndUpdate({ companyName, projectName },
             { $push: { tasks: { $each: tasks } } }, // Replace the tasks array with the new array from the request
             { new: true })
+
+        await sendNotifications(companyName,`A new set of tasks has been added to the project ${projectName} `)
 
         if (!updateProject) {
             return res.status(404).json({ message: "Project not found" });

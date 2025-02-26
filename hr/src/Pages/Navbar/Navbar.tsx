@@ -12,11 +12,24 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { IoMdNotificationsOutline } from 'react-icons/io';
+import { BASE_URL } from '@/constants';
+import axios from 'axios';
+
+interface Notification {
+  _id: string;
+  userId: string;
+  message: string;
+  read: boolean;
+  createdAt: string; // or Date if parsing as Date object
+  companyName: string;
+  __v: number;
+}
+
 
 
 const Navbar = ({ setShowMenu, showMenu }) => {
 
-    const [notificationData, setNotificationData] = useState<notifications[]>([])
+    const [notificationData, setNotificationData] = useState<Notification[]>([])
       const [loading, setLoading] = useState(true);
     
   
@@ -81,9 +94,9 @@ const Navbar = ({ setShowMenu, showMenu }) => {
     { id: 4, message: 'Your salary for December has been processed.', time: 'Yesterday' },
     { id: 4, message: 'Your salary for December has been processed.', time: 'Yesterday' },
   ];
-
+console.log("notificationData",notificationData)
   return (
-    <div className='h-[9vh] flex items-center justify-between px-5 rounded-md rounded-tl-none rounded-tr-none bg-background1 dark:bg-[#121212] dark:text-white dark:rounded-md'>
+    <div className='h-[9vh] flex items-center justify-between px-5 rounded-md rounded-tl-none rounded-tr-none bg-background1 dark:bg-secondary1 dark:text-white dark:rounded-md'>
       <div className='flex gap-4 items-center'>
         <TiThMenu className='text-2xl cursor-pointer' onClick={sidebartoggle} />
         {!showMenu && (
@@ -101,25 +114,41 @@ const Navbar = ({ setShowMenu, showMenu }) => {
 
         <div>
           <Sheet>
-            <SheetTrigger className='   p-1 rounded-md border border-black '><IoMdNotificationsOutline className=' text-2xl' />
+            <SheetTrigger onClick={()=>getNotifications()} className='p-1 rounded-md border border-black '><IoMdNotificationsOutline className=' text-2xl' />
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent className=' dark:bg-primary1'>
               <div className=" h-[90vh] overflow-y-auto">
                 <h2 className="text-lg font-bold mb-4">Notifications</h2>
                 <ul className="space-y-3">
-                  {notifications.map((notification) => (
+                  {notificationData?.notifications?.map((notification:Notification) => {
+                    const formattedDate = new Date(notification.createdAt).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    });
+                  
+                    const formattedTime = new Date(notification.createdAt).toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    });
+                    
+                    return(
                     <li
-                      key={notification.id}
-                      className="p-3 rounded-md bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+                      key={notification._id}
+                      className="p-3 rounded-md bg-gray-100 dark:bg-secondary1 hover:bg-gray-200 dark:hover:bg-gray-700"
                     >
                       <p className="text-sm text-gray-800 dark:text-gray-200">
                         {notification.message}
                       </p>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        {notification.time}
-                      </span>
+                      <div className="text-xs text-gray-500 dark:text-gray-400  flex items-center justify-between  ">
+
+                        <span>
+                        {formattedDate}
+                          </span> {formattedTime}
+                      </div>
                     </li>
-                  ))}
+                    )})}
                 </ul>
               </div>
             </SheetContent>

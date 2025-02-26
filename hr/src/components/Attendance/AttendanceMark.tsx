@@ -200,8 +200,8 @@ const AttendanceMark = () => {
   return (
 
 
-    <div className='w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-black p-2 overflow-y-auto'>
-            <div className=' bg-background1 dark:bg-[#121212]  rounded-lg w-full p-4 text-sm' >
+    <div className='w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-primary1 p-2 overflow-y-auto'>
+            <div className=' bg-background1 dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
 
         {isModalOpen && (
           <div onClick={() => setIsModalOpen(false)} className="fixed top-0 left-0 z-50 h-full px-2 w-screen bg-[#000000b3] flex md:items-center items-center justify-center ">
@@ -275,14 +275,14 @@ const AttendanceMark = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="ml-auto hidden h-8 lg:flex dark:bg-[#121212]"
+                    className="ml-auto hidden h-8 lg:flex dark:bg-secondary1"
                   >
                     <RxMixerHorizontal className="mr-2 h-4 w-4" />
                     View
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="bg-white dark:bg-[#121212] py-2 px-3 text-[0.8rem] shadow-lg rounded-md">
-                  <div className=" bg-gray-50 dark:bg-[#121212] font-semibold py-1 flex items-center gap-2">
+                <PopoverContent className="bg-white dark:bg-secondary1 py-2 px-3 text-[0.8rem] shadow-lg rounded-md">
+                  <div className=" bg-gray-50 dark:bg-secondary1 font-semibold py-1 flex items-center gap-2">
                     <Checkbox {...getToggleHideAllColumnsProps()} />
                     Toggle All
                   </div>

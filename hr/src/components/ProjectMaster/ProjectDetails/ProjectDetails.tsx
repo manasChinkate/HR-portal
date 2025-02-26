@@ -91,8 +91,8 @@ const ProjectDetails = () => {
     },[])
 
     return (
-        <div className='w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-black p-2 overflow-y-auto'>
-            <div className=' bg-background1 dark:bg-[#121212]  rounded-lg w-full p-4 text-sm' >
+        <div className='w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-primary1 p-2 overflow-y-auto'>
+            <div className=' bg-background1 dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
                 <div className=' border-b border-gray-200 pb-2'>
                     <h1 className=' text-2xl font-bold      '>Add Project</h1>
                     <p className=' text-gray-500 text-sm'>Add Projects here</p>
@@ -106,14 +106,14 @@ const ProjectDetails = () => {
 
                                 {...register("projectName")}
 
-                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-gray-700 dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='name of your project' ></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-primary1 dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='name of your project' ></input>
                         </div>
                     <div className=' flex flex-col gap-2'>
                             <label>Client</label>
                             <select
                                 {...register("clientName")}
                                 id="clientname"
-                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-gray-700 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
+                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
                             >
                                 <option value="">Select</option>
                                 {
@@ -130,7 +130,7 @@ const ProjectDetails = () => {
                             <select
                                 {...register("projectManager")}
                                 id="clientname"
-                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-gray-700 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
+                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
                             >
                                 <option value="">Select</option>
                                 {
@@ -148,7 +148,7 @@ const ProjectDetails = () => {
 
                                 {...register("startDate")}
 
-                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder='holiday'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder='holiday'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>Deadline</label>
@@ -156,14 +156,14 @@ const ProjectDetails = () => {
 
                                 {...register("deadline")}
 
-                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder='holiday'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='date' placeholder='holiday'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>Priority</label>
                             <select
                                 {...register("priority")}
                                 id="clientname"
-                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-gray-700 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
+                                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
                             >
                                 <option value="">Select</option>
                                 <option value="Low">Low</option>
@@ -176,7 +176,7 @@ const ProjectDetails = () => {
                             <label>Project Description</label>
                             <textarea
                                 {...register("description")}
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' placeholder=' description'></textarea>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' placeholder=' description'></textarea>
                         </div>
                     </div>
                     <Button className=' dark:bg-[#3b5ae4] dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md  ' type='submit'>

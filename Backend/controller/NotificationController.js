@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const NotificationModel = require('../models/Notifications');
+const NotificationModel = require("../models/Notifications");
+const LoginSchema = require("../models/Login"); // Assuming this is your employee model
+
 
 const getNotifications = async (req, res) => {
     try {
@@ -31,5 +33,36 @@ const getNotifications = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 };
+const sendNotifications = async (companyName, message) => {
+    try {
+        // Fetch employees for the given company
+        const employees = await LoginSchema.find({ companyName });
+        if (!employees.length) {
+            console.log("No employees found for this company");
+            return;
+        }
 
-module.exports = { getNotifications };
+        // Extract user IDs
+        const userIds = employees.map(user => user._id);
+
+        const notifications = userIds.map(userId => ({
+            userId,
+            message,
+            read: false,
+            createdAt: new Date(),
+            companyName,
+        }));
+
+        // Insert notifications into the database
+        await NotificationModel.insertMany(notifications);
+        console.log("Notifications created successfully");
+
+    } catch (error) {
+        console.error("Error creating notifications:", error);
+    }
+};
+
+module.exports = { getNotifications, sendNotifications };
+
+
+

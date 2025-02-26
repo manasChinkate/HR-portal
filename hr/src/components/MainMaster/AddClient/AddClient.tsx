@@ -144,7 +144,7 @@ const AddClient = () => {
     }, [])
 
     return (
-        <div className='w-full max-h-[90vh] bg-background2 flex flex-col gap-0 dark:bg-black p-2 overflow-y-auto'>
+        <div className='w-full max-h-[90vh] bg-background2 flex flex-col gap-0 dark:bg-primary1 p-2 overflow-y-auto'>
             <div className=' bg-background1 dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
 
                 <div className=' border-b border-gray-200 pb-2'>
@@ -159,7 +159,7 @@ const AddClient = () => {
                             <label>Client Name</label>
                             <input
                                 {...register("clientName")}
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' placeholder='name'></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' placeholder='name'></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>state</label>
@@ -167,13 +167,13 @@ const AddClient = () => {
 
                                 {...register("state")}
 
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' ></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' ></input>
                         </div>
                         <div className=' flex flex-col gap-2'>
                             <label>Country</label>
                             <input
                                 {...register("country")}
-                                className=' hover:border-gray-400 dark:hover:border-blue-900  dark:border-gray-700  dark:border-[0.2px] dark:bg-[#121212]    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' ></input>
+                                className=' hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' ></input>
                         </div>
                     </div>
                     <Button className=' dark:bg-[#3b5ae4] dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md  ' type='submit'>
@@ -211,14 +211,14 @@ const AddClient = () => {
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        className="ml-auto hidden h-8 lg:flex dark:bg-[#121212]"
+                                        className="ml-auto hidden h-8 lg:flex dark:bg-secondary1"
                                     >
                                         <RxMixerHorizontal className="mr-2 h-4 w-4" />
                                         View
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="bg-white dark:bg-[#121212] py-2 px-3 text-[0.8rem] shadow-lg rounded-md">
-                                    <div className=" bg-gray-50 dark:bg-[#121212] font-semibold py-1 flex items-center gap-2">
+                                <PopoverContent className="bg-white dark:bg-secondary1 py-2 px-3 text-[0.8rem] shadow-lg rounded-md">
+                                    <div className=" bg-gray-50 dark:bg-secondary1 font-semibold py-1 flex items-center gap-2">
                                         <Checkbox {...getToggleHideAllColumnsProps()} />
                                         Toggle All
                                     </div>

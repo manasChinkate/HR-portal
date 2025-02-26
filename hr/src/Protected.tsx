@@ -52,6 +52,8 @@ const Protected = ({ children,  }) => {
         // Handle the response, e.g., store in state or display the data
         console.log(res.data);
         setNotificationData(res.data)
+        dispatch(setNotifications(res.data.notifications));
+
         setLoading(false)
 
     } catch (error) {

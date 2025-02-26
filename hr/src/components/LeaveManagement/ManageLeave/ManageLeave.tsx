@@ -117,10 +117,10 @@ const ManageLeave = () => {
     const getLeaves = async () => {
         try {
             const res = await axios.get(`${BASE_URL}/getmanageleave`);
-            
+
             const fetchedLeaves = res.data;
             setLeaves(fetchedLeaves); // Set the original leaves data
-    
+
             if (Authority === 'HiringManager') {
                 const filtered = fetchedLeaves.filter((e: Inputs) => e.email !== Email); // Filter the data
                 setFinalLeaves(filtered); // Set the filtered data to finalLeaves
@@ -128,7 +128,7 @@ const ManageLeave = () => {
             } else {
                 setFinalLeaves(fetchedLeaves); // Pass the original data if not a Hiring Manager
             }
-    
+
             setloading(false);
         } catch (error) {
             console.error('Error fetching leaves:', error);
@@ -143,16 +143,18 @@ const ManageLeave = () => {
     }, [])
 
     return (
-        <div className='w-full min-h-[90vh] bg-background2 dark:bg-primary1 p-2 overflow-y-auto'>
+        <div className='w-full h-[90vh] dark:bg-primary1 bg-background2 p-2 overflow-y-auto'>
+            <div className="bg-background1 md:p-4 p-2 rounded-md  dark:bg-secondary1 shadow-lg">
+                <div className="space-y-3 sm:space-y-0 sm:flex  justify-between items-center">
+                    <div className=' flex items-center gap-5'>
+                        
+                        <div>
 
-
-<div className="bg-background1 dark:bg-[#121212] md:p-4 p-2 rounded-md shadow-lg ">
-<div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
-                    <div>
-                        <h1 className=' text-2xl font-bold     '>Manage Leave</h1>
-                        <p className="text-xs text-muted-foreground">
-                            Here&apos;s a list of applided leaves.
-                        </p>
+                            <h1 className=' text-2xl font-bold     '>Employee List</h1>
+                            <p className="text-xs text-muted-foreground">
+                                Here&apos;s a list of Holidays.
+                            </p>
+                        </div>
                     </div>
 
                     <div className="sm:flex justify-between items-center gap-2">
@@ -175,14 +177,14 @@ const ManageLeave = () => {
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        className="ml-auto hidden h-8 lg:flex dark:bg-[#121212]"
+                                        className="ml-auto hidden h-8 lg:flex dark:bg-secondary1"
                                     >
                                         <RxMixerHorizontal className="mr-2 h-4 w-4" />
                                         View
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="bg-white dark:bg-[#121212] py-2 px-3 text-[0.8rem] shadow-lg rounded-md">
-                                    <div className=" bg-gray-50 dark:bg-[#121212] font-semibold py-1 flex items-center gap-2">
+                                <PopoverContent className="bg-white dark:bg-secondary1 py-2 px-3 text-[0.8rem] shadow-lg rounded-md">
+                                    <div className=" bg-gray-50 dark:bg-secondary1 font-semibold py-1 flex items-center gap-2">
                                         <Checkbox {...getToggleHideAllColumnsProps()} />
                                         Toggle All
                                     </div>
@@ -225,7 +227,7 @@ const ManageLeave = () => {
                     </div>
                 </div>
                 {/* ------------------------------------Table-------------------------------------- */}
-                <div className="overflow-auto mt-4 border  rounded-lg">
+                <div className=" max-w-screen-lg overflow-auto mt-4 border  rounded-lg">
                     {loading ? (
                         <div className="w-full flex items-center justify-center h-[65vh]">
                             <img src='' className="w-[5rem]" alt="Loading..." />
@@ -278,7 +280,7 @@ const ManageLeave = () => {
                                                 {row.cells.map((cell: any) => {
                                                     return (
                                                         <td {...cell.getCellProps()}>
-                                                            {cell.render("Cell", { getLeaves })}
+                                                            {cell.render("Cell",{getLeaves})}
                                                         </td>
                                                     );
                                                 })}
@@ -356,9 +358,6 @@ const ManageLeave = () => {
                     </div>
                 </div>
             </div>
-
-
-
         </div>
     )
 }
