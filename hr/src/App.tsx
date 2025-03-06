@@ -112,9 +112,9 @@ const App = () => {
         {
           path: "/add-new-company",
           element: (
-            <Protected>
+            
               <AddnewCompany />
-            </Protected>
+            
           ),
         },
         {

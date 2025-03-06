@@ -67,7 +67,7 @@ const Protected = ({ children,  }) => {
     setDebouncedLoading(true);
     setShowContent(false);
     getNotifications()
-    checking();
+    authority !== "MasterAdmin" && checking()
   }, [children]);
 
   // Debounce effect
