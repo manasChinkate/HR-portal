@@ -18,10 +18,10 @@ const getNotifications = async (req, res) => {
         console.log("Decoded User ID:", userId);
 
         // Convert userId to ObjectId
-        const objectId = new mongoose.Types.ObjectId(userId);
+        // const objectId = new mongoose.Types.ObjectId(userId);
 
         // Query notifications
-        const notifications = await NotificationModel.find({ userId: objectId }).populate('userId');
+        const notifications = await NotificationModel.find({ userId });
 
         if (notifications.length === 0) {
             return res.status(404).json({ message: 'No notifications found for the user.' });
@@ -43,7 +43,7 @@ const sendNotifications = async (companyName, message) => {
         }
 
         // Extract user IDs
-        const userIds = employees.map(user => user._id);
+        const userIds = employees.map(user => user.employeeId );
 
         const notifications = userIds.map(userId => ({
             userId,

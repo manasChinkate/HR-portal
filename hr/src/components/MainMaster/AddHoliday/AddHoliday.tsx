@@ -132,7 +132,7 @@ const AddDesignation = () => {
             const res = await axios.post(`${BASE_URL}/holiday`, formdata)
 
             if (res.status === 201) {
-                toast.success("Added successfully")
+                toast.success(res.data.message)
                 reset()
                 getHoliday()
             }

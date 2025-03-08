@@ -19,6 +19,7 @@ interface LeaveData {
   from_date: string;
   to_date: string;
   reason: string;
+  employeeId:string,
   status: string;
   companyName: string;
   createdAt: string;
@@ -87,14 +88,14 @@ export const COLUMNS: Column<LeaveData>[] = [
     Cell: ({ row,getLeaves }) => {
 
       const setAccept = async () => {
-        const res = await axios.patch(`${BASE_URL}/leaves/Accepted/${row.original._id}`)
+        const res = await axios.patch(`${BASE_URL}/leaves/Accepted/${row.original.employeeId}`,{data:row.original})
         if (res.status == 200) {
           toast.success("Status Updated")
           getLeaves()
         }
       }
       const setReject = async () => {
-        const res = await axios.patch(`${BASE_URL}/leaves/Rejected/${row.original._id}`)
+        const res = await axios.patch(`${BASE_URL}/leaves/Rejected/${row.original.employeeId}`)
         if (res.status == 200) {
           toast.success("Status Updated")
           getLeaves()

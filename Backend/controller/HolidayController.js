@@ -21,13 +21,12 @@ const Holiday = async (req, res) => {
         console.log('Holiday created:', data);
 
         // Fetch employees for the given company
-        await sendNotifications(companyName,`A new ${holiday} has been created`)
+        await sendNotifications(companyName,`${holiday}, Holiday has been created`)
 
         // Send success response
         res.status(201).json({
             message: 'Holiday created successfully and notifications sent',
             holiday: data,
-            notifications,
         });
     } catch (error) {
         console.error('Error:', error);

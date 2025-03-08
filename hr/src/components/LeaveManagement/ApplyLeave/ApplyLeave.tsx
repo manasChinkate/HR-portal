@@ -210,7 +210,7 @@ const ApplyLeave = () => {
                         <div className=' flex flex-col gap-2'>
                             <label>Department</label>
                             <select
-                                {...register("department")}
+                                {...register("department",{required:true})}
                                 id="clientname"
                                 className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
                             >
@@ -230,7 +230,7 @@ const ApplyLeave = () => {
                             <label>Count</label>
                             <input
 
-                                {...register("count")}
+                                {...register("count" ,{required:true})}
 
                                 className=' hover:border-gray-400 dark:hover:border-gray-600 dark:border-primary1 dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm' type='text' placeholder='days' ></input>
                         </div>

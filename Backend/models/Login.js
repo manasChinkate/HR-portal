@@ -5,7 +5,8 @@ const loginSchema = new mongoose.Schema({
     email:String,
     name:String,
     password:String,
-    companyName:String
+    companyName:String,
+    employeeId:String
 }, { collection: 'logindata' })
 
  const LoginSchema = mongoose.model('login', loginSchema)

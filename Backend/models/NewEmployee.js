@@ -9,13 +9,14 @@ const EmployeeSchema = new mongoose.Schema({
     maritialStatus:String,
     adhaarNo:String,
     panNo:String,
-
+    dob:String,
     //Employeement Details
     joiningDate:String,
     probationPeriod:String,
     authority:String,
     designation: String,
     reportingManager:String,
+    employeeId:String,
 
 
     //Address Details
@@ -25,6 +26,17 @@ const EmployeeSchema = new mongoose.Schema({
     pincode:Number,
     address:String,
     companyName:String,
+
+    //Pending Leaves
+    pendingLeave: {
+        type: [
+            {
+                leaveType: String,
+                count: String
+            }
+        ],
+        default: []  // Initially empty array
+    },
 
     createdDate: {
         type: Date,

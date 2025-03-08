@@ -1,12 +1,18 @@
 
 const CompanySchema = require('../models/NewCompany')
 const LoginSchema = require('../models/Login')
+const { generateUserId } = require('./NewEmployeeController')
 
 const AddnewCompany = async (req, res) => {
+
+const body = req.body
+
+    console.log("EMPLOYEEIDDD",body)
 
     const Companydata = {
         ...req.body,
         authority: "Admin",
+        employeeId:generateUserId(req.body.CompanyName)
     }
 
     const LoginData = {
@@ -14,7 +20,9 @@ const AddnewCompany = async (req, res) => {
         email: req.body.email,
         authority: "Admin",
         password: "admin",
-        companyName: req.body.CompanyName
+        companyName: req.body.CompanyName,
+        employeeId:generateUserId(req.body.CompanyName)
+
     }
 
     try {

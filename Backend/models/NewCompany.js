@@ -18,6 +18,7 @@ const NewCompnay = new mongoose.Schema({
     pincode:Number,
     address:String,
     authority:String,
+    employeeId:String,
     createdDate: {
         type: Date,
         default: Date.now

@@ -25,15 +25,7 @@ import {
   MdOutlineTimeToLeave,
 } from "react-icons/md";
 import { PiBuildingOfficeLight } from "react-icons/pi";
-import {
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
+
 
 const Sidebar = ({ showMenu, setShowMenu }) => {
   const [activeParent, setActiveParent] = useState<number | null>(null);
@@ -357,9 +349,9 @@ const EmployeeNavData = [
     icon: <RiProjectorLine />,
     children: [
       {
-        name: "Project Details ",
+        name: "Ongoing Projects",
         icon: <MdMergeType />,
-        link: "/projectdetails",
+        link: "/ongoing_projects",
       },
       {
         name: "Add Task  ",

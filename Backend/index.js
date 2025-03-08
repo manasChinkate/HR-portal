@@ -21,14 +21,17 @@ const { AddTimesheet, getTimesheet } = require('./controller/TimesheetController
 const { CheckIn, CheckOut, GetAttendance } = require('./controller/AttendanceController');
 const Checking = require('./controller/Checking');
 const { getNotifications } = require('./controller/NotificationController');
+const EmployeeModel = require('./models/NewEmployee');
 // const GetDesignation = require('./controller/DesignationController')
 
 
 app.use(cors({
-  origin: 'http://localhost:5173', // Allow requests from this origin
-  methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
-  credentials: true // Allow cookies to be sent cross-origin
+  origin: 'http://localhost:5173',  // Allow requests from this origin
+  methods: "*",  // Include PATCH and OPTIONS
+  credentials: true                // Allow cookies to be sent cross-origin
 }));
+
+
 
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://ManasDeveloper:manas14@cluster0.lck1f65.mongodb.net/Hr-Portal')
@@ -39,6 +42,9 @@ mongoose.connect('mongodb+srv://ManasDeveloper:manas14@cluster0.lck1f65.mongodb.
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
+
+
+
 
 app.post('/login', login);
 app.post('/checking', Checking);

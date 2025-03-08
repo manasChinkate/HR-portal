@@ -1,22 +1,45 @@
 const EmployeeModel = require('../models/NewEmployee')
 const LoginSchema = require('../models/Login')
+const jwt = require('jsonwebtoken')
+
+
+const  generateUserId = (companyName) => {
+    const prefix = companyName.slice(0, 3).toUpperCase(); // Get first 3 letters and convert to uppercase
+    const randomNumber = Math.floor(100000 + Math.random() * 9000); // Generates a random 4-digit number
+    const userId = `${prefix}${randomNumber}`; // Combines prefix and random number
+    return userId;
+};
+
+// Example usage
+const userId = generateUserId("Accenture");
+console.log(userId); // Output: ACC1234
+
 
 const AddnewEmployee = async (req, res) => {
-
-    const loginemployee = {
+    const userId = await generateUserId(req.body.companyName)
+    const {fullname} = req.body
+    const loginData = {
         name: req.body.fullname,
         email: req.body.email,
         authority: req.body.authority,
-        password: req.body.authority === 'ProjectManager' ? `${req.body.fullname}@123` : '123456',
-        companyName: req.body.companyName
+        password: req.body.authority === 'ProjectManager' ? `${fullname.slice(0,3)}@123` : '123456',
+        companyName: req.body.companyName,
+        employeeId:userId
     };
     
 
-    const employee = req.body;
+
+    const employeeData = {
+        ...req.body,
+        employeeId:userId
+    }
+
+
+   
     try {
 
-        await EmployeeModel.create(employee)
-        await LoginSchema.create(loginemployee)
+        await EmployeeModel.create(employeeData)
+        await LoginSchema.create(loginData)
 
         res.status(201)
         res.json("Employee Creted successfully")
@@ -30,13 +53,9 @@ const AddnewEmployee = async (req, res) => {
 }
 
 
-const getEmployeeData = async()=>{
+const getEmployeeData = async(req,res)=>{
     try {
-        // Extract companyName from URL parameters
-        // const  companyName  =  req.params.companyname;
-        // console.log('companyName :',companyName)
-
-
+    
         const token = req.headers.token;
         if (!token) {
             return res.status(401).json({ message: 'No token provided' });
@@ -61,8 +80,8 @@ const getEmployeeData = async()=>{
         res.status(200).json(Employee);
     } catch (error) {
         // Handle any errors that occur during the query
-        res.status(500).json({ message: 'Error fetching designations', error: error.message });
+        res.status(500).json({ message: 'Error fetching Employees', error: error.message });
     }
 }
 
-module.exports = {AddnewEmployee,getEmployeeData}
+module.exports = {AddnewEmployee,getEmployeeData, generateUserId}

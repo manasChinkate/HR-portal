@@ -38,6 +38,7 @@ const Checking = async (req, res) => {
                         username: user.name,
                         companyName: user.companyName,
                         authority: user.authority,
+                        userId:user.employeeId
                     },
                 });
             } else {

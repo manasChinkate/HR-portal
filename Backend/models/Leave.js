@@ -11,6 +11,7 @@ const leaveSchema = new mongoose.Schema({
     reason:String,
     status:String,
     companyName:String,
+    employeeId:String,
     createdAt:{
         type:Date,
         default:Date.now
