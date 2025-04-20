@@ -34,10 +34,7 @@ export const COLUMNS: Column<LeaveData>[] = [
     Header: "Employee Name",
     accessor: "name",
   },
-  {
-    Header: "Department",
-    accessor: "department",
-  },
+  
   {
     Header: "Leave Type",
     accessor: "leaveType",

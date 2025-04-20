@@ -16,10 +16,10 @@ interface Notification {
 export interface AuthState {
     authority: string | null;
     name: string | null;
- 
     companyName:string | null;
     email:string | null;
     userId: string | null;
+    companyId: string | null;
     notifications: Notification[] 
   }
  
@@ -31,7 +31,8 @@ export interface AuthState {
     email:null,
     companyName:null,
     userId:null,
-    notifications:[]
+    notifications:[],
+    companyId: null,
    
   };
 
@@ -55,6 +56,9 @@ export interface AuthState {
           setUserId: (state, action: PayloadAction<string>) => {
             state.userId = action.payload;
           },
+          setCompanyId: (state, action: PayloadAction<string>) => {
+            state.companyId = action.payload;
+          },
           setNotifications: (state, action: PayloadAction<Notification[]>) => {
             state.notifications = action.payload;
           },
@@ -64,6 +68,7 @@ export interface AuthState {
             state.userId = null;
             state.companyName = null;
             state.email = null;
+            state.companyId = null;
             state.notifications = [];
             
           },
@@ -77,7 +82,8 @@ export const {
     setEmail,
     setCompany,
     setUserId,
-    setNotifications
+    setNotifications,
+    setCompanyId
   } = authSlice.actions;
   
   export default authSlice.reducer;

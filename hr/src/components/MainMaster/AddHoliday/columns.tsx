@@ -23,7 +23,7 @@ export const COLUMNS: Column<Account>[] = [
   },
   {
     Header: "From Day",
-    accessor: "from_date",
+    accessor: "fromDate",
     Cell: ({ value }) => {
       const convertDate = (isoDate: string) => {
         const date = new Date(isoDate);
@@ -39,7 +39,7 @@ export const COLUMNS: Column<Account>[] = [
   },
   {
     Header: "To Day",
-    accessor: "to_date",
+    accessor: "toDate",
     Cell: ({ value }) => {
       const convertDate = (isoDate: string) => {
         const date = new Date(isoDate);

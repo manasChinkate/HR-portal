@@ -6,7 +6,14 @@ const loginSchema = new mongoose.Schema({
     name:String,
     password:String,
     companyName:String,
-    employeeId:String
+    employeeId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'newEmployee'
+    },
+    companyId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'newCompnany'
+    }
 }, { collection: 'logindata' })
 
  const LoginSchema = mongoose.model('login', loginSchema)

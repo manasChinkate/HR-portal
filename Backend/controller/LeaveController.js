@@ -1,6 +1,7 @@
 const LeaveModel = require("../models/Leave");
 const jwt = require("jsonwebtoken");
 const EmployeeModel = require("../models/NewEmployee");
+const pendingLeavesModel = require("../models/PendingLeaves");
 
 const AddLeave = async (req, res) => {
   try {
@@ -61,11 +62,9 @@ const GetLeaveData = async (req, res) => {
 
     // If no leave data is found
     if (getData.length === 0) {
-      return res
-        .status(404)
-        .json({
-          message: "No leave data found for this user in the specified company",
-        });
+      return res.status(404).json({
+        message: "No leave data found for this user in the specified company",
+      });
     }
 
     // Send the data as response
@@ -92,11 +91,9 @@ const GetManageLeave = async (req, res) => {
     const getData = await LeaveModel.find({ companyName });
 
     if (getData.length === 0) {
-      return res
-        .status(404)
-        .json({
-          message: "No leave data found for this user in the specified company",
-        });
+      return res.status(404).json({
+        message: "No leave data found for this user in the specified company",
+      });
     }
 
     // Send the data as response
@@ -122,8 +119,8 @@ const StatusChange = async (req, res) => {
   console.log("BODYYYYY", data);
 
   try {
-    if(status === "Accepted"){
-        await decreaseCount(employeeId,data.count,data.leaveType)
+    if (status === "Accepted") {
+      await decreaseCount(employeeId, data.count, data.leaveType);
     }
     const statusChange = await LeaveModel.findOneAndUpdate(
       { employeeId: employeeId }, // Find leave record by ID and companyName
@@ -143,43 +140,61 @@ const StatusChange = async (req, res) => {
   }
 };
 
-const decreaseCount =async(employeeId,count,leaveType)=>{
-    const employee = await EmployeeModel.findOne({ employeeId });
-    console.log("Employee-------------------------", employee);
-    console.log(
-      "PendingLEAVE-------------------------",
-      employee?.pendingLeave
-    );
+const decreaseCount = async (employeeId, count, leaveType) => {
+  const employee = await pendingLeavesModel.findOne({ employeeId });
+  console.log("Employee-------------------------", employee);
+  console.log("PendingLEAVE-------------------------", employee?.pendingLeaves);
 
-    if (!employee) {
-      console.log("NO employee found");
-    }
-    const leave = employee.pendingLeave.find(
-      (e) => e.leaveType == leaveType
-    );
+  if (!employee) {
+    console.log("NO employee found");
+  }
+  const leave = employee.pendingLeaves.find((e) => e.leaveType == leaveType);
 
-    if (!leave) {
-      console.log("No leave found");
-    }
-    const newCount = +leave.count - +count;
+  if (!leave) {
+    console.log("No leave found");
+  }
+  const newCount = +leave.count - +count;
 
-    if (newCount < 0) {
-      console.log("Not enough Leaves");
-      
-    }
-    const result = await EmployeeModel.findOneAndUpdate(
-      { employeeId, "pendingLeave.leaveType": leaveType },
-      {
-        $set: {
-          "pendingLeave.$.count": newCount,
-        },
+  if (newCount < 0) {
+    console.log("Not enough Leaves");
+  }
+  const result = await pendingLeavesModel.findOneAndUpdate(
+    { employeeId, "pendingLeaves.leaveType": leaveType },
+    {
+      $set: {
+        "pendingLeaves.$.count": newCount,
       },
-      { new: true }
-    );
-    if (result) {
-      console.log("COunt updated successfulyy");
+    },
+    { new: true }
+  );
+  if (result) {
+    console.log("COunt updated successfulyy");
+  }
+};
+
+const getPendingLeaves = async (req, res) => {
+  try {
+    const token = req.headers.token;
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
     }
 
-} 
+    const decodedToken = jwt.verify(token, "jwt-secret-key");
+    const employeeId = decodedToken.employeeId;
 
-module.exports = { AddLeave, GetLeaveData, StatusChange, GetManageLeave };
+    const response = await pendingLeavesModel.find( employeeId );
+    console.log("RESSSSSSSS", response);
+    res.status(200).json({ data: response, message: "Successful" });
+  } catch (error) {
+    res.status(500).json({ message: error });
+    console.log(error);
+  }
+};
+
+module.exports = {
+  AddLeave,
+  GetLeaveData,
+  StatusChange,
+  GetManageLeave,
+  getPendingLeaves,
+};

@@ -3,6 +3,11 @@ const mongoose = require('mongoose')
 const designationSchema = new mongoose.Schema({
     designation:String,
     companyName:String,
+    companyId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'newCompnany',
+        required:true
+    },
     createdAt:{
         type:Date,
         default:Date.now

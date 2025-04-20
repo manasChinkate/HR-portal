@@ -19,26 +19,15 @@ const AddnewEmployee = async (req, res) => {
     const userId = await generateUserId(req.body.companyName)
     const {fullname} = req.body
     const loginData = {
-        name: req.body.fullname,
         email: req.body.email,
-        authority: req.body.authority,
         password: req.body.authority === 'ProjectManager' ? `${fullname.slice(0,3)}@123` : '123456',
-        companyName: req.body.companyName,
-        employeeId:userId
+        employeeId:req.body
     };
-    
-
-
-    const employeeData = {
-        ...req.body,
-        employeeId:userId
-    }
-
-
    
+
     try {
 
-        await EmployeeModel.create(employeeData)
+        await EmployeeModel.create(req.body)
         await LoginSchema.create(loginData)
 
         res.status(201)

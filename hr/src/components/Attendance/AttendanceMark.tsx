@@ -1,12 +1,8 @@
-
-
-import { Button } from '../ui/button';
-import axios from 'axios'
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { BASE_URL } from '../../constants';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../app/store'
-import { useEffect, useMemo, useState } from 'react';
+import { Button } from "../ui/button";
+import axios from "axios";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { BASE_URL } from "../../constants";
+import { useEffect, useMemo, useState } from "react";
 import { exportToExcel } from "../xlsx";
 import {
   useTable,
@@ -16,7 +12,7 @@ import {
   usePagination,
 } from "react-table";
 
-import '../table.css'
+import "../table.css";
 
 import {
   Popover,
@@ -27,7 +23,7 @@ import {
 import { COLUMNS } from "./columns";
 import ColumnFiltering from "../ColumnFiltering";
 import GlobalFiltering from "../GlobalFiltering";
-import { FaFileExcel } from 'react-icons/fa';
+import { FaFileExcel } from "react-icons/fa";
 import {
   RxChevronLeft,
   RxChevronRight,
@@ -35,28 +31,22 @@ import {
   RxDoubleArrowRight,
   RxMixerHorizontal,
 } from "react-icons/rx";
-import Checkbox from '../Checkbox';
-import toast from 'react-hot-toast';
-
+import Checkbox from "../Checkbox";
+import toast from "react-hot-toast";
+import { Table } from "../ui/table";
 
 const AttendanceMark = () => {
-
   const [status, setStatus] = useState("Not Checked In");
   const [checkInTime, setCheckInTime] = useState(null);
   const [checkOutTime, setCheckOutTime] = useState(null);
-  const [loading, setloading] = useState(true)
+  const [loading, setloading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [attendace, setAttendance] = useState([])
+  const [attendace, setAttendance] = useState([]);
 
   const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm<Inputs>()
-
+    formState: {},
+  } = useForm<Inputs>();
 
   const columns: any = useMemo(() => COLUMNS, []);
   const data = useMemo(() => attendace, [attendace]);
@@ -107,21 +97,17 @@ const AttendanceMark = () => {
       const res = await axios.get(`${BASE_URL}/getAttendance`);
       // Handle the response, e.g., store in state or display the data
       console.log(res.data);
-      setAttendance(res.data)
-      setloading(false)
-
+      setAttendance(res.data);
+      setloading(false);
     } catch (error) {
       // Handle any errors that occur during the request
-      console.error('Error fetching Leaves:', error);
+      console.error("Error fetching Leaves:", error);
     }
-  }
-
-
+  };
 
   const handleCheckIn = async () => {
     const now = new Date(); // Current date and time
     setCheckInTime(now);
-
 
     // Format the date to YYYY-MM-DD
     const formattedDate = now.toISOString().split("T")[0];
@@ -131,29 +117,27 @@ const AttendanceMark = () => {
       date: formattedDate, // Include today's date
     };
 
-    console.log(data)
+    console.log(data);
 
     try {
-      const res = await axios.post(`${BASE_URL}/mark-in`, data)
+      const res = await axios.post(`${BASE_URL}/mark-in`, data);
 
       if (res.status === 400) {
         // toast.success(res.data)
-        setStatus('Already Checked In')
+        setStatus("Already Checked In");
       } else {
         setStatus("Present");
-        toast.success("Successfully Checked In")
+        toast.success("Successfully Checked In");
       }
-
     } catch (error) {
-      toast.error("Already Checked In")
+      toast.error("Already Checked In");
     }
-
 
     // API call to save check-in
   };
 
   const handleCheckOut = async () => {
-    setIsModalOpen(true)
+    setIsModalOpen(true);
   };
 
   const confirmCheckOut = async () => {
@@ -167,50 +151,41 @@ const AttendanceMark = () => {
 
     const formattedDate = now.toISOString().split("T")[0];
 
-
     const data = {
       checkOutTime: now.toLocaleTimeString(), // Include the check-in time in HH:MM:SS format
       date: formattedDate, // Include today's date
     };
     try {
-      const res = await axios.post(`${BASE_URL}/mark-out`, data)
+      const res = await axios.post(`${BASE_URL}/mark-out`, data);
 
-      if(res.status === 200){
-        toast.success("Success CheckOut")
-        getData()
-      }else(
-        toast.error(res.data.message)
-     
-      )
-      
+      if (res.status === 200) {
+        toast.success("Success CheckOut");
+        getData();
+      } else toast.error(res.data.message);
     } catch (error) {
-    
+      console.log(error);
     }
 
     console.log("Checked out successfully!");
   };
 
-  const cancelCheckOut = () => {
-    setIsModalOpen(false); // Close the modal without checking out
-  };
-
   useEffect(() => {
-    getData()
-  }, [])
+    getData();
+  }, []);
   return (
-
-
-    <div className='w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-primary1 p-2 overflow-y-auto'>
-            <div className=' bg-background1 dark:bg-secondary1  rounded-lg w-full p-4 text-sm' >
-
+    <div className="w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-primary1 p-2 overflow-y-auto">
+      <div className=" bg-background1 dark:bg-secondary1  rounded-lg w-full p-4 text-sm">
         {isModalOpen && (
-          <div onClick={() => setIsModalOpen(false)} className="fixed top-0 left-0 z-50 h-full px-2 w-screen bg-[#000000b3] flex md:items-center items-center justify-center ">
+          <div
+            onClick={() => setIsModalOpen(false)}
+            className="fixed top-0 left-0 z-50 h-full px-2 w-screen bg-[#000000b3] flex md:items-center items-center justify-center "
+          >
             <div className="bg-white  overflow-y-scroll dark:bg-secondary1 overflow-auto p-6 rounded-sm w-full md:w-auto">
               <h2 className="text-lg font-bold mb-4">Confirm Check Out</h2>
               <p>Are you sure you want to check out for the day?</p>
               <div className="mt-4 flex justify-end">
                 <button
-                  onClick={cancelCheckOut}
+                  onClick={() => setIsModalOpen(false)}
                   className="px-4 py-2 bg-gray-300 text-black rounded-md mr-2"
                 >
                   Cancel
@@ -225,7 +200,6 @@ const AttendanceMark = () => {
             </div>
           </div>
         )}
-
 
         <h2 className="text-lg font-bold">Daily Attendance</h2>
         <p>Status: {status}</p>
@@ -249,7 +223,7 @@ const AttendanceMark = () => {
       <div className="bg-background1 dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg ">
         <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
           <div>
-            <h1 className=' text-2xl font-bold     '>My Attendance</h1>
+            <h1 className=" text-2xl font-bold     ">My Attendance</h1>
             <p className="text-xs text-muted-foreground">
               Here&apos;s a history of your attendance.
             </p>
@@ -328,7 +302,7 @@ const AttendanceMark = () => {
         <div className="overflow-auto mt-4 border  rounded-lg">
           {loading ? (
             <div className="w-full flex items-center justify-center h-[65vh]">
-              <img src='' className="w-[5rem]" alt="Loading..." />
+              <img src="" className="w-[5rem]" alt="Loading..." />
             </div>
           ) : (
             <table {...getTableProps()}>
@@ -365,7 +339,7 @@ const AttendanceMark = () => {
                   <tr>
                     <td colSpan={columns.length}>
                       <span className="flex items-center justify-center">
-                        <img src='' alt="No Data" className="w-[10rem]" />
+                        <img src="" alt="No Data" className="w-[10rem]" />
                         No data available.
                       </span>
                     </td>
@@ -400,7 +374,8 @@ const AttendanceMark = () => {
                 {pageIndex + 1} - {pageOptions.length}
               </strong>
               {` `}
-              of <strong className="text-sm text-black dark:text-white">
+              of{" "}
+              <strong className="text-sm text-black dark:text-white">
                 {rows.length}
               </strong>{" "}
               data
@@ -457,8 +432,7 @@ const AttendanceMark = () => {
         </div>
       </div>
     </div>
+  );
+};
 
-  )
-}
-
-export default AttendanceMark
+export default AttendanceMark;

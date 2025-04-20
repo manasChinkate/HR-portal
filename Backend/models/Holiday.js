@@ -1,16 +1,26 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const holidaySchema = new mongoose.Schema({
-    holiday:String,
-    companyName:String,
-    from_date:String,
-    to_date:String,
-    createdAt:{
-        type:Date,
-        default:Date.now
-    }
-},{collection:'Holiday'})
+const holidaySchema = new mongoose.Schema(
+  {
+    holiday: {
+      required: true,
+      type: String,
+    },
+    fromDate: String,
+    toDate: String,
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "newCompnany",
+      required: true,
+    },
+  },
+  { collection: "Holiday" }
+);
 
-const HolidayModel = mongoose.model('holiday',holidaySchema)
+const HolidayModel = mongoose.model("holiday", holidaySchema);
 
-module.exports = HolidayModel
+module.exports = HolidayModel;

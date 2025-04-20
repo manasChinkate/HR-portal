@@ -1,26 +1,21 @@
-const mongoose = require('mongoose')
- 
+const mongoose = require("mongoose");
 
-
-const attendanceSchema = new mongoose.Schema({
-    companyName: String,
-    email:String,
-    date:String,
+const attendanceSchema = new mongoose.Schema(
+  {
+    employeeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "newEmployee",
+    },
+    date: String,
     status: String,
     checkInTime: String,
     checkOutTime: String,
     totalhours: String,
-    
+  },
+  { collection: "Attendance" }
+);
 
-},{collection:'Attendance'})
+const AttendanceModel = mongoose.model("attendance", attendanceSchema);
+const getAttendanceById = (employeeId=>AttendanceModel.findById(employeeId))
 
-const AttendanceModel = mongoose.model('attendance',attendanceSchema)
-
-module.exports = AttendanceModel
-
-
-
-
-
-
-  
+module.exports = {AttendanceModel,getAttendanceById};

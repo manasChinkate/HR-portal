@@ -4,10 +4,15 @@ const clientSchema = new mongoose.Schema({
     clientName:String,
     state:String,
     country:String,
-    companyName:String,
+    contactPerson:String,
+    contactPersonPhone:String,
     createdAt:{
         type:Date,
         default:Date.now
+    },
+    companyId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'newCompnany'
     }
 },{collection:'Clients'})
 

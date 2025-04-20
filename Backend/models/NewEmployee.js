@@ -16,7 +16,7 @@ const EmployeeSchema = new mongoose.Schema({
     authority:String,
     designation: String,
     reportingManager:String,
-    employeeId:String,
+    
 
 
     //Address Details
@@ -27,16 +27,6 @@ const EmployeeSchema = new mongoose.Schema({
     address:String,
     companyName:String,
 
-    //Pending Leaves
-    pendingLeave: {
-        type: [
-            {
-                leaveType: String,
-                count: String
-            }
-        ],
-        default: []  // Initially empty array
-    },
 
     createdDate: {
         type: Date,
@@ -47,4 +37,6 @@ const EmployeeSchema = new mongoose.Schema({
 },{collection:'newEmployee'})
 
 const EmployeeModel = mongoose.model("employee",EmployeeSchema )
-module.exports = EmployeeModel 
+
+const getEmployeeByEmployeeId = async(employeeId) => EmployeeModel.find(employeeId)
+module.exports ={ EmployeeModel, getEmployeeByEmployeeId }

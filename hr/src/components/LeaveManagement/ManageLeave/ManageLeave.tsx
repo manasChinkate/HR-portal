@@ -115,26 +115,27 @@ const ManageLeave = () => {
     const Authority = useSelector((state: RootState) => state.auth.authority)
 
     const getLeaves = async () => {
+        setloading(true); // Start loading before the request
         try {
             const res = await axios.get(`${BASE_URL}/getmanageleave`);
-
-            const fetchedLeaves = res.data;
-            setLeaves(fetchedLeaves); // Set the original leaves data
-
-            if (Authority === 'HiringManager') {
-                const filtered = fetchedLeaves.filter((e: Inputs) => e.email !== Email); // Filter the data
-                setFinalLeaves(filtered); // Set the filtered data to finalLeaves
-                // console.log('Filtered:', filtered);
-            } else {
-                setFinalLeaves(fetchedLeaves); // Pass the original data if not a Hiring Manager
-            }
-
-            setloading(false);
-        } catch (error) {
+            const fetchedLeaves = res.data || []; // Ensure we have an array
+    
+            setLeaves(fetchedLeaves); // Store all leaves data
+    
+            const finalData = Authority === 'HiringManager'
+                ? fetchedLeaves.filter((e: Inputs) => e.email !== Email) // Filter for Hiring Managers
+                : fetchedLeaves; // Keep original data for others
+    
+            setFinalLeaves(finalData); // Set finalLeaves based on role
+    
+        } catch (error: any) {
             console.error('Error fetching leaves:', error);
-            toast.error('Error fetching leaves data');
+            toast.error(error?.response?.data?.message || 'Failed to fetch leave data'); // Better error handling
+        } finally {
+            setloading(false); // Ensure loading is set to false even on error
         }
-    }
+    };
+    
 
 
 
@@ -227,7 +228,7 @@ const ManageLeave = () => {
                     </div>
                 </div>
                 {/* ------------------------------------Table-------------------------------------- */}
-                <div className=" max-w-screen-lg overflow-auto mt-4 border  rounded-lg">
+                <div className="  overflow-auto mt-4 border  rounded-lg">
                     {loading ? (
                         <div className="w-full flex items-center justify-center h-[65vh]">
                             <img src='' className="w-[5rem]" alt="Loading..." />

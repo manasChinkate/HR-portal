@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { SyncLoader } from 'react-spinners';
 import axios from 'axios';
 import { BASE_URL } from './constants';
-import { setauthority, setName, setEmail, setCompany, setNotifications, setUserId } from '../app/authslice';
+import { setauthority, setName, setEmail, setCompany, setNotifications, setUserId, setCompanyId } from '../app/authslice';
 
 
 
@@ -29,6 +29,7 @@ const Protected = ({ children,  }) => {
         dispatch(setCompany(res.data.Checked.companyName));
         dispatch(setEmail(res.data.Checked.email));
         dispatch(setUserId(res.data.Checked.userId));
+        dispatch(setCompanyId(res.data.Checked.companyId));
         setLoading(false); // Stop the loader
       } else {
         navigate('/session-out');

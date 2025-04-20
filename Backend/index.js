@@ -14,7 +14,7 @@ const {Designation,GetDesignation} = require('./controller/DesignationController
 const { Holiday, GetHoliday } = require('./controller/HolidayController');
 const { AddClient, GetClient } = require('./controller/ClientController');
 const { LeaveType, getLeaveType } = require('./controller/LeaveTypeController');
-const { AddLeave, GetLeaveData, StatusChange, GetManageLeave } = require('./controller/LeaveController');
+const { AddLeave, GetLeaveData, StatusChange, GetManageLeave, getPendingLeaves } = require('./controller/LeaveController');
 const { Department, GetDepartment } = require('./controller/DepartmentController');
 const { CreateProject, getProjects, AddTask, getTask, UpdateTaskStatus } = require('./controller/ProjectController');
 const { AddTimesheet, getTimesheet } = require('./controller/TimesheetController');
@@ -22,6 +22,7 @@ const { CheckIn, CheckOut, GetAttendance } = require('./controller/AttendanceCon
 const Checking = require('./controller/Checking');
 const { getNotifications } = require('./controller/NotificationController');
 const EmployeeModel = require('./models/NewEmployee');
+const router = express.Router()
 // const GetDesignation = require('./controller/DesignationController')
 
 
@@ -88,6 +89,8 @@ app.get('/gettimesheet', getTimesheet)
 app.post('/mark-in', CheckIn)
 app.post('/mark-out', CheckOut)
 app.get('/getAttendance', GetAttendance)
+
+app.get('/pendingLeaves',getPendingLeaves)
 
 // app.get('/protected',protected)
 

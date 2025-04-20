@@ -33,10 +33,10 @@ const getNotifications = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 };
-const sendNotifications = async (companyName, message) => {
+const sendNotifications = async (companyId, message) => {
     try {
         // Fetch employees for the given company
-        const employees = await LoginSchema.find({ companyName });
+        const employees = await LoginSchema.find({ companyId });
         if (!employees.length) {
             console.log("No employees found for this company");
             return;
@@ -45,12 +45,17 @@ const sendNotifications = async (companyName, message) => {
         // Extract user IDs
         const userIds = employees.map(user => user.employeeId );
 
+        if(!userIds.length) {
+            console.log("No user IDs found for this company");
+            return;
+        }
+
         const notifications = userIds.map(userId => ({
             userId,
             message,
             read: false,
             createdAt: new Date(),
-            companyName,
+            companyId,
         }));
 
         // Insert notifications into the database

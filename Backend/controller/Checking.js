@@ -38,7 +38,8 @@ const Checking = async (req, res) => {
                         username: user.name,
                         companyName: user.companyName,
                         authority: user.authority,
-                        userId:user.employeeId
+                        userId:user.employeeId,
+                        companyId:user.companyId,
                     },
                 });
             } else {

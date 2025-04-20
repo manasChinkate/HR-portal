@@ -369,11 +369,6 @@ const EmployeeNavData = [
         icon: <MdMergeType />,
         link: "/fill_timesheet",
       },
-      {
-        name: "Timesheet Details",
-        icon: <MdMergeType />,
-        link: "/timesheet",
-      },
     ],
   },
   {
