@@ -1,52 +1,53 @@
-const mongoose = require('mongoose')
-const DepartmentModel = require('../models/Department')
-const jwt  = require('jsonwebtoken')
+const mongoose = require("mongoose");
+const DepartmentModel = require("../models/Department");
+const jwt = require("jsonwebtoken");
+const extractToken = require("../db");
+const { DepartmentSchema } = require("../Validations/ValidationSchema");
 
-const Department = async(req,res)=>{
-    const department = req.body
+const Department = async (req, res) => {
+  const decodedToken = extractToken(req); // Assuming you have a function to extract and verify the token
+  const department = {
+    ...req.body,
+    companyId: decodedToken.companyId,
+  };
 
-    if(department){
-       const data =  await DepartmentModel.create(department) 
-        // console.log(data)
-        res.status(201).json('Created successfully')
-    }else{
-        res.status(500).json('Error Creating ')
-        console.log('error')
+  const parsed = DepartmentSchema.safeParse(department);
 
+  if (!parsed.success) {
+    res
+      .status(400)
+      .json({ message: "Invalid data", errors: parsed.error.errors });
+  }
+
+  const data = await DepartmentModel.create(parsed.data);
+  // console.log(data)
+  res.status(201).json("Created successfully");
+};
+
+const GetDepartment = async (req, res) => {
+  try {
+    const decodedToken = extractToken(req); // Assuming you have a function to extract and verify the token
+    const companyId = decodedToken.companyId; // Extract
+    // Query the database to find reporting managers for the given company€
+    const departments = await DepartmentModel.find({ companyId });
+
+    if (departments.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No departments found for this company." });
     }
-}
 
-const GetDepartment = async(req,res)=>{
-    try {
-        // Extract companyName from URL parameters
-        // const  companyName  =  req.params.companyname;
-        const token = req.headers.token;
-        if (!token) {
-            return res.status(401).json({ message: 'No token provided' });
-        }
+    // Send the found reporting managers as the response
+    res.status(200).json({
+      data: departments,
+      message: "Departments fetched successfully.",
+    });
+  } catch (error) {
+    // Handle any errors that occur during the query
+    res
+      .status(500)
+      .json({ message: "Error fetching departments", error: error.message });
+  }
+};
 
-        // Verify and decode the token to get the companyName
-        const decodedToken = jwt.verify(token, 'jwt-secret-key'); // Replace 'jwt-secret-key' with your actual secret key
-        // console.log(decodedToken)
-        const companyName = decodedToken.companyName; // Assuming companyName is stored in the token payload
-        // console.log('decoded companyName:', companyName);
-        // console.log('companyName :',companyName)
-
-        // Query the database to find reporting managers for the given company€
-        const departments = await DepartmentModel.find({ companyName });
-        // console.log(designations)
-
-        
-        if (departments.length === 0) {
-            return res.status(404).json({ message: 'No departments found for this company.' });
-        }
-
-        // Send the found reporting managers as the response
-        res.status(200).json(departments);
-    } catch (error) {
-        // Handle any errors that occur during the query
-        res.status(500).json({ message: 'Error fetching departments', error: error.message });
-    }
-}
-
-module.exports = {Department,GetDepartment}
+module.exports = { Department, GetDepartment };

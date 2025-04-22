@@ -2,7 +2,10 @@ const mongoose = require('mongoose')
 
 const departmentSchema = new mongoose.Schema({
     department:String,
-    companyName:String,
+    companyId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'newcompnany'
+    },
     createdAt:{
         type:Date,
         default:Date.now

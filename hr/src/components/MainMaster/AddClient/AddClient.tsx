@@ -45,7 +45,7 @@ const ClientSchema = z.object({
   state: z.string().min(1, { message: "State is required" }),
   country: z.string().min(1, { message: "Country is required" }),
   contactPerson: z.string().min(1, { message: "Contact Person is required" }),
-  ContactPersonPhone: z
+  contactPersonPhone: z
     .string()
     .min(1, { message: "Contact Person Phone is required" })
     .max(10, { message: "Contact Person Phone should be 10 digits" }),
@@ -177,12 +177,12 @@ const AddClient = () => {
             <div className=" flex flex-col gap-2">
               <label>Contact Person Phone *</label>
               <input
-                {...register("ContactPersonPhone")}
+                {...register("contactPersonPhone")}
                 className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
                 placeholder=""
               />
               <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.ContactPersonPhone?.message}
+                {errors.contactPersonPhone?.message}
               </p>
             </div>
             <div className=" flex flex-col gap-2">

@@ -165,7 +165,7 @@ const AddDesignation = () => {
             className=" dark:bg-[#000000] dark:text-[#ffffff]   "
             type="submit"
           >
-            Add Designation
+            Add
           </Button>
         </form>
       </div>
