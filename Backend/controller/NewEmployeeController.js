@@ -1,33 +1,45 @@
-const EmployeeModel = require('../models/NewEmployee')
+const {EmployeeModel} = require('../models/NewEmployee')
 const LoginSchema = require('../models/Login')
 const jwt = require('jsonwebtoken')
+const extractToken = require('../db')
 
 
-const  generateUserId = (companyName) => {
-    const prefix = companyName.slice(0, 3).toUpperCase(); // Get first 3 letters and convert to uppercase
-    const randomNumber = Math.floor(100000 + Math.random() * 9000); // Generates a random 4-digit number
-    const userId = `${prefix}${randomNumber}`; // Combines prefix and random number
-    return userId;
-};
+// const  generateUserId = (companyName) => {
+//     const prefix = companyName.slice(0, 3).toUpperCase(); // Get first 3 letters and convert to uppercase
+//     const randomNumber = Math.floor(100000 + Math.random() * 9000); // Generates a random 4-digit number
+//     const userId = `${prefix}${randomNumber}`; // Combines prefix and random number
+//     return userId;
+// };
 
-// Example usage
-const userId = generateUserId("Accenture");
-console.log(userId); // Output: ACC1234
+// // Example usage
+// const userId = generateUserId("Accenture");
+// console.log(userId); // Output: ACC1234
 
 
 const AddnewEmployee = async (req, res) => {
-    const userId = await generateUserId(req.body.companyName)
+    // const userId = await generateUserId(req.body.companyName)
     const {fullname} = req.body
-    const loginData = {
-        email: req.body.email,
-        password: req.body.authority === 'ProjectManager' ? `${fullname.slice(0,3)}@123` : '123456',
-        employeeId:req.body
-    };
-   
+    const decodedToken = extractToken(req)
+    
 
+    
+    
     try {
+        const employee = {
+            ...req.body,
+            companyId: decodedToken.companyId,
+        }
+    
+    
+        
+        const newEmployee =  await EmployeeModel.create(employee)
+        const loginData = {
+            email: req.body.email,
+            password: req.body.authority === 'ProjectManager' ? `${fullname.slice(0,3)}@123` : '123456',
+            employeeId:newEmployee._id,
+            companyId:decodedToken.companyId
+        };
 
-        await EmployeeModel.create(req.body)
         await LoginSchema.create(loginData)
 
         res.status(201)
@@ -38,6 +50,7 @@ const AddnewEmployee = async (req, res) => {
         res.status(500)
         res.json("Failed creting Employee")
         console.log("error creating employee")
+        console.log(error)
     }
 }
 
@@ -73,4 +86,4 @@ const getEmployeeData = async(req,res)=>{
     }
 }
 
-module.exports = {AddnewEmployee,getEmployeeData, generateUserId}
+module.exports = {AddnewEmployee,getEmployeeData}

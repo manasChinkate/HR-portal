@@ -1,15 +1,29 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
+const { z } = require("zod");
 
-const leavetypesSchema = new mongoose.Schema({
-    leaveType:String,
-    count:String,
-    companyName:String,
-    createdAt:{
-        type:Date,
-        default:Date.now
-    }
-},{collection:'LeaveTypes'})
+const leaveTypeSchema = new mongoose.Schema(
+  {
+    leaveType: String,
+    count: String,
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "addcompnany",
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  { collection: "LeaveTypes" }
+);
 
-const LeavetypeModel = mongoose.model('leavetypes',leavetypesSchema)
+const leaveTypeZodSchema = z.object({
+  leaveType: z.string().min(1, "Leave Type is required"),
+  count: z.string().min(1, "Count is required"),
+  companyId: z.string().min(1, "Company ID is required"),
+});
 
-module.exports = LeavetypeModel
+const leaveTypeModel = mongoose.model("leavetypes", leaveTypeSchema);
+
+module.exports = { leaveTypeModel, leaveTypeZodSchema };

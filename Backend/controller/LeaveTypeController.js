@@ -1,4 +1,4 @@
-const LeavetypeModel = require("../models/LeaveType");
+const leaveTypeModel = require("../models/LeaveType");
 const jwt = require("jsonwebtoken");
 const EmployeeModel = require("../models/NewEmployee");
 const pendingLeavesModel = require("../models/PendingLeaves");
@@ -6,13 +6,8 @@ const pendingLeavesModel = require("../models/PendingLeaves");
 const LeaveType = async (req, res) => {
   const { count, leaveType } = req.body;
 
-  const token = req.headers.token;
-  if (!token) {
-    return res.status(401).json({ message: "No token provided" });
-  }
-  // Verify and decode the token to get the companyName
-  const decodedToken = jwt.verify(token, "jwt-secret-key"); // Replace 'jwt-secret-key' with your actual secret key
-  const companyName = decodedToken.companyName;
+ const decodedToken = extractToken(req)
+ const companyId = decodedToken.companyId; 
 
   const employees = await EmployeeModel.find({ companyName });
   const pendingLeaves = await pendingLeavesModel.find({ companyName });
@@ -57,7 +52,7 @@ const LeaveType = async (req, res) => {
 
   const data = req.body;
   try {
-    const leavetype = LeavetypeModel.create(data);
+    const leavetype = leaveTypeModel.create(data);
     res.status(201).json(data);
   } catch (error) {
     console.log(error);
@@ -75,7 +70,7 @@ const getLeaveType = async (req, res) => {
   const companyName = decodedToken.companyName; // Assuming companyName is stored in the token payload
 
   try {
-    const getdata = await LeavetypeModel.find({ companyName });
+    const getdata = await leaveTypeModel.find({ companyName });
     console.log(getdata);
     res.status(200).json(getdata);
   } catch (error) {
