@@ -1,23 +1,34 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const pendingLeave = new mongoose.Schema({
-    employeeId:String,
-    companyName:String,
-    pendingLeaves: {
-        type: [
-            {
-                leaveType: String,
-                count: String
-            }
-        ],
-        default: []  // Initially empty array
+const pendingLeave = new mongoose.Schema(
+  {
+    employeeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      require: true,
+      ref: "newEmployee",
     },
-    createdAt:{
-        type:Date,
-        default:Date.now
-    }
-},{collection:'PendingLeaves'})
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      require: true,
+      ref: "addcompnany",
+    },
+    pendingLeaves: {
+      type: [
+        {
+          leaveType: String,
+          count: String,
+        },
+      ],
+      default: [], // Initially empty array
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  { collection: "PendingLeaves" }
+);
 
-const pendingLeavesModel = mongoose.model('pendingLeaves',pendingLeave)
+const pendingLeavesModel = mongoose.model("PendingLeaves", pendingLeave);
 
-module.exports = pendingLeavesModel
+module.exports = pendingLeavesModel;

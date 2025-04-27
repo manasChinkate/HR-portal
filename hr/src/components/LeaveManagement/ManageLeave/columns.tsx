@@ -16,8 +16,8 @@ interface LeaveData {
   leaveType: string;
   count: string;
   department: string;
-  from_date: string;
-  to_date: string;
+  fromDate: string;
+  toDate: string;
   reason: string;
   employeeId:string,
   status: string;
@@ -45,7 +45,7 @@ export const COLUMNS: Column<LeaveData>[] = [
   },
   {
     Header: "From Date",
-    accessor: "from_date",
+    accessor: "fromDate",
     Cell: ({ value }) => {
       const convertDate = (isoDate: string) => {
         const date = new Date(isoDate);
@@ -61,7 +61,7 @@ export const COLUMNS: Column<LeaveData>[] = [
   },
   {
     Header: "To Date",
-    accessor: "to_date",
+    accessor: "toDate",
     Cell: ({ value }) => {
       const convertDate = (isoDate: string) => {
         const date = new Date(isoDate);

@@ -57,15 +57,7 @@ const ManageLeave = () => {
     const [leaves, setLeaves] = useState<Inputs[]>([])
     const [finalleaves, setFinalLeaves] = useState<Inputs[]>([])
     const [loading, setloading] = useState(true)
-    const {
-        register,
-        handleSubmit,
-        watch,
-        reset,
-        formState: { errors },
-    } = useForm<Inputs>()
-
-
+   
     const columns: any = useMemo(() => COLUMNS, []);
     const data = useMemo(() => finalleaves, [finalleaves]);
 
@@ -111,19 +103,19 @@ const ManageLeave = () => {
     const { pageIndex } = state;
 
 
-    const Email = useSelector((state: RootState) => state.auth.email)
+    const employee = useSelector((state: RootState) => state.auth.userId)
     const Authority = useSelector((state: RootState) => state.auth.authority)
 
     const getLeaves = async () => {
         setloading(true); // Start loading before the request
         try {
             const res = await axios.get(`${BASE_URL}/getmanageleave`);
-            const fetchedLeaves = res.data || []; // Ensure we have an array
+            const fetchedLeaves = res.data.data || []; // Ensure we have an array
     
             setLeaves(fetchedLeaves); // Store all leaves data
     
             const finalData = Authority === 'HiringManager'
-                ? fetchedLeaves.filter((e: Inputs) => e.email !== Email) // Filter for Hiring Managers
+                ? fetchedLeaves.filter((e: Inputs) => e.employeeId !== employee?._id) // Filter for Hiring Managers
                 : fetchedLeaves; // Keep original data for others
     
             setFinalLeaves(finalData); // Set finalLeaves based on role

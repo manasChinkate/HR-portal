@@ -1,23 +1,54 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
+const { z } = require("zod");
 
-const leaveSchema = new mongoose.Schema({
-    name:String,
-    email:String,
-    leaveType:String,
-    count:String,
-    department:String,
-    from_date:String,
-    to_date:String,
-    reason:String,
-    status:String,
-    companyName:String,
-    employeeId:String,
-    createdAt:{
-        type:Date,
-        default:Date.now
+const leaveSchema = new mongoose.Schema(
+  {
+    leaveType: String,
+    count: String,
+    department: String,
+    fromDate: String,
+    toDate: String,
+    reason: String,
+    status: String,
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "addcompnany",
+      require: true,
+    },
+    employeeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "newEmployee",
+      require: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  { collection: "Leaves" }
+);
+
+const LeaveModel = mongoose.model("Leaves", leaveSchema);
+
+const LeaveZodSchema = z
+  .object({
+    leaveType: z.string().min(1, "Leave type required"),
+    department: z.string().min(1, "department is required"),
+    count: z.string().min(1, "Count is required"),
+    fromDate: z.string().min(1, { message: "From Date is required" }),
+    toDate: z.string().min(1, { message: "To Date is required" }),
+    reason: z.string().min(1, "Must be any reason"),
+  })
+  .refine(
+    (data) => {
+      const from = new Date(data.fromDate);
+      const to = new Date(data.toDate);
+      return to > from;
+    },
+    {
+      message: "To Date must be after From Date",
+      path: ["toDate"],
     }
-},{collection:'Leaves'})
+  );
 
-const LeaveModel = mongoose.model('leaves',leaveSchema)
-
-module.exports = LeaveModel
+module.exports = { LeaveModel, LeaveZodSchema };

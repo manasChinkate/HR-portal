@@ -5,33 +5,22 @@ import { BASE_URL } from "@/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "app/store";
 
-interface LeaveType {
+
+export interface PendingLeave {
   leaveType: string;
-  count: number; // Fixed from string to number
+  count: string;
+  _id: string;
 }
 
-interface Employee {
-  employeeId: string;
-  companyName: string;
-  pendingLeaves: LeaveType[];
-}
 
 const Chart4: React.FC = () => {
-  const employeeId = useSelector((state: RootState) => state.auth.userId);
-  const [leaveData, setLeaveData] = useState<LeaveType[]>([]);
-  
+  const [leaveData, setLeaveData] = useState<PendingLeave[]>([]);
+
   const fetchLeaveData = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/pendingLeaves`);
-      const employees: Employee[] = res.data.data;
 
-      // Find the logged-in employee's leave data
-      const employee = employees.find((emp) => emp.employeeId === employeeId);
-
-      // Set leave data only if the employee exists
-      if (employee) {
-        setLeaveData(employee.pendingLeaves);
-      }
+      setLeaveData(res.data.data);
     } catch (error) {
       console.error("Error fetching leave data:", error);
     }
@@ -49,10 +38,14 @@ const Chart4: React.FC = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
+        
         {leaveData.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {leaveData.map((e, key) => (
-              <button key={key} className="py-8 bg-background1 rounded-lg border dark:border-gray-700">
+              <button
+                key={key}
+                className="py-8 bg-background1 rounded-lg border dark:border-gray-700"
+              >
                 <p className="text-sm text-muted-foreground">{e.leaveType}</p>
                 <span className="text-lg font-bold leading-none sm:text-3xl">
                   {e.count}

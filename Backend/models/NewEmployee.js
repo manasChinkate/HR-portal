@@ -38,7 +38,7 @@ const EmployeeSchema = new mongoose.Schema(
   { collection: "newEmployee" }
 );
 
-const EmployeeModel = mongoose.model("employee", EmployeeSchema);
+const EmployeeModel = mongoose.model("newEmployee", EmployeeSchema);
 
 const getEmployeeByEmployeeId = async (employeeId) =>
   EmployeeModel.find(employeeId);

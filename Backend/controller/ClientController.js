@@ -13,7 +13,7 @@ const AddClient = async (req, res) => {
 
   const parsed = ClientSchema.safeParse(data);
   if (!parsed.success) {
-    res
+   return res
       .status(400)
       .json({ message: "Invalid data", errors: parsed.error.errors });
   }

@@ -18,10 +18,10 @@ const Protected = ({ children,  }) => {
   const dispatch = useDispatch();
 
   const checking = async () => {
-    const checkData = { authority };
+
 
     try {
-      const res = await axios.post(`${BASE_URL}/checking`, checkData);
+      const res = await axios.get(`${BASE_URL}/checking`);
 
       if (res.status === 200) {
         dispatch(setauthority(res.data.Checked.authority));

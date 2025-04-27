@@ -2,27 +2,19 @@
 
 import { Column } from "react-table";
 
-
-
 interface LeaveRecord {
   _id: string;
   leaveType: string;
   count: string;
-  from_date: string,
-  to_date: string,
-  department: string,
-  reason: string,
-  companyName: string;
+  fromDate: string;
+  toDate: string;
+  department: string;
+  reason: string;
   createdAt: string; // ISO 8601 date string
   __v: number;
 }
 
-
-
-
-
 export const COLUMNS: Column<LeaveRecord>[] = [
-
   {
     Header: "Leave type",
     accessor: "leaveType",
@@ -33,12 +25,12 @@ export const COLUMNS: Column<LeaveRecord>[] = [
   },
   {
     Header: "From Date",
-    accessor: "from_date",
-    Cell: ({ value }) => {
+    accessor: "fromDate",
+    Cell: ({ value }: { value: string }) => {
       const convertDate = (isoDate: string) => {
         const date = new Date(isoDate);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based in JavaScript
         const year = date.getFullYear();
 
         return `${day}/${month}/${year}`;
@@ -49,12 +41,12 @@ export const COLUMNS: Column<LeaveRecord>[] = [
   },
   {
     Header: "To date",
-    accessor: "to_date",
-    Cell: ({ value }) => {
+    accessor: "toDate",
+    Cell: ({ value }: { value: string }) => {
       const convertDate = (isoDate: string) => {
         const date = new Date(isoDate);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based in JavaScript
         const year = date.getFullYear();
 
         return `${day}/${month}/${year}`;
@@ -70,11 +62,11 @@ export const COLUMNS: Column<LeaveRecord>[] = [
   {
     Header: "Applied date",
     accessor: "createdAt",
-    Cell: ({ value }) => {
+    Cell: ({ value }: { value: string }) => {
       const convertDate = (isoDate: string) => {
         const date = new Date(isoDate);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based in JavaScript
         const year = date.getFullYear();
 
         return `${day}/${month}/${year}`;
@@ -82,31 +74,26 @@ export const COLUMNS: Column<LeaveRecord>[] = [
 
       return <span>{convertDate(value)}</span>;
     },
-
   },
   {
     Header: "Approval Status",
     accessor: "status",
-    Cell: ({ row }) => {
+    Cell: ({ row }: { row: { original: { status: string } } }) => {
       return (
-          <>
-            {
-              row.original.status === "Accepted" ? ( <p className="bg-cyan-100 mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2 rounded-lg dark:bg-secondary1 dark:border-blue-600 dark:border text-blue-600 w-fit text-xs">
-                {row.original.status}
-              </p>) : (
-                 <p className="bg-cyan-100 mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2 rounded-lg dark:bg-secondary1 dark:border-red-600 dark:border text-red-600 w-fit text-xs">
-                 {row.original.status}
-               </p>
-              )
-            }
-          </>
-        
-       
-      )
-    }
+        <>
+          {row.original.status === "Accepted" ? (
+            <p className="bg-cyan-100 mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2 rounded-lg dark:bg-secondary1 dark:border-blue-600 dark:border text-blue-600 w-fit text-xs">
+              {row.original.status}
+            </p>
+          ) : (
+            <p className="bg-cyan-100 mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2 rounded-lg dark:bg-secondary1 dark:border-red-600 dark:border text-red-600 w-fit text-xs">
+              {row.original.status}
+            </p>
+          )}
+        </>
+      );
+    },
   },
-
-
 
   //   {
   //     Header: "Edit",

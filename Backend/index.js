@@ -13,8 +13,8 @@ const ReportingManager = require('./controller/ReportingManager')
 const {Designation,GetDesignation} = require('./controller/DesignationController');
 const { Holiday, GetHoliday } = require('./controller/HolidayController');
 const { AddClient, GetClient } = require('./controller/ClientController');
-const { LeaveType, getLeaveType } = require('./controller/LeaveTypeController');
-const { AddLeave, GetLeaveData, StatusChange, GetManageLeave, getPendingLeaves } = require('./controller/LeaveController');
+const { LeaveType, getLeaveType, createLeaveType } = require('./controller/LeaveTypeController');
+const { AddLeave, GetLeaveData, StatusChange, GetManageLeave, getPendingLeaves, applyLeave, getLeaveData, getManageLeaveData } = require('./controller/LeaveController');
 const { Department, GetDepartment } = require('./controller/DepartmentController');
 const { CreateProject, getProjects, AddTask, getTask, UpdateTaskStatus } = require('./controller/ProjectController');
 const { AddTimesheet, getTimesheet } = require('./controller/TimesheetController');
@@ -48,7 +48,7 @@ app.get('/', (req, res) => {
 
 
 app.post('/login', login);
-app.post('/checking', Checking);
+app.get('/checking', Checking);
 app.get('/notifications', getNotifications);
 
 app.post('/addnewcompany', AddnewCompany);
@@ -62,11 +62,13 @@ app.post('/holiday', Holiday);
 app.get('/holiday', GetHoliday);
 app.post('/addclient', AddClient);
 app.get('/getclient', GetClient);
-app.post('/addleavetype', LeaveType);
+app.post('/addleavetype', createLeaveType);
 app.get('/getleavetype', getLeaveType);
-app.post('/applyleave', AddLeave);
-app.get('/getapplyleave', GetLeaveData);
-app.get('/getmanageleave', GetManageLeave);
+
+
+app.post('/applyleave', applyLeave);
+app.get('/getapplyleave', getLeaveData);
+app.get('/getmanageleave', getManageLeaveData);
 
 app.patch('/leaves/:status/:id', StatusChange);
 

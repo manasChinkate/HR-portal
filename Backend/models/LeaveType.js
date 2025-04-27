@@ -21,9 +21,8 @@ const leaveTypeSchema = new mongoose.Schema(
 const leaveTypeZodSchema = z.object({
   leaveType: z.string().min(1, "Leave Type is required"),
   count: z.string().min(1, "Count is required"),
-  companyId: z.string().min(1, "Company ID is required"),
 });
 
-const leaveTypeModel = mongoose.model("leavetypes", leaveTypeSchema);
+const leaveTypeModel = mongoose.model("LeaveTypes", leaveTypeSchema);
 
 module.exports = { leaveTypeModel, leaveTypeZodSchema };

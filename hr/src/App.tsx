@@ -96,9 +96,9 @@ const App = () => {
         {
           path: "/",
           element: (
-            <Protected>
+            // <Protected>
               <Dashboard />
-            </Protected>
+            
           ),
         },
         {
