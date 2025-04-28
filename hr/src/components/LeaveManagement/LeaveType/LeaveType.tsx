@@ -102,7 +102,7 @@ const LeaveType = () => {
 
   const getClient = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/getleavetype`);
+      const res = await axios.get(`${BASE_URL}/leavetype`);
       // Handle the response, e.g., store in state or display the data
       setLeavetype(res.data.data);
       setloading(false);

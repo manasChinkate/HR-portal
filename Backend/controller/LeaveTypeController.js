@@ -7,7 +7,7 @@ const extractToken = require("../db");
 // @desc     Create LeaveTypes for company and each employee of companies
 // @route    POST /addleavetype
 // access    private
-const createLeaveType = async (req, res) => {
+const handleCreateLeaveType = async (req, res) => {
   const { count, leaveType } = req.body;
   const decodedToken = extractToken(req);
   const companyId = decodedToken.companyId;
@@ -71,7 +71,7 @@ const createLeaveType = async (req, res) => {
 // @desc     Fetch leaveTypes for each company
 // @route    GET /getleavetype
 // access    private
-const getLeaveType = async (req, res) => {
+const handleGetLeaveType = async (req, res) => {
   const decodedToken = extractToken(req);
   const companyId = decodedToken.companyId;
 
@@ -87,4 +87,4 @@ const getLeaveType = async (req, res) => {
   }
 };
 
-module.exports = { createLeaveType, getLeaveType };
+module.exports = { handleCreateLeaveType, handleGetLeaveType };

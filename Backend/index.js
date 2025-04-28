@@ -22,6 +22,20 @@ const { CheckIn, CheckOut, GetAttendance } = require('./controller/AttendanceCon
 const Checking = require('./controller/Checking');
 const { getNotifications } = require('./controller/NotificationController');
 const EmployeeModel = require('./models/NewEmployee');
+const { designationRouter } = require('./routes/Designation.Routes');
+const { clientRouter } = require('./routes/Client.Routes');
+const { leaveTypeRouter } = require('./routes/LeaveType.Routes');
+const { holidayRouter } = require('./routes/Holiday.Routes');
+const { departmentRouter } = require('./routes/Department.Routes');
+const { projectRouter } = require('./routes/Project.Routes');
+const { taskRouter } = require('./routes/Task.Routes');
+const { timesheetRouter } = require('./routes/Timesheet.Routes');
+const { leaveRouter } = require('./routes/Leave.Routes');
+const { employeeRouter } = require('./routes/Employee.Routes');
+const { companyRouter } = require('./routes/Company.Routes');
+const { attendanceRouter } = require('./routes/Attendance.Routes');
+const { authRouter } = require('./routes/Auth.Routes');
+const { notificationRouter } = require('./routes/Notification.Routes');
 const router = express.Router()
 // const GetDesignation = require('./controller/DesignationController')
 
@@ -45,56 +59,29 @@ app.get('/', (req, res) => {
 });
 
 
-
-
-app.post('/login', login);
-app.get('/checking', Checking);
-app.get('/notifications', getNotifications);
-
-app.post('/addnewcompany', AddnewCompany);
-app.get('/getcompanies', GetCompany);
-app.post('/addnewemployee', AddnewEmployee);
-app.get('/employee', getEmployeeData);
-app.get('/reportingmanager', ReportingManager);
-app.post('/designation', Designation);
-app.get('/designation', GetDesignation);
-app.post('/holiday', Holiday);
-app.get('/holiday', GetHoliday);
-app.post('/addclient', AddClient);
-app.get('/getclient', GetClient);
-app.post('/addleavetype', createLeaveType);
-app.get('/getleavetype', getLeaveType);
-
-
-app.post('/applyleave', applyLeave);
-app.get('/getapplyleave', getLeaveData);
-app.get('/getmanageleave', getManageLeaveData);
-
-app.patch('/leaves/:status/:id', StatusChange);
-
-
-app.post('/department', Department);
-app.get('/getdepartment', GetDepartment);
+app.use('/api/v0/designation',designationRouter)
+app.use('/api/v0/client',clientRouter)
+app.use('/api/v0/leavetype',leaveTypeRouter)
+app.use('/api/v0/holiday',holidayRouter)
+app.use('/api/v0/department',departmentRouter)
+app.use('/api/v0/projects',projectRouter)
+app.use('/api/v0/tasks',taskRouter)
+app.use('/api/v0/timesheet',timesheetRouter)
+app.use('/api/v0/leaves',leaveRouter)
+app.use('/api/v0/employee',employeeRouter)
+app.use('/api/v0/company',companyRouter)
+app.use('/api/v0/attendance',attendanceRouter)
+app.use('/api/v0/auth',authRouter)
+app.use('/api/v0/notification',notificationRouter)
 
 
 
-app.post('/projects', CreateProject);
-app.get('/getprojects', getProjects);
-app.post('/addtask', AddTask);
-app.get('/gettask', getTask);
-app.post('/updatetask', UpdateTaskStatus);
-
-app.post('/addtimesheet', AddTimesheet)
-app.get('/gettimesheet', getTimesheet)
+// app.get('/checking', Checking);
 
 
-app.post('/mark-in', CheckIn)
-app.post('/mark-out', CheckOut)
-app.get('/getAttendance', GetAttendance)
 
-app.get('/pendingLeaves',getPendingLeaves)
 
-// app.get('/protected',protected)
+
 
 // Start server
 app.listen(port, () => {

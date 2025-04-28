@@ -2,7 +2,7 @@ const Timesheetmodel = require("../models/Timesheet");
 const  jwt  = require("jsonwebtoken");
 
 
-const AddTimesheet =async (req,res)=>{
+const handleCreateTimesheet =async (req,res)=>{
     try {
         const token = req.headers.token;
         if (!token) {
@@ -37,7 +37,7 @@ const AddTimesheet =async (req,res)=>{
     }
 }
 
-const getTimesheet = async(req,res)=>{
+const handleGetTimesheets = async(req,res)=>{
     try {
         const token = req.headers.token;
         if (!token) {
@@ -88,4 +88,4 @@ const getTimesheet = async(req,res)=>{
 }
 
 
-module.exports ={AddTimesheet,getTimesheet}
+module.exports ={handleCreateTimesheet,handleGetTimesheets}

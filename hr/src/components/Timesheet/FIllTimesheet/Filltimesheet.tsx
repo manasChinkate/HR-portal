@@ -60,7 +60,7 @@ const Filltimesheet = () => {
 
   const getProjects = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/getprojects`);
+      const res = await axios.get(`${BASE_URL}/projects`);
       setProjects(res.data); // Keep original dates for calculations
       setloading(false);
     } catch (error) {
@@ -93,7 +93,7 @@ const Filltimesheet = () => {
     };
 
     console.log(formdata)
-    const res = await axios.post(`${BASE_URL}/addtimesheet`, formdata)
+    const res = await axios.post(`${BASE_URL}/timesheet`, formdata)
 
     if (res.status === 201) {
       reset()
@@ -118,7 +118,7 @@ const Filltimesheet = () => {
         </div>
         <div className='flex justify-end mt-4'>
           <Link
-            to={'/timesheet-history'}
+            to={'/timesheet/view'}
             
           >
             <Button className=' dark:bg-blue-600 dark:text-white' type='submit'>

@@ -18,7 +18,7 @@ const Chart4: React.FC = () => {
 
   const fetchLeaveData = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/pendingLeaves`);
+      const res = await axios.get(`${BASE_URL}/leaves/pending`);
 
       setLeaveData(res.data.data);
     } catch (error) {

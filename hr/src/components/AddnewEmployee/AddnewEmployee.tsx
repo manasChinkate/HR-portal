@@ -59,10 +59,9 @@ const AddnewEmployee = () => {
 
   const getReportingManager = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/reportingmanager`);
+      const res = await axios.get(`${BASE_URL}/employee/reporting`);
       // Handle the response, e.g., store in state or display the data
-      console.log(res.data);
-      setreportingmanager(res.data);
+      setreportingmanager(res.data.data);
     } catch (error) {
       // Handle any errors that occur during the request
       console.error("Error fetching reporting managers:", error);
@@ -114,7 +113,7 @@ const AddnewEmployee = () => {
         </div>
         <div className="flex justify-end mt-4">
           <Link
-            to={"/employee-table"}
+            to={"/admin/employees/view"}
             className="inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md"
           >
             Employee List

@@ -5,7 +5,7 @@ const { z } = require("zod");
 
 
 
-const Designation = async (req, res) => {
+const handleCreateDesignation = async (req, res) => {
   const token = req.headers.token;
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
@@ -28,7 +28,7 @@ const Designation = async (req, res) => {
   }
 };
 
-const GetDesignation = async (req, res) => {
+const handleGetDesignation = async (req, res) => {
   try {
     // Extract companyName from URL parameters
     const token = req.headers.token;
@@ -62,4 +62,4 @@ const GetDesignation = async (req, res) => {
   }
 };
 
-module.exports = { Designation, GetDesignation };
+module.exports = { handleCreateDesignation, handleGetDesignation };

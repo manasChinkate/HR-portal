@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const extractToken = require("../db");
 const { DepartmentSchema } = require("../Validations/ValidationSchema");
 
-const Department = async (req, res) => {
+const handleCreateDepartment = async (req, res) => {
   const decodedToken = extractToken(req); // Assuming you have a function to extract and verify the token
   const department = {
     ...req.body,
@@ -24,7 +24,7 @@ const Department = async (req, res) => {
   res.status(201).json("Created successfully");
 };
 
-const GetDepartment = async (req, res) => {
+const handleGetDepartment = async (req, res) => {
   try {
     const decodedToken = extractToken(req); // Assuming you have a function to extract and verify the token
     const companyId = decodedToken.companyId; // Extract
@@ -50,4 +50,4 @@ const GetDepartment = async (req, res) => {
   }
 };
 
-module.exports = { Department, GetDepartment };
+module.exports = { handleCreateDepartment, handleGetDepartment };

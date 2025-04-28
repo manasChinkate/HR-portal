@@ -21,7 +21,7 @@ const Protected = ({ children,  }) => {
 
 
     try {
-      const res = await axios.get(`${BASE_URL}/checking`);
+      const res = await axios.get(`${BASE_URL}/auth/checking`);
 
       if (res.status === 200) {
         dispatch(setauthority(res.data.Checked.authority));

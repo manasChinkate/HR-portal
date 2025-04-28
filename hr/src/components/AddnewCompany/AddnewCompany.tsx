@@ -38,7 +38,7 @@ const AddnewCompany = () => {
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         console.log(data)
-        const res = await axios.post(`${BASE_URL}/addnewcompany`,data)
+        const res = await axios.post(`${BASE_URL}/company`,data)
 
         if(res.status===201){
             reset()

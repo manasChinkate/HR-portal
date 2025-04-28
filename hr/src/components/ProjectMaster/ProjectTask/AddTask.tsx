@@ -93,7 +93,7 @@ const AddTask = () => {
         };
 
         try {
-            const response = await axios.post(`${BASE_URL}/addtask`, formattedData);
+            const response = await axios.post(`${BASE_URL}/task`, formattedData);
             console.log("Task added successfully:", response.data);
             toast.success("Task added successfully");
             reset();
@@ -106,7 +106,7 @@ const AddTask = () => {
 
     const getProjects = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/getprojects`);
+            const res = await axios.get(`${BASE_URL}/projects`);
             setProjects(res.data);
             setLoading(false);
         } catch (error) {

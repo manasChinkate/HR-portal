@@ -35,7 +35,7 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const res = await axios.post(`${BASE_URL}/login`, data);
+      const res = await axios.post(`${BASE_URL}/auth/login`, data);
 
       if (res.status === 200 && res?.data?.token) {
         toast.success("Login Successfully");

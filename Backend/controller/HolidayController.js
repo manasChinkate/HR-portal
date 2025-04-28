@@ -6,7 +6,7 @@ const NotificationModel = require("../models/Notifications");
 const LoginSchema = require("../models/Login");
 const { sendNotifications } = require("./NotificationController");
 
-const Holiday = async (req, res) => {
+const handleCreateHoliday = async (req, res) => {
   const token = req.headers.token;
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
@@ -45,7 +45,7 @@ const Holiday = async (req, res) => {
   }
 };
 
-const GetHoliday = async (req, res) => {
+const handleGetHoliday = async (req, res) => {
   try {
     const token = req.headers.token;
     if (!token) {
@@ -76,4 +76,4 @@ const GetHoliday = async (req, res) => {
   }
 };
 
-module.exports = { Holiday, GetHoliday };
+module.exports = { handleCreateHoliday, handleGetHoliday };

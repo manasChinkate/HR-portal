@@ -1,36 +1,34 @@
-import React, { useState } from 'react'
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
-import Navbar from './Pages/Navbar/Navbar';
-import Dashboard from './Pages/Dashboard/Dashboard';
-import Sidebar from './Pages/Sidebar/Sidebar';
-import AddnewCompany from './components/AddnewCompany/AddnewCompany';
-import Login from './Pages/Login/Login';
-import Protected from '../src/Protected'
-import SessionOut from './Pages/SessionOut/SessionOut';
-import AddnewEmployee from './components/AddnewEmployee/AddnewEmployee';
-import AddDesignation from './components/MainMaster/AddDesignation/AddDesignation';
-import AddHoliday from './components/MainMaster/AddHoliday/AddHoliday';
-import EmployeeTable from './components/AddnewEmployee/EmployeeTable';
-import axios from 'axios';
-import CompanyTable from './components/AddnewCompany/CompanyTable';
-import AddClient from './components/MainMaster/AddClient/AddClient';
-import LeaveType from './components/LeaveManagement/LeaveType/LeaveType';
-import ManageLeave from './components/LeaveManagement/ManageLeave/ManageLeave';
-import ApplyLeave from './components/LeaveManagement/ApplyLeave/ApplyLeave';
-import AddDepartment from './components/MainMaster/AddDepartment/AddDepartment';
-import ProjectDetails from './components/ProjectMaster/ProjectDetails/ProjectDetails';
-import OngoingProjects from './components/ProjectMaster/OngoingProjects/OngoingProjects';
-import Filltimesheet from './components/Timesheet/FIllTimesheet/Filltimesheet';
-import TimesheetTable from './components/Timesheet/FIllTimesheet/TimesheetTable';
-import AttendanceMark from './components/Attendance/AttendanceMark';
-import AddTask from './components/ProjectMaster/ProjectTask/AddTask';
-
+import React, { useState } from "react";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import Navbar from "./Pages/Navbar/Navbar";
+import Dashboard from "./Pages/Dashboard/Dashboard";
+import Sidebar from "./Pages/Sidebar/Sidebar";
+import AddnewCompany from "./components/AddnewCompany/AddnewCompany";
+import Login from "./Pages/Login/Login";
+import Protected from "../src/Protected";
+import SessionOut from "./Pages/SessionOut/SessionOut";
+import AddnewEmployee from "./components/AddnewEmployee/AddnewEmployee";
+import AddDesignation from "./components/MainMaster/AddDesignation/AddDesignation";
+import AddHoliday from "./components/MainMaster/AddHoliday/AddHoliday";
+import EmployeeTable from "./components/AddnewEmployee/EmployeeTable";
+import axios from "axios";
+import CompanyTable from "./components/AddnewCompany/CompanyTable";
+import AddClient from "./components/MainMaster/AddClient/AddClient";
+import LeaveType from "./components/LeaveManagement/LeaveType/LeaveType";
+import ManageLeave from "./components/LeaveManagement/ManageLeave/ManageLeave";
+import ApplyLeave from "./components/LeaveManagement/ApplyLeave/ApplyLeave";
+import AddDepartment from "./components/MainMaster/AddDepartment/AddDepartment";
+import ProjectDetails from "./components/ProjectMaster/ProjectDetails/ProjectDetails";
+import OngoingProjects from "./components/ProjectMaster/OngoingProjects/OngoingProjects";
+import Filltimesheet from "./components/Timesheet/FIllTimesheet/Filltimesheet";
+import TimesheetTable from "./components/Timesheet/FIllTimesheet/TimesheetTable";
+import AttendanceMark from "./components/Attendance/AttendanceMark";
+import AddTask from "./components/ProjectMaster/ProjectTask/AddTask";
 
 const App = () => {
   const Layout = () => {
     const [showMenu, setShowMenu] = useState(false);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
-
 
     axios.interceptors.request.use(
       function (config) {
@@ -45,29 +43,33 @@ const App = () => {
       }
     );
 
-    { showMenu ? console.log("showmenu") : console.log("not showmenu") }
+    {
+      showMenu ? console.log("showmenu") : console.log("not showmenu");
+    }
 
     return (
       <>
-
-
         <div className="grid grid-rows-[auto_1fr] h-screen overflow-hidden custom">
           {/* Navbar */}
-
 
           {/* Main Content */}
           <div className="relative h-full">
             {/* Sidebar */}
             <div
-              className={`transition-all duration-300 ease-in-out fixed top-15 left-0 z-50 ${showMenu ? "w-[280px]" : "w-0"
-                } h-full dark:bg-primary1 bg-background2 flex items-start  justify-center`}
+              className={`transition-all duration-300 ease-in-out fixed top-15 left-0 z-50 ${
+                showMenu ? "w-[280px]" : "w-0"
+              } h-full dark:bg-primary1 bg-background2 flex items-start  justify-center`}
               style={{ left: showMenu ? "0" : "-100%" }}
             >
               <Sidebar showMenu={showMenu} setShowMenu={setShowMenu} />
             </div>
 
             {/* Outlet */}
-            <div className={`h-full  overflow-y-auto custom ${showMenu ? "ml-[270px]" : "ml-0"}`}>
+            <div
+              className={`h-full  overflow-y-auto custom ${
+                showMenu ? "ml-[270px]" : "ml-0"
+              }`}
+            >
               <div className="dark:border-4 dark:border-primary1 dark:shadow-md border-b dark:bg-primary1">
                 <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
               </div>
@@ -75,14 +77,6 @@ const App = () => {
             </div>
           </div>
         </div>
-
-
-
-
-
-
-
-
       </>
     );
   };
@@ -95,11 +89,7 @@ const App = () => {
       children: [
         {
           path: "/",
-          element: (
-            // <Protected>
-              <Dashboard />
-            
-          ),
+          element: <Dashboard />,
         },
         {
           path: "/main-master",
@@ -110,15 +100,15 @@ const App = () => {
           ),
         },
         {
-          path: "/add-new-company",
-          element: (
-            
-              <AddnewCompany />
-            
-          ),
+          path: "/masteradmin/company/new",
+          element: <AddnewCompany />,
         },
         {
-          path: "/add-employee",
+          path: "masteradmin/company/view",
+          element: <CompanyTable />,
+        },
+        {
+          path: "/admin/employees/new",
           element: (
             <Protected>
               <AddnewEmployee />
@@ -126,24 +116,13 @@ const App = () => {
           ),
         },
         {
-          path: "/employee-table",
-          element: (
-            <Protected>
-              <EmployeeTable />
-            </Protected>
-          ),
+          path: "/admin/employees/view",
+          element: <EmployeeTable />,
         },
-        {
-          path: "/company-table",
-          element: (
-            <Protected>
-              <CompanyTable />
-            </Protected>
-          ),
-        },
+       
 
         {
-          path: "/designation",
+          path: "admin/designation/new",
           element: (
             <Protected>
               <AddDesignation />
@@ -151,7 +130,7 @@ const App = () => {
           ),
         },
         {
-          path: "/holidays",
+          path: "admin/holiday/new",
           element: (
             <Protected>
               <AddHoliday />
@@ -159,7 +138,7 @@ const App = () => {
           ),
         },
         {
-          path: "/client",
+          path: "admin/client/new",
           element: (
             <Protected>
               <AddClient />
@@ -167,31 +146,7 @@ const App = () => {
           ),
         },
         {
-          path: "/leavetype",
-          element: (
-            <Protected>
-              <LeaveType />
-            </Protected>
-          ),
-        },
-        {
-          path: "/manageleave",
-          element: (
-            <Protected>
-              <ManageLeave />
-            </Protected>
-          ),
-        },
-        {
-          path: "/applyleave",
-          element: (
-            <Protected>
-              <ApplyLeave />
-            </Protected>
-          ),
-        },
-        {
-          path: "/department",
+          path: "admin/department/new",
           element: (
             <Protected>
               <AddDepartment />
@@ -199,7 +154,32 @@ const App = () => {
           ),
         },
         {
-          path: "/projectdetails",
+          path: "admin/leavetype/new",
+          element: (
+            <Protected>
+              <LeaveType />
+            </Protected>
+          ),
+        },
+        {
+          path: "admin/manageleave/",
+          element: (
+            <Protected>
+              <ManageLeave />
+            </Protected>
+          ),
+        },
+        {
+          path: "employee/leave/new",
+          element: (
+            <Protected>
+              <ApplyLeave />
+            </Protected>
+          ),
+        },
+        
+        {
+          path: "admin/project/new",
           element: (
             <Protected>
               <ProjectDetails />
@@ -207,7 +187,7 @@ const App = () => {
           ),
         },
         {
-          path: "/ongoing_projects",
+          path: "/ongoing_projects/view",
           element: (
             <Protected>
               <OngoingProjects />
@@ -215,7 +195,7 @@ const App = () => {
           ),
         },
         {
-          path: "/fill_timesheet",
+          path: "employee/timesheet/new",
           element: (
             <Protected>
               <Filltimesheet />
@@ -223,7 +203,7 @@ const App = () => {
           ),
         },
         {
-          path: "/timesheet-history",
+          path: "/timesheet/view",
           element: (
             <Protected>
               <TimesheetTable />
@@ -246,26 +226,18 @@ const App = () => {
             </Protected>
           ),
         },
-      ]
+      ],
     },
     {
       path: "/login",
-      element: (
-        <Login />
-      ),
+      element: <Login />,
     },
     {
       path: "/session-out",
-      element: (
-        <SessionOut />
-      ),
+      element: <SessionOut />,
     },
-
-
   ]);
   return <RouterProvider router={router}></RouterProvider>;
-}
+};
 
-
-
-export default App
+export default App;

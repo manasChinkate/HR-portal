@@ -109,7 +109,7 @@ const ManageLeave = () => {
     const getLeaves = async () => {
         setloading(true); // Start loading before the request
         try {
-            const res = await axios.get(`${BASE_URL}/getmanageleave`);
+            const res = await axios.get(`${BASE_URL}/leaves/manage`);
             const fetchedLeaves = res.data.data || []; // Ensure we have an array
     
             setLeaves(fetchedLeaves); // Store all leaves data

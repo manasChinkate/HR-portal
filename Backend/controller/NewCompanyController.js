@@ -2,7 +2,7 @@ const CompanySchema = require("../models/NewCompany");
 const LoginSchema = require("../models/Login");
 const { generateUserId } = require("./NewEmployeeController");
 
-const AddnewCompany = async (req, res) => {
+const handleCreateCompany = async (req, res) => {
   const body = req.body;
 
   console.log("EMPLOYEEIDDD", body);
@@ -32,7 +32,7 @@ const AddnewCompany = async (req, res) => {
   }
 };
 
-const GetCompany = async (req, res) => {
+const handleGetCompanies = async (req, res) => {
   try {
     const companies = await CompanySchema.find();
     res.status(200).json(companies);
@@ -43,4 +43,4 @@ const GetCompany = async (req, res) => {
   }
 };
 
-module.exports = { AddnewCompany, GetCompany };
+module.exports = { handleCreateCompany, handleGetCompanies };

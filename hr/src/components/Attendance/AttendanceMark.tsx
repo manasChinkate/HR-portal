@@ -94,7 +94,7 @@ const AttendanceMark = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/getAttendance`);
+      const res = await axios.get(`${BASE_URL}/attendance`);
       // Handle the response, e.g., store in state or display the data
       console.log(res.data);
       setAttendance(res.data);

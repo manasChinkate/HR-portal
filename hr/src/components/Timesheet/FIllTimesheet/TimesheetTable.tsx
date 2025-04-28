@@ -89,7 +89,7 @@ const TimesheetTable = () => {
 
   const getTimesheet = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/gettimesheet`);
+      const res = await axios.get(`${BASE_URL}/timesheet`);
       setTimesheet(res.data); // Keep original dates for calculations
       setloading(false);
     } catch (error) {
@@ -108,7 +108,7 @@ const TimesheetTable = () => {
           <div className=" flex items-center gap-5">
             {authority !== "Admin" && (
               <div>
-                <BackButton backnavigation="/fill_timesheet" />
+                <BackButton backnavigation="/employee/timesheet/new" />
               </div>
             )}
             <div>

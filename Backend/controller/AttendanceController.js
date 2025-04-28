@@ -1,18 +1,18 @@
-const AttendanceModel = require("../models/Attendance");
-const jwt = require("jsonwebtoken")
+const extractToken = require("../db");
+const { AttendanceModel } = require("../models/Attendance");
+const jwt = require("jsonwebtoken");
 
-const CheckIn = async (req, res) => {
-
-  const { date } = req.body
+const handleCheckIn = async (req, res) => {
+  const { date } = req.body;
 
   try {
     const token = req.headers.token;
     if (!token) {
-      return res.status(401).json({ message: 'No token provided' });
+      return res.status(401).json({ message: "No token provided" });
     }
 
     // Verify and decode the token to get the companyName
-    const decodedToken = jwt.verify(token, 'jwt-secret-key'); // Replace 'jwt-secret-key' with your actual secret key
+    const decodedToken = jwt.verify(token, "jwt-secret-key"); // Replace 'jwt-secret-key' with your actual secret key
     // console.log(decodedToken)
     const email = decodedToken.email;
     const companyName = decodedToken.companyName; // Assuming companyName is stored in the token payload
@@ -21,42 +21,33 @@ const CheckIn = async (req, res) => {
     const existingUser = await AttendanceModel.findOne({
       email,
       companyName,
-      date
-    })
+      date,
+    });
 
-    if(existingUser){
-      return res
-      .status(400)
-      .json('Already checked in, come again tomorrow')
-
+    if (existingUser) {
+      return res.status(400).json("Already checked in, come again tomorrow");
     }
 
-    console.log("existing user", existingUser)
+    console.log("existing user", existingUser);
 
     const data = {
       ...req.body,
       status: "Present",
       email,
       companyName,
-      checkOutTime:'-'
+      checkOutTime: "-",
+    };
 
-    }
-
-
-    const CheckIn = await AttendanceModel.create(data)
-    res.status(201).json("Marked In successfully")
-    console.log('Marked In ', CheckIn)
-
-
-
+    const CheckIn = await AttendanceModel.create(data);
+    res.status(201).json("Marked In successfully");
+    console.log("Marked In ", CheckIn);
   } catch (error) {
-    console.log(error)
-    res.status(500).json('Internal server error')
+    console.log(error);
+    res.status(500).json("Internal server error");
   }
-}
+};
 
-
-const CheckOut = async (req, res) => {
+const handleCheckout = async (req, res) => {
   try {
     // Extract token from headers
     const token = req.headers.token;
@@ -86,7 +77,9 @@ const CheckOut = async (req, res) => {
     });
     if (!attendanceRecord) {
       console.error("Attendance record not found for today");
-      return res.status(404).json({ message: "Attendance record not found for today" });
+      return res
+        .status(404)
+        .json({ message: "Attendance record not found for today" });
     }
 
     console.log("Raw Check-In Time:", attendanceRecord.checkInTime);
@@ -113,7 +106,9 @@ const CheckOut = async (req, res) => {
     let checkInTimeStandardized, checkOutTimeStandardized;
 
     try {
-      checkInTimeStandardized = convertTo24HourFormat(attendanceRecord.checkInTime);
+      checkInTimeStandardized = convertTo24HourFormat(
+        attendanceRecord.checkInTime
+      );
       checkOutTimeStandardized = convertTo24HourFormat(checkOutTime);
     } catch (formatError) {
       console.error("Time format error:", formatError.message);
@@ -124,11 +119,18 @@ const CheckOut = async (req, res) => {
     console.log("Standardized Check-Out Time:", checkOutTimeStandardized);
 
     // Parse check-in and check-out times into Date objects
-    const checkInTimeParsed = new Date(`${currentDate}T${checkInTimeStandardized}`);
-    const checkOutTimeParsed = new Date(`${currentDate}T${checkOutTimeStandardized}`);
+    const checkInTimeParsed = new Date(
+      `${currentDate}T${checkInTimeStandardized}`
+    );
+    const checkOutTimeParsed = new Date(
+      `${currentDate}T${checkOutTimeStandardized}`
+    );
 
     // Validate parsed times
-    if (isNaN(checkInTimeParsed.getTime()) || isNaN(checkOutTimeParsed.getTime())) {
+    if (
+      isNaN(checkInTimeParsed.getTime()) ||
+      isNaN(checkOutTimeParsed.getTime())
+    ) {
       console.error("Parsed time is invalid");
       return res.status(400).json({ message: "Invalid time format" });
     }
@@ -136,12 +138,14 @@ const CheckOut = async (req, res) => {
     // Ensure check-out time is after check-in time
     if (checkOutTimeParsed <= checkInTimeParsed) {
       console.error("Check-out time must be after check-in time");
-      return res.status(400).json({ message: "Check-out time must be after check-in time" });
+      return res
+        .status(400)
+        .json({ message: "Check-out time must be after check-in time" });
     }
 
     // Calculate total hours worked
     const timeDiffMs = checkOutTimeParsed - checkInTimeParsed; // Difference in milliseconds
-    const totalhours = (timeDiffMs / (1000 * 60 * 60)).toFixed(2) + ' Hours'; // Convert to hours with 2 decimal places
+    const totalhours = (timeDiffMs / (1000 * 60 * 60)).toFixed(2) + " Hours"; // Convert to hours with 2 decimal places
 
     console.log("Total Hours Calculated:", totalhours);
 
@@ -169,41 +173,21 @@ const CheckOut = async (req, res) => {
   }
 };
 
-const GetAttendance = async(req,res)=>{
+const handleGetAttendance = async (req, res) => {
   try {
-    const token = req.headers.token;
-    if (!token) {
-      return res.status(401).json({ message: 'No token provided' });
-    }
-
-    // Verify and decode the token to get the companyName
-    const decodedToken = jwt.verify(token, 'jwt-secret-key'); // Replace 'jwt-secret-key' with your actual secret key
-    // console.log(decodedToken)
-    const email = decodedToken.email;
-    const companyName = decodedToken.companyName; // Assuming companyName is stored in the token payload
-    // console.log('decoded email:', email);
+    const decodedToken = extractToken(req);
+    const employeeId = decodedToken.userId?._id;
 
     const attendace = await AttendanceModel.find({
-      email,
-      companyName,
-      
-    })
-    if(attendace){
-      return res
-      .status(200)
-      .json(attendace)
-
+      employeeId,
+    });
+    if (attendace) {
+      return res.status(200).json(attendace);
     }
-
   } catch (error) {
-    console.log(error)
-    res.status(500).json('Internal server error')
+    console.log(error);
+    res.status(500).json("Internal server error");
   }
-}
+};
 
-
-
-
-
-
-module.exports = { CheckIn, CheckOut, GetAttendance }
+module.exports = { handleCheckIn, handleCheckout, handleGetAttendance };

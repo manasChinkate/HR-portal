@@ -7,7 +7,7 @@ const extractToken = require("../db");
 // @desc     Apply Leaves for each employee
 // @route    POST /applyleave
 // access    private
-const applyLeave = async (req, res) => {
+const handleCreateLeave = async (req, res) => {
   try {
     const decodedToken = extractToken(req);
     const  companyId  = decodedToken.companyId;
@@ -45,14 +45,14 @@ const applyLeave = async (req, res) => {
 // @desc     Get applieded leaves for each employee
 // @route    GET /getapplyleave
 // access    private
-const getLeaveData = async (req, res) => {
+const handleGetLeaves = async (req, res) => {
   try {
     const token = req.headers.token;
     if (!token) {
       return res.status(401).json({ message: "No token provided" });
     }
     const decodedToken = extractToken(req);
-    const { companyId, employeeId } = decodedToken;
+    const  employeeId  = decodedToken.userId?._id;
 
     // Fetch all leaves for the company
 
@@ -78,7 +78,7 @@ const getLeaveData = async (req, res) => {
 // @desc     Fetch leaves data to (Accept/Reject) leaves = Admin
 // @route    GET /getmanageleave
 // access    private
-const getManageLeaveData = async (req, res) => {
+const handleGetManageLeaves = async (req, res) => {
   try {
     const decodedToken = extractToken(req);
     const companyId = decodedToken.companyId;
@@ -100,7 +100,7 @@ const getManageLeaveData = async (req, res) => {
   }
 };
 
-const StatusChange = async (req, res) => {
+const handleLeaveStatusChange = async (req, res) => {
   const status = req.params.status;
   const employeeId = req.params.id;
   const { data } = req.body;
@@ -116,7 +116,7 @@ const StatusChange = async (req, res) => {
 
   try {
     if (status === "Accepted") {
-      await decreaseCount(employeeId, data.count, data.leaveType);
+      await handleDecreaseLeaveCount(employeeId, data.count, data.leaveType);
     }
     const statusChange = await LeaveModel.findOneAndUpdate(
       { employeeId: employeeId }, // Find leave record by ID and companyName
@@ -136,7 +136,7 @@ const StatusChange = async (req, res) => {
   }
 };
 
-const decreaseCount = async (employeeId, count, leaveType) => {
+const handleDecreaseLeaveCount = async (employeeId, count, leaveType) => {
   const employee = await pendingLeavesModel.findOne({ employeeId });
   console.log("Employee-------------------------", employee);
   console.log("PendingLEAVE-------------------------", employee?.pendingLeaves);
@@ -171,14 +171,14 @@ const decreaseCount = async (employeeId, count, leaveType) => {
 // @desc     Get pending leaves for each employee
 // @route    GET /pendingLeaves
 // access    private
-const getPendingLeaves = async (req, res) => {
+const handleGetPendingLeaves = async (req, res) => {
   try {
     const token = req.headers.token;
     if (!token) {
       return res.status(401).json({ message: "No token provided" });
     }
     const decodedToken = extractToken(req);
-    const employeeId = decodedToken.userId._id;
+    const employeeId = decodedToken.userId?._id;
     console.log("EMPLOYEE", employeeId);
 
     const pendingLeavesData = await pendingLeavesModel.find({ employeeId });
@@ -197,9 +197,9 @@ const getPendingLeaves = async (req, res) => {
 };
 
 module.exports = {
-  applyLeave,
-  getLeaveData,
-  StatusChange,
-  getManageLeaveData,
-  getPendingLeaves,
+  handleCreateLeave,
+  handleGetLeaves,
+  handleLeaveStatusChange,
+  handleGetManageLeaves,
+  handleGetPendingLeaves,
 };

@@ -21,7 +21,7 @@ const MasteradminData = [
   { name: "HelpDesk", icon: "SiHelpdesk ", link: "/helpDesk" },
 ];
 
-const login = async (req, res) => {
+const handleLogin = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -74,4 +74,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = login;
+module.exports = handleLogin;

@@ -109,7 +109,7 @@ const AddClient = () => {
 
   const getClient = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/getclient`);
+      const res = await axios.get(`${BASE_URL}/client`);
       // Handle the response, e.g., store in state or display the data
       console.log(res.data);
       setClient(res.data.clients);
@@ -124,7 +124,7 @@ const AddClient = () => {
     console.log(data);
 
     try {
-      const res = await axios.post(`${BASE_URL}/addclient`, data);
+      const res = await axios.post(`${BASE_URL}/client`, data);
 
       if (res.status === 201) {
         reset();

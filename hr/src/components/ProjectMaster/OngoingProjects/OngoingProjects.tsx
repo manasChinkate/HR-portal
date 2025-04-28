@@ -22,7 +22,7 @@ const OngoingProjects = () => {
 
   const getProjects = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/getprojects`);
+      const res = await axios.get(`${BASE_URL}/projects`);
       setProjects(res.data); // Keep original dates for calculations
       setLoading(false);
     } catch (error) {

@@ -92,7 +92,7 @@ const EmployeeTable = () => {
 
 
     const getData = async () => {
-        const res = await axios.get(`${BASE_URL}/reportingmanager`)
+        const res = await axios.get(`${BASE_URL}/employee`)
         setEmployee(res.data)
         console.log("Employee", Employee)
     }

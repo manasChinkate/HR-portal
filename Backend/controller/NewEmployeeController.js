@@ -3,7 +3,7 @@ const LoginSchema = require("../models/Login");
 const jwt = require("jsonwebtoken");
 const extractToken = require("../db");
 
-const AddnewEmployee = async (req, res) => {
+const handleCreateEmployee = async (req, res) => {
   // const userId = await generateUserId(req.body.companyName)
   const { fullname } = req.body;
   const decodedToken = extractToken(req);
@@ -39,7 +39,7 @@ const AddnewEmployee = async (req, res) => {
   }
 };
 
-const getEmployeeData = async (req, res) => {
+const handleGetEmployees = async (req, res) => {
   try {
     const token = req.headers.token;
     if (!token) {
@@ -72,4 +72,4 @@ const getEmployeeData = async (req, res) => {
   }
 };
 
-module.exports = { AddnewEmployee, getEmployeeData };
+module.exports = { handleCreateEmployee, handleGetEmployees };

@@ -161,7 +161,7 @@ const MasterAdminNavData = [
   {
     name: "Add New Company",
     icon: <FaBuilding />,
-    link: "/add-new-company",
+    link: "/masteradmin/company/add",
   },
   {
     name: "HelpDesk",
@@ -182,22 +182,22 @@ const AdminNavData = [
       {
         name: "Add Designation",
         icon: <GrUserWorker />,
-        link: "/designation",
+        link: "admin/designation/new",
       },
       {
         name: "Add Holiday",
         icon: <FaRegCalendarCheck />,
-        link: "/holidays",
+        link: "admin/holiday/new",
       },
       {
         name: "Add Client",
         icon: <LuAppWindow />,
-        link: "/client",
+        link: "admin/client/new",
       },
       {
         name: "Add Department",
         icon: <PiBuildingOfficeLight />,
-        link: "/department",
+        link: "admin/department/new",
       },
     ],
   },
@@ -208,12 +208,12 @@ const AdminNavData = [
       {
         name: "Leave Type",
         icon: <MdMergeType />,
-        link: "/leavetype",
+        link: "admin/leavetype/new",
       },
       {
         name: "Manage Leave",
         icon: <MdManageHistory />,
-        link: "/manageleave",
+        link: "admin/manageleave",
       },
     ],
   },
@@ -234,7 +234,7 @@ const AdminNavData = [
       {
         name: "Ongoing Projects  ",
         icon: <MdMergeType />,
-        link: "/ongoing_projects",
+        link: "/ongoing_projects/view",
       },
     ],
   },
@@ -245,14 +245,14 @@ const AdminNavData = [
       {
         name: "Timesheet Details",
         icon: <MdMergeType />,
-        link: "/timesheet-history",
+        link: "/timesheet/view",
       },
     ],
   },
   {
     name: "Add Employee",
     icon: <BsPersonWorkspace />,
-    link: "/add-employee",
+    link: "/admin/employees/new",
   },
   {
     name: "HelpDesk",
@@ -274,12 +274,12 @@ const HRNavData = [
       {
         name: "Apply Leave ",
         icon: <MdMergeType />,
-        link: "/applyleave",
+        link: "/employee/leave/new",
       },
       {
         name: "Manage Leave",
         icon: <MdManageHistory />,
-        link: "/manageleave",
+        link: "admin/manageleave",
       },
     ],
   },
@@ -290,7 +290,7 @@ const HRNavData = [
       {
         name: "Project Details ",
         icon: <MdMergeType />,
-        link: "/applyleave",
+        link: "/employee/leave/new",
       },
       {
         name: "Add Task  ",
@@ -306,7 +306,7 @@ const HRNavData = [
       {
         name: "Fill Timesheet  ",
         icon: <MdMergeType />,
-        link: "/fill_timesheet",
+        link: "employee/timesheet/new",
       },
       {
         name: "Timesheet Details",
@@ -340,7 +340,7 @@ const EmployeeNavData = [
       {
         name: "Apply Leave ",
         icon: <MdMergeType />,
-        link: "/applyleave",
+        link: "/employee/leave/new",
       },
     ],
   },
@@ -351,7 +351,7 @@ const EmployeeNavData = [
       {
         name: "Ongoing Projects",
         icon: <MdMergeType />,
-        link: "/ongoing_projects",
+        link: "/ongoing_projects/view",
       },
       {
         name: "Add Task  ",
@@ -367,7 +367,7 @@ const EmployeeNavData = [
       {
         name: "Fill Timesheet  ",
         icon: <MdMergeType />,
-        link: "/fill_timesheet",
+        link: "employee/timesheet/new",
       },
     ],
   },
@@ -397,7 +397,7 @@ const ProjectManagerNavData = [
       {
         name: "Apply Leave ",
         icon: <MdMergeType />,
-        link: "/applyleave",
+        link: "/employee/leave/new",
       },
     ],
   },
@@ -408,7 +408,7 @@ const ProjectManagerNavData = [
       {
         name: "Project Details ",
         icon: <MdMergeType />,
-        link: "/applyleave",
+        link: "/employee/leave/new",
       },
       {
         name: "Add Task  ",
@@ -424,7 +424,7 @@ const ProjectManagerNavData = [
       {
         name: "Fill Timesheet  ",
         icon: <MdMergeType />,
-        link: "/fill_timesheet",
+        link: "employee/timesheet/new",
       },
       {
         name: "Timesheet Details",

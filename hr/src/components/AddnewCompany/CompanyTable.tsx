@@ -92,8 +92,10 @@ const CompanyTable = () => {
 
 
     const getData = async () => {
-        const res = await axios.get(`${BASE_URL}/getcompanies`)
+        console.log("FUNCTINNNNNNNN")
+        const res = await axios.get(`${BASE_URL}/company`)
         setEmployee(res.data)
+        setloading(false)
         console.log("Employee", Employee)
     }
 

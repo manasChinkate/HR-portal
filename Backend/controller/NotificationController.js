@@ -4,7 +4,7 @@ const NotificationModel = require("../models/Notifications");
 const LoginSchema = require("../models/Login"); // Assuming this is your employee model
 
 
-const getNotifications = async (req, res) => {
+const handleGetNotification = async (req, res) => {
     try {
         const token = req.headers.token;
 
@@ -67,7 +67,7 @@ const sendNotifications = async (companyId, message) => {
     }
 };
 
-module.exports = { getNotifications, sendNotifications };
+module.exports = { handleGetNotification, sendNotifications };
 
 
 

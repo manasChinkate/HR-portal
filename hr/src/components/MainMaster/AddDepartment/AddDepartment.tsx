@@ -102,7 +102,7 @@ const AddDepartment = () => {
 
   const getDepartment = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/getdepartment`);
+      const res = await axios.get(`${BASE_URL}/department`);
       // Handle the response, e.g., store in state or display the data
       console.log(res.data.data);
       setDepartment(res.data.data);

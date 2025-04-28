@@ -3,7 +3,7 @@ const Clientmodel = require("../models/Client");
 const jwt = require("jsonwebtoken");
 const { ClientSchema } = require("../Validations/ValidationSchema");
 
-const AddClient = async (req, res) => {
+const handleAddClient = async (req, res) => {
   const decodedToken = extractToken(req); // Replace 'jwt-secret-key' with your actual secret key
 
   const data = {
@@ -29,7 +29,7 @@ const AddClient = async (req, res) => {
   }
 };
 
-const GetClient = async (req, res) => {
+const handleGetClient = async (req, res) => {
   const token = req.headers.token;
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
@@ -53,4 +53,4 @@ const GetClient = async (req, res) => {
   }
 };
 
-module.exports = { AddClient, GetClient };
+module.exports = { handleAddClient, handleGetClient };

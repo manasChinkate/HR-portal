@@ -5,7 +5,7 @@ const CompanySchema = require("../models/NewCompany");
 // @desc    Authorization of user
 // @route   POST /checking
 // access   private
-const Checking = async (req, res) => {
+const handleChecking = async (req, res) => {
   try {
     const decodedToken = extractToken(req);
     console.log("Decoded Token:", decodedToken);
@@ -59,4 +59,4 @@ const Checking = async (req, res) => {
   }
 };
 
-module.exports = Checking;
+module.exports = handleChecking;

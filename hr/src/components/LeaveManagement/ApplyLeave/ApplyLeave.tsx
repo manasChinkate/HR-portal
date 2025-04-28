@@ -121,7 +121,7 @@ const ApplyLeave = () => {
 
   const getLeaves = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/getapplyleave`);
+      const res = await axios.get(`${BASE_URL}/leaves`);
       // Handle the response, e.g., store in state or display the data
       console.log(res.data.data);
       setLeave(res.data.data);
@@ -134,7 +134,7 @@ const ApplyLeave = () => {
 
   const getleavetype = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/getleavetype`);
+      const res = await axios.get(`${BASE_URL}/leavetype`);
       // Handle the response, e.g., store in state or display the data
       console.log(res.data);
       setLeavetypes(res.data.data);
@@ -146,7 +146,7 @@ const ApplyLeave = () => {
   };
   const getDepartment = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/getdepartment`);
+      const res = await axios.get(`${BASE_URL}/department`);
       // Handle the response, e.g., store in state or display the data
       console.log(res.data);
       setDepartment(res.data.data);
@@ -161,7 +161,7 @@ const ApplyLeave = () => {
     console.log(data);
 
     try {
-      const res = await axios.post(`${BASE_URL}/applyleave`, data);
+      const res = await axios.post(`${BASE_URL}/leaves`, data);
 
       if (res.status === 201) {
         toast.success("Added successfully");
