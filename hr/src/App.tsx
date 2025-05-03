@@ -24,6 +24,8 @@ import Filltimesheet from "./components/Timesheet/FIllTimesheet/Filltimesheet";
 import TimesheetTable from "./components/Timesheet/FIllTimesheet/TimesheetTable";
 import AttendanceMark from "./components/Attendance/AttendanceMark";
 import AddTask from "./components/ProjectMaster/ProjectTask/AddTask";
+import Task from "./components/ProjectMaster/ProjectTask/AddTask";
+import ViewTasks from "./components/ProjectMaster/ProjectTask/ViewTasks";
 
 const App = () => {
   const Layout = () => {
@@ -89,7 +91,11 @@ const App = () => {
       children: [
         {
           path: "/",
-          element: <Dashboard />,
+          element: (
+            <Protected>
+              <Dashboard />,
+            </Protected>
+          ),
         },
         {
           path: "/main-master",
@@ -119,7 +125,6 @@ const App = () => {
           path: "/admin/employees/view",
           element: <EmployeeTable />,
         },
-       
 
         {
           path: "admin/designation/new",
@@ -177,9 +182,9 @@ const App = () => {
             </Protected>
           ),
         },
-        
+
         {
-          path: "admin/project/new",
+          path: "/project/new",
           element: (
             <Protected>
               <ProjectDetails />
@@ -219,10 +224,18 @@ const App = () => {
           ),
         },
         {
-          path: "/add_task",
+          path: "/add-task",
           element: (
             <Protected>
               <AddTask />
+            </Protected>
+          ),
+        },
+        {
+          path: "/view-task",
+          element: (
+            <Protected>
+              <ViewTasks />
             </Protected>
           ),
         },

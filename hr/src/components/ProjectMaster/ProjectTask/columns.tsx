@@ -3,6 +3,18 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../../constants";
 import toast from "react-hot-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Ellipsis } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "app/store";
 
 interface Task {
   _id: string;
@@ -28,87 +40,104 @@ interface Project {
 export const COLUMNS: Column<Project>[] = [
   {
     Header: "Task Name",
-    accessor: "taskName", // Still the same accessor
-    
+    accessor: "taskTitle", // Still the same accessor
   },
+  {
+    Header: "Due Date",
+    accessor: "dueDate", // Still the same accessor
+  },
+  // {
+  //   Header: "Status",
+  //   accessor: "status", // Still the same accessor
+  // },
   {
     Header: "Status",
-    accessor: "status", // Still the same accessor
-    
-  },
-  {
-    Header: "Edit",
     Cell: ({ row, updater }) => {
-      const [data, setData] = useState(row.original.status); // Current status
-      const [edit, setEdit] = useState(false);
+      const { status, projectId, _id } = row.original;
+      const [data, setData] = useState(status);
 
-      const {projectName} = row.original
-  
       useEffect(() => {
-        setData(row.original.status);
-      }, [edit, row]);
-  
-      const handleUpdate = async (e) => {
-        e.preventDefault();
+        setData(status); // Keep in sync with row data
+      }, [status]);
+
+      const handleChange = async (e) => {
+        const newStatus = e.target.value;
+        setData(newStatus);
+
         try {
-          const body = {
-            projectName: row.original.projectName, // Use projectName from row data
-            taskName: row.original.taskName,
-            status: data, // Send the updated status
-          };
-      
-          const response = await axios.post(`${BASE_URL}/updatetask`, body);
-      
-          // Check if the response status is 200
+          const body = { projectId, _id, status: newStatus };
+          const response = await axios.post(`${BASE_URL}/tasks/update`, body);
+
           if (response.status === 200) {
-            toast.success("Task updated successfully");
-            await updater(row.original.projectName); // Refresh tasks using projectName
+            toast.success("Status updated");
+            updater(projectId); // refresh data
           } else {
-            toast.error("Task update failed");
+            toast.error("Failed to update status");
           }
         } catch (error) {
-          console.error("Error during task update:", error); // Debug the error
+          console.error("Update error:", error);
           toast.error("Something went wrong");
-        } finally {
-          setEdit(false);
         }
       };
-      
-      
-      
-  
+
       return (
-        <>
-          <form onSubmit={handleUpdate} className="flex gap-4 items-center">
-            <select
-              disabled={!edit}
-              value={data}
-              onChange={(e) => setData(e.target.value)}
-              className="border border-black rounded-sm px-2 py-1 disabled:text-gray-500 disabled:border-gray-500 disabled:cursor-not-allowed"
-            >
-              {/* Add your status options here */}
-              <option value="Pending">Pending</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Completed">Completed</option>
-            </select>
-            {edit ? (
-              <button
-                type="submit"
-                className="bg-green-500 w-16 py-1 rounded-md text-white"
-              >
-                Update
-              </button>
-            ) : (
-              <div
-                onClick={() => setEdit(true)}
-                className="text-center bg-green-500 w-16 py-1 rounded-md cursor-pointer text-white"
-              >
-                Edit
-              </div>
-            )}
-          </form>
-        </>
+        <select
+          value={data}
+          onChange={handleChange}
+          className=" dark:bg-primary1  rounded-sm px-2 py-1"
+        >
+          <option value="Not Started">Not Started</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Completed">Completed</option>
+        </select>
       );
     },
-  }
+  },
+
+  {
+    Header: "Actions",
+    Cell: ({ row }) => {
+      const navigate = useNavigate();
+  const authority = useSelector((state: RootState) => state.auth.authority);
+      return (
+        <div className=" flex items-center justify-start">
+          <DropdownMenu>
+            <DropdownMenuTrigger className="  p-1 rounded-lg dark:hover:bg-zinc-900  ">
+              <Ellipsis size={20} />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className=" dark:bg-secondary1">
+              {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
+              {/* <DropdownMenuSeparator /> */}
+              
+              <DropdownMenuItem
+                onClick={() =>
+                  navigate("/add-task", {
+                    state: { mode: "view", data: row.original },
+                  })
+                }
+                className=" hover:bg-zinc-900"
+              >
+                View
+              </DropdownMenuItem>
+              {
+                authority !== "Employee" && (
+
+              <DropdownMenuItem
+                onClick={() =>
+                  navigate("/add-task", {
+                    state: { mode: "edit", data: row.original },
+                  })
+                }
+                className=" hover:bg-zinc-900"
+              >
+                Edit
+              </DropdownMenuItem>
+                )
+              }
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      );
+    },
+  },
 ];

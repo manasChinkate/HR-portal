@@ -93,7 +93,7 @@ const EmployeeTable = () => {
 
     const getData = async () => {
         const res = await axios.get(`${BASE_URL}/employee`)
-        setEmployee(res.data)
+        setEmployee(res.data.data)
         console.log("Employee", Employee)
     }
 

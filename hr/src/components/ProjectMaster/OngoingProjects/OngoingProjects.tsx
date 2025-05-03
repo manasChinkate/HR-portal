@@ -23,12 +23,14 @@ const OngoingProjects = () => {
   const getProjects = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/projects`);
-      setProjects(res.data); // Keep original dates for calculations
+      setProjects(res.data.data); // Keep original dates for calculations
+      
       setLoading(false);
     } catch (error) {
       console.error('Error fetching Projects:', error);
     }
   };
+  console.log("PROJHE",projects)
 
   useEffect(() => {
     getProjects();
@@ -61,7 +63,7 @@ const OngoingProjects = () => {
               <div className="flex justify-between items-center px-3">
                 <div className="text-sm space-y-3">
                   <p className="text-gray-700 dark:text-gray-300">
-                    <span className="font-semibold ">Assigned To:</span> {project.projectManager}
+                    <span className="font-semibold ">Assigned To:</span> {project.projectManager?.fullname}
                   </p>
                   <p className="text-gray-700 dark:text-gray-300">
                     <span className="font-semibold">Start Date: </span> 

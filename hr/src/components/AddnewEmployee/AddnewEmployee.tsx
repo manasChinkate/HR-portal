@@ -87,7 +87,7 @@ const AddnewEmployee = () => {
       ...data,
       companyName: companyName,
     };
-    const res = await axios.post(`${BASE_URL}/addnewemployee`, formdata);
+    const res = await axios.post(`${BASE_URL}/employee`, formdata);
 
     if (res.status === 201) {
       toast.success("Added Successfully");

@@ -6,22 +6,35 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { RootState } from "../../../../app/store";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { z } from "zod";
+import ErrorMessage from "@/components/ui/ErrorMessage";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-type Inputs = {
-  clientName: string;
-  authority: string;
-  fullname: string;
-  projectName: string;
-  // clientName:String,
-  projectManager: string;
-  startDate: string;
-  deadline: string;
-  priority: string;
-  description: string;
-};
+type Inputs = z.infer<typeof ProjectSchema>;
+const ProjectSchema = z
+  .object({
+    projectName: z.string().min(1, "Project is required"),
+    clientName: z.string().min(1, "Client is required"),
+    projectManager: z.string().min(1, "Project Manager is required"),
+    startDate: z.string().min(1, "Start Date is required"),
+    deadline: z.string().min(1, "Deadline is required"),
+    priority: z.string(),
+    description: z.string().min(1, "Description is required"),
+  })
+  .refine(
+    (data) => {
+      const from = new Date(data.startDate);
+      const to = new Date(data.deadline);
+      return to > from;
+    },
+    {
+      message: "Deadline must be after Start Date",
+      path: ["deadline"], // this tells Zod where the error should appear
+    }
+  );
+
 const ProjectDetails = () => {
   const [clients, setClient] = useState<Inputs[]>([]);
-  const [ProjectM, setProjectM] = useState<Inputs[]>([]);
   const [FilteredPm, setFilteredPm] = useState<Inputs[]>([]);
   const [loading, setloading] = useState(true);
 
@@ -31,12 +44,13 @@ const ProjectDetails = () => {
     watch,
     reset,
     formState: { errors },
-  } = useForm<Inputs>();
-
+  } = useForm<Inputs>({
+    resolver: zodResolver(ProjectSchema),
+  });
 
   const getClient = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/getclient`);
+      const res = await axios.get(`${BASE_URL}/client`);
       // Handle the response, e.g., store in state or display the data
       console.log(res.data);
       setClient(res.data.clients);
@@ -49,10 +63,9 @@ const ProjectDetails = () => {
 
   const getPm = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/reportingmanager`);
-      setProjectM(res.data);
+      const res = await axios.get(`${BASE_URL}/employee/reporting`);
 
-      const filtered = res.data.filter(
+      const filtered = res.data.data.filter(
         (e: Inputs) => e.authority === "ProjectManager"
       );
       setFilteredPm(filtered);
@@ -61,20 +74,14 @@ const ProjectDetails = () => {
     }
   };
 
-  const companyName = useSelector((state: RootState) => state.auth.companyName);
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
-    const formdata = {
-      ...data,
-      companyName: companyName,
-    };
 
     try {
-      const res = await axios.post(`${BASE_URL}/projects`, formdata);
-
+      const res = await axios.post(`${BASE_URL}/projects`, data);
+      console.log("DATA", data);
       if (res.status === 201) {
         reset();
-        // getClient()
         toast.success("Added Successfully");
       }
     } catch (error) {
@@ -86,6 +93,9 @@ const ProjectDetails = () => {
     getClient();
     getPm();
   }, []);
+
+  console.log(errors);
+  console.log(watch());
 
   return (
     <div className="w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-primary1 p-2 overflow-y-auto">
@@ -103,7 +113,10 @@ const ProjectDetails = () => {
                 className=" hover:border-gray-400 dark:hover:border-gray-600 dark:border-primary1 dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
                 type="text"
                 placeholder="name of your project"
-              ></input>
+              />
+              <p className=" pl-2 text-xs text-red-500 font-semibold">
+                {errors.projectName?.message}
+              </p>
             </div>
             <div className=" flex flex-col gap-2">
               <label>Client</label>
@@ -113,23 +126,28 @@ const ProjectDetails = () => {
                 className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
               >
                 <option value="">Select</option>
-                {clients.map((e) => {
+                {clients.map((e: { clientName: string }) => {
                   return <option value={e.clientName}>{e.clientName}</option>;
                 })}
               </select>
+              <p className=" pl-2 text-xs text-red-500 font-semibold">
+                {errors.clientName?.message}
+              </p>
             </div>
             <div className=" flex flex-col gap-2">
               <label>Assign Project Manager</label>
               <select
                 {...register("projectManager")}
-                id="clientname"
                 className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
               >
                 <option value="">Select</option>
-                {FilteredPm.map((e) => {
-                  return <option value={e.fullname}>{e.fullname}</option>;
+                {FilteredPm.map((e: any) => {
+                  return <option value={e._id}>{e.fullname}</option>;
                 })}
               </select>
+              <p className=" pl-2 text-xs text-red-500 font-semibold">
+                {errors.projectManager?.message}
+              </p>
             </div>
             <div className=" flex flex-col gap-2">
               <label>Start Date</label>
@@ -138,7 +156,10 @@ const ProjectDetails = () => {
                 className=" hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
                 type="date"
                 placeholder="holiday"
-              ></input>
+              />
+              <p className=" pl-2 text-xs text-red-500 font-semibold">
+                {errors.startDate?.message}
+              </p>
             </div>
             <div className=" flex flex-col gap-2">
               <label>Deadline</label>
@@ -148,6 +169,9 @@ const ProjectDetails = () => {
                 type="date"
                 placeholder="holiday"
               ></input>
+              <p className=" pl-2 text-xs text-red-500 font-semibold">
+                {errors.deadline?.message}
+              </p>
             </div>
             <div className=" flex flex-col gap-2">
               <label>Priority</label>
@@ -161,6 +185,9 @@ const ProjectDetails = () => {
                 <option value="Medium">Medium</option>
                 <option value="High">High</option>
               </select>
+              <p className=" pl-2 text-xs text-red-500 font-semibold">
+                {errors.priority?.message}
+              </p>
             </div>
             <div className=" flex flex-col gap-2 col-span-3">
               <label>Project Description</label>
@@ -169,6 +196,9 @@ const ProjectDetails = () => {
                 className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
                 placeholder=" description"
               ></textarea>
+              <p className=" pl-2 text-xs text-red-500 font-semibold">
+                {errors.description?.message}
+              </p>
             </div>
           </div>
           <Button

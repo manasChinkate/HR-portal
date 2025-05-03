@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { act, Children, useState } from "react";
 import {
   FaAngleDown,
   FaAngleRight,
@@ -26,9 +26,10 @@ import {
 } from "react-icons/md";
 import { PiBuildingOfficeLight } from "react-icons/pi";
 
-
 const Sidebar = ({ showMenu, setShowMenu }) => {
   const [activeParent, setActiveParent] = useState<number | null>(null);
+  const [activeChild, setActiveChild] = useState(null);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -36,19 +37,19 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
   const name = useSelector((state: RootState) => state.auth.name);
   const email = useSelector((state: RootState) => state.auth.email);
 
-  const handleParentClick = (
-    index: number,
-    link: string,
-    hasChildren: boolean
-  ) => {
-    if (hasChildren) {
-      setActiveParent(activeParent === index ? null : index);
-    } else {
+  const handleParentClick = (index, link, hasChildren) => {
+    if (!hasChildren) {
       navigate(link);
-      // setShowMenu(false); // Close sidebar on navigation
+    } else {
+      setActiveParent(activeParent === index ? null : index);
+      setActiveChild(null);
     }
   };
 
+  const handleChildClick = (parentIndex, childIndex, hasChildren) => {
+    if (!hasChildren) return;
+    setActiveChild(activeChild === childIndex ? null : childIndex);
+  };
   const handleLogout = () => {
     localStorage.removeItem("token");
     dispatch(cleanUp());
@@ -87,8 +88,7 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
                 <h1 className=" text-lg font-semibold  ">{name}</h1>
               </div>
               <div className=" flex gap-2 items-center  text-gray-400">
-                <MdMailOutline 
-                className=" text-lg" />
+                <MdMailOutline className=" text-lg" />
                 <h1 className=" text-sm font-semibold  ">{email}</h1>
               </div>
             </div>
@@ -96,44 +96,54 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
 
             {navData.map((data, index) => (
               <div key={index}>
-                <div
-                  className={`mx-2 py-3 w-full rounded flex items-center gap-4 px-4 cursor-pointer transition-colors duration-400 relative group`}
-                  onClick={() =>
-                    handleParentClick(index, data.link, !!data.children)
-                  }
-                >
-                  {data.children && (
-                    <div className="">
-                      {activeParent === index ? (
-                        <FaAngleDown />
-                      ) : (
-                        <FaAngleRight />
+              <div
+                className={`mx-2 py-3 w-full rounded flex items-center gap-4 px-4 cursor-pointer transition-colors duration-400 relative group`}
+                onClick={() => handleParentClick(index, data.link, !!data.children)}
+              >
+                {/* Down/Right Arrow as Parent toggle */}
+                <div className="w-5">
+                  {data.children && (activeParent === index ? <FaAngleDown /> : <FaAngleRight />)}
+                </div>
+            
+                {/* Icon and Label */}
+                <div className="dark:text-blue-500 text-base">{data.icon}</div>
+                <span>{data.name}</span>
+            
+                {/* Bottom Border on Hover */}
+                <div className="absolute bottom-0 left-0 h-[1px] bg-gray-500 w-0 group-hover:w-full transition-all duration-300"></div>
+              </div>
+            
+              {/* Second level dropdown */}
+              {data.children && activeParent === index && (
+                <div>
+                  {data.children.map((child, childIndex) => (
+                    <div key={childIndex}>
+                      <div
+                        className="mx-2 py-3 bg-transparent dark:bg-secondary1 rounded flex items-center gap-4 pl-8 cursor-pointer relative group"
+                        onClick={() => handleChildClick(index, childIndex, !!child.children)}
+                      >
+                        {child.icon} {child.name}
+                        <div className="absolute bottom-0 left-0 h-[1px] bg-gray-500 w-0 group-hover:w-full transition-all duration-300"></div>
+                      </div>
+            
+                      {/* Third level */}
+                      {child.children && activeParent === index && activeChild === childIndex && (
+                        <div className="pl-12">
+                          {child.children.map((grandChild, grandIndex) => (
+                            <Link to={grandChild.link} key={grandIndex} className="no-underline">
+                              <div className="py-2 rounded flex items-center gap-4 cursor-pointer">
+                                {grandChild.icon} {grandChild.name}
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
                       )}
                     </div>
-                  )}
-                  <div className=" dark:text-blue-500 text-base">
-                    {data.icon}
-                  </div>{" "}
-                  {data.name}
-                  <div className="absolute bottom-0 left-0 h-[1px] bg-gray-500  w-0 group-hover:w-full transition-all duration-300"></div>
+                  ))}
                 </div>
-                {data.children && activeParent === index && (
-                  <div>
-                    {data.children.map((child, childIndex) => (
-                      <Link
-                        to={child.link}
-                        key={childIndex}
-                        className="no-underline"
-                      >
-                        <div className="mx-2 py-3 bg-transparent  dark:bg-secondary1 rounded flex items-center gap-4 pl-8 cursor-pointer relative group">
-                          {child.icon} {child.name}
-                          <div className="absolute bottom-0 left-0 h-[1px] bg-gray-500  w-0 group-hover:w-full transition-all duration-300"></div>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+              )}
+            </div>
+            
             ))}
           </div>
         </div>
@@ -224,12 +234,23 @@ const AdminNavData = [
       {
         name: "Create Project  ",
         icon: <MdMergeType />,
-        link: "/projectdetails",
+        link: "/project/new",
       },
       {
-        name: "Add Task  ",
-        icon: <MdMergeType />,
-        link: "/add_task",
+        name: "Task Management  ",
+        // icon: <MdMergeType />,
+        children: [
+          {
+            name: "Add Task",
+            icon: <MdMergeType />,
+            link: "/add-task",
+          },
+          {
+            name: "View Tasks",
+            icon: <MdMergeType />,
+            link: "/view-task",
+          },
+        ],
       },
       {
         name: "Ongoing Projects  ",
@@ -283,22 +304,7 @@ const HRNavData = [
       },
     ],
   },
-  {
-    name: "Project Master",
-    icon: <RiProjectorLine />,
-    children: [
-      {
-        name: "Project Details ",
-        icon: <MdMergeType />,
-        link: "/employee/leave/new",
-      },
-      {
-        name: "Add Task  ",
-        icon: <MdMergeType />,
-        link: "/add_task",
-      },
-    ],
-  },
+
   {
     name: "TimeSheet",
     icon: <RiProjectorLine />,
@@ -354,9 +360,15 @@ const EmployeeNavData = [
         link: "/ongoing_projects/view",
       },
       {
-        name: "Add Task  ",
+        name: "Task Management  ",
         icon: <MdMergeType />,
-        link: "/add_task",
+        Children: [
+          {
+            name: "View Tasks",
+            icon: <MdMergeType />,
+            link: "/view-task",
+          },
+        ],
       },
     ],
   },
@@ -411,9 +423,20 @@ const ProjectManagerNavData = [
         link: "/employee/leave/new",
       },
       {
-        name: "Add Task  ",
+        name: "Task Management  ",
         icon: <MdMergeType />,
-        link: "/add_task",
+        Children: [
+          {
+            name: "Add Task",
+            icon: <MdMergeType />,
+            link: "/add-task",
+          },
+          {
+            name: "View Tasks",
+            icon: <MdMergeType />,
+            link: "/view-task",
+          },
+        ],
       },
     ],
   },

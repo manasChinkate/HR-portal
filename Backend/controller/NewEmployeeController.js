@@ -41,19 +41,11 @@ const handleCreateEmployee = async (req, res) => {
 
 const handleGetEmployees = async (req, res) => {
   try {
-    const token = req.headers.token;
-    if (!token) {
-      return res.status(401).json({ message: "No token provided" });
-    }
-
-    // Verify and decode the token to get the companyName
-    const decodedToken = jwt.verify(token, "jwt-secret-key"); // Replace 'jwt-secret-key' with your actual secret key
-    console.log(decodedToken);
-    const companyName = decodedToken.companyName; // Assuming companyName is stored in the token payload
-    console.log("decoded companyName:", companyName);
-
+    
+    const decodedToken = extractToken(req)
+    const companyId = decodedToken.companyId
     // Query the database to find reporting managers for the given company€
-    const Employee = await EmployeeModel.find({ companyName });
+    const Employee = await EmployeeModel.find({ companyId });
     console.log(Employee);
 
     if (Employee.length === 0) {
@@ -63,7 +55,7 @@ const handleGetEmployees = async (req, res) => {
     }
 
     // Send the found reporting managers as the response
-    res.status(200).json(Employee);
+    res.status(200).json({data:Employee,message:"Fetched Succesfully"});
   } catch (error) {
     // Handle any errors that occur during the query
     res
