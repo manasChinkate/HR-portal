@@ -14,7 +14,7 @@ const holidaySchema = new mongoose.Schema(
     },
     companyId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "newCompnany",
+      ref: "Company",
       required: true,
     },
   },

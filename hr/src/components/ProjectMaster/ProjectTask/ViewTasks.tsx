@@ -142,7 +142,7 @@ const ViewTasks = () => {
     getProjects();
   }, []);
   return (
-    <div className="w-full min-h-[90vh] bg-background2 dark:bg-primary1 p-2 overflow-y-auto  ">
+    <div className="w-full min-h-[90vh] bg-background2 dark:bg-primary1 py-2 pr-2 overflow-y-auto  ">
       <div className=" bg-background1 dark:bg-secondary1  rounded-lg w-full p-5 text-sm ">
         <div className="border-b border-gray-200 pb-2">
           <h1 className="text-2xl font-bold">View Tasks</h1>

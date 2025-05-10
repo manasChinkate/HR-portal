@@ -1,193 +1,115 @@
+const { toZonedTime } = require('date-fns-tz');
+const { format, differenceInMinutes } = require('date-fns');
+
 const extractToken = require("../db");
-const { AttendanceModel } = require("../models/Attendance");
+const { AttendanceModel, getAttendanceById, getAttendanceByEmployeeId } = require("../models/Attendance");
 const jwt = require("jsonwebtoken");
 
+const IST_TIMEZONE = 'Asia/Kolkata';
+
 const handleCheckIn = async (req, res) => {
-  const { date } = req.body;
+  const getCurrentISTTime = () => {
+    const now = new Date();
+    const istTime = toZonedTime(now, IST_TIMEZONE);
+    return format(istTime, 'HH:mm:ss a'); // e.g., 09:05:22 AM
+  };
+  const decodedToken = extractToken(req);
+  const employeeId = decodedToken.userId?._id || decodedToken.userId;
+  const companyId =decodedToken.companyId;
+  const date = format(new Date(), "dd-MM-yyyy");
+  const time = getCurrentISTTime()
 
-  try {
-    const token = req.headers.token;
-    if (!token) {
-      return res.status(401).json({ message: "No token provided" });
-    }
+  const existing = await AttendanceModel.findOne({ employeeId, date });
+  if (existing) return res.status(400).json({ message: "Already checked in." });
 
-    // Verify and decode the token to get the companyName
-    const decodedToken = jwt.verify(token, "jwt-secret-key"); // Replace 'jwt-secret-key' with your actual secret key
-    // console.log(decodedToken)
-    const email = decodedToken.email;
-    const companyName = decodedToken.companyName; // Assuming companyName is stored in the token payload
-    // console.log('decoded email:', email);
+  const newAttendance = new AttendanceModel({
+    employeeId,
+    companyId,
+    date,
+    checkInTime: time,
+    status: "Present",
+  });
 
-    const existingUser = await AttendanceModel.findOne({
-      email,
-      companyName,
-      date,
-    });
-
-    if (existingUser) {
-      return res.status(400).json("Already checked in, come again tomorrow");
-    }
-
-    console.log("existing user", existingUser);
-
-    const data = {
-      ...req.body,
-      status: "Present",
-      email,
-      companyName,
-      checkOutTime: "-",
-    };
-
-    const CheckIn = await AttendanceModel.create(data);
-    res.status(201).json("Marked In successfully");
-    console.log("Marked In ", CheckIn);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json("Internal server error");
-  }
+  await newAttendance.save();
+  res.json({ message: "Check-in successful", data: newAttendance });
 };
 
-const handleCheckout = async (req, res) => {
+const handleCheckOut = async (req, res) => {
   try {
-    // Extract token from headers
-    const token = req.headers.token;
-    if (!token) {
-      console.error("No token provided");
-      return res.status(401).json({ message: "No token provided" });
+    const now = new Date();
+    const istTime = toZonedTime(now, IST_TIMEZONE);
+    const checkOutTime = format(istTime, "hh:mm:ss a");
+    const currentDate = format(istTime, "dd-MM-yyyy");
+
+    const decodedToken = extractToken(req);
+    const employeeId = decodedToken.userId?._id || decodedToken.userId;
+
+    const attendance = await AttendanceModel.findOne({ employeeId, date: currentDate });
+
+    if (!attendance) {
+      return res.status(404).json({ message: "Check-in not found for today." });
     }
 
-    // Decode the token
-    const decodedToken = jwt.verify(token, "jwt-secret-key");
-    const email = decodedToken.email;
-    const companyName = decodedToken.companyName;
-    const currentDate = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-
-    // Get checkOutTime from request body
-    const { checkOutTime } = req.body;
-    if (!checkOutTime) {
-      console.error("Check-out time is missing");
-      return res.status(400).json({ message: "Check-out time is required" });
+    if (attendance.checkOutTime) {
+      return res.status(400).json({ message: "Already checked out." });
     }
 
-    // Fetch today's attendance record
-    const attendanceRecord = await AttendanceModel.findOne({
-      email,
-      companyName,
-      date: currentDate,
+    // Parse check-in and check-out time to calculate total hours
+    const checkInDateTime = new Date(`${currentDate} ${attendance.checkInTime}`);
+    const checkOutDateTime = new Date(`${currentDate} ${checkOutTime}`);
+
+    // Convert to IST before calculating difference
+    const zonedCheckIn = toZonedTime(checkInDateTime, IST_TIMEZONE);
+    const zonedCheckOut = toZonedTime(checkOutDateTime, IST_TIMEZONE);
+
+    const minutesWorked = differenceInMinutes(zonedCheckOut, zonedCheckIn);
+    const hours = Math.floor(minutesWorked / 60);
+    const minutes = minutesWorked % 60;
+
+    const totalHours = `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")} hrs`;
+
+// Update attendance record
+    attendance.checkOutTime = checkOutTime;
+    attendance.totalHours = totalHours;
+
+    await attendance.save();
+
+    res.json({
+      message: "Check-out successful",
+      data: {
+        checkOutTime,
+        totalhours: totalHours,
+      },
     });
-    if (!attendanceRecord) {
-      console.error("Attendance record not found for today");
-      return res
-        .status(404)
-        .json({ message: "Attendance record not found for today" });
-    }
-
-    console.log("Raw Check-In Time:", attendanceRecord.checkInTime);
-    console.log("Raw Check-Out Time:", checkOutTime);
-
-    // Convert time from 12-hour to 24-hour format
-    const convertTo24HourFormat = (timeString) => {
-      const [time, modifier] = timeString.split(" ");
-      if (!time || !modifier) {
-        throw new Error(`Invalid time format: ${timeString}`);
-      }
-
-      let [hours, minutes, seconds] = time.split(":");
-      if (modifier === "PM" && hours !== "12") {
-        hours = parseInt(hours) + 12;
-      }
-      if (modifier === "AM" && hours === "12") {
-        hours = "00";
-      }
-
-      return `${hours}:${minutes}:${seconds || "00"}`;
-    };
-
-    let checkInTimeStandardized, checkOutTimeStandardized;
-
-    try {
-      checkInTimeStandardized = convertTo24HourFormat(
-        attendanceRecord.checkInTime
-      );
-      checkOutTimeStandardized = convertTo24HourFormat(checkOutTime);
-    } catch (formatError) {
-      console.error("Time format error:", formatError.message);
-      return res.status(400).json({ message: formatError.message });
-    }
-
-    console.log("Standardized Check-In Time:", checkInTimeStandardized);
-    console.log("Standardized Check-Out Time:", checkOutTimeStandardized);
-
-    // Parse check-in and check-out times into Date objects
-    const checkInTimeParsed = new Date(
-      `${currentDate}T${checkInTimeStandardized}`
-    );
-    const checkOutTimeParsed = new Date(
-      `${currentDate}T${checkOutTimeStandardized}`
-    );
-
-    // Validate parsed times
-    if (
-      isNaN(checkInTimeParsed.getTime()) ||
-      isNaN(checkOutTimeParsed.getTime())
-    ) {
-      console.error("Parsed time is invalid");
-      return res.status(400).json({ message: "Invalid time format" });
-    }
-
-    // Ensure check-out time is after check-in time
-    if (checkOutTimeParsed <= checkInTimeParsed) {
-      console.error("Check-out time must be after check-in time");
-      return res
-        .status(400)
-        .json({ message: "Check-out time must be after check-in time" });
-    }
-
-    // Calculate total hours worked
-    const timeDiffMs = checkOutTimeParsed - checkInTimeParsed; // Difference in milliseconds
-    const totalhours = (timeDiffMs / (1000 * 60 * 60)).toFixed(2) + " Hours"; // Convert to hours with 2 decimal places
-
-    console.log("Total Hours Calculated:", totalhours);
-
-    // Update the attendance record with check-out time and total hours
-    const updatedAttendance = await AttendanceModel.findOneAndUpdate(
-      { email, companyName, date: currentDate },
-      { checkOutTime, totalhours },
-      { new: true } // Return the updated document
-    );
-
-    if (!updatedAttendance) {
-      console.error("Failed to update attendance");
-      return res.status(500).json({ message: "Failed to update attendance" });
-    }
-
-    res.status(201).json({
-      message: "Checked out successfully",
-      attendance: updatedAttendance,
-    });
-
-    console.log("Checked Out successfully", updatedAttendance);
   } catch (error) {
-    console.error("Error during CheckOut:", error);
-    res.status(500).json({ message: "Internal server error" });
+    console.error("Check-out error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
 const handleGetAttendance = async (req, res) => {
+
+  
   try {
     const decodedToken = extractToken(req);
     const employeeId = decodedToken.userId?._id;
+    console.log("employeeId", employeeId);
 
-    const attendace = await AttendanceModel.find({
-      employeeId,
-    });
-    if (attendace) {
-      return res.status(200).json(attendace);
+    const attendance = await getAttendanceByEmployeeId(employeeId);
+    console.log('attendance',attendance)
+
+    if (!attendance) {
+      return res.status(400).json({ message: "No Attendance found" });
     }
+    return res
+      .status(200)
+      .json({ data: attendance, message: "Attendance fetched" });
   } catch (error) {
     console.log(error);
     res.status(500).json("Internal server error");
   }
 };
 
-module.exports = { handleCheckIn, handleCheckout, handleGetAttendance };
+module.exports = { handleCheckIn, handleCheckOut, handleGetAttendance };

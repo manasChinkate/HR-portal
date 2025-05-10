@@ -3,11 +3,15 @@ const mongoose = require("mongoose");
 const projectSchema = new mongoose.Schema(
   {
     projectName: String,
-    clientName: String,
+    clientName: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Client",
+    },
     projectManager: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "newEmployee",
+      ref: "Employee",
     },
     startDate: String,
     deadline: String,
@@ -16,22 +20,17 @@ const projectSchema = new mongoose.Schema(
     companyId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "addcompnany",
+      ref: "Company",
     },
-    // tasks: [
-    //     {
-    //         taskName: { type: String, required: true },
-    //         status: { type: String, enum: ["Pending", "In Progress", "Completed"], default: "Pending" },
-    //     },
-    // ],
+
     createdAt: {
       type: Date,
       default: Date.now,
     },
   },
-  { collection: "Projects" }
+  { collection: "Project" }
 );
 
-const ProjectModel = mongoose.model("project", projectSchema);
+const ProjectModel = mongoose.model("Project", projectSchema);
 
 module.exports = ProjectModel;

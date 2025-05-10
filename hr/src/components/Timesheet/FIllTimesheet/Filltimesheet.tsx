@@ -99,7 +99,7 @@ const Filltimesheet = () => {
   };
 
   return (
-    <div className="w-full h-[90vh] dark:bg-primary1 bg-background2 p-2 overflow-y-auto">
+    <div className="w-full h-[90vh] dark:bg-primary1 bg-background2 py-2 pr-2 overflow-y-auto">
       <div className=" bg-background1  rounded-lg w-full p-4 text-sm dark:bg-secondary1">
         <div className="flex items-start justify-between">
           <div>

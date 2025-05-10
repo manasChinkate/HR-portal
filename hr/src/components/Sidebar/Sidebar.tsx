@@ -37,7 +37,7 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
   const name = useSelector((state: RootState) => state.auth.name);
   const email = useSelector((state: RootState) => state.auth.email);
 
-  const handleParentClick = (index, link, hasChildren) => {
+  const handleParentClick = (index:number, link:string, hasChildren:boolean) => {
     if (!hasChildren) {
       navigate(link);
     } else {
@@ -73,7 +73,6 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
   return (
     <>
       <div className="relative ">
-        {/* Sidebar */}
         <div
           className={`fixed inset-y-0 left-0 w-64 bg-background1 rounded-md dark:bg-secondary1  dark:text-white text-sm pb-2 transition-transform h-[97vh] duration-3000 transform lg:transform-none lg:relative lg:translate-x-0 z-20 ${
             showMenu ? "translate-x-0" : "-translate-x-full"
@@ -81,7 +80,6 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
         >
           <div>
             <div className=" w-full flex flex-col items-center justify-center gap-1  mb-4 h-28  border-b border-gray-200 ">
-              {/* <img className='h-7' src={logo} alt="logo" /> */}
 
               <div className=" flex gap-2 items-center text-gray-400">
                 <FaUser className=" text-lg" />
@@ -105,15 +103,12 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
                   {data.children && (activeParent === index ? <FaAngleDown /> : <FaAngleRight />)}
                 </div>
             
-                {/* Icon and Label */}
                 <div className="dark:text-blue-500 text-base">{data.icon}</div>
                 <span>{data.name}</span>
             
-                {/* Bottom Border on Hover */}
                 <div className="absolute bottom-0 left-0 h-[1px] bg-gray-500 w-0 group-hover:w-full transition-all duration-300"></div>
               </div>
             
-              {/* Second level dropdown */}
               {data.children && activeParent === index && (
                 <div>
                   {data.children.map((child, childIndex) => (
@@ -126,7 +121,6 @@ const Sidebar = ({ showMenu, setShowMenu }) => {
                         <div className="absolute bottom-0 left-0 h-[1px] bg-gray-500 w-0 group-hover:w-full transition-all duration-300"></div>
                       </div>
             
-                      {/* Third level */}
                       {child.children && activeParent === index && activeChild === childIndex && (
                         <div className="pl-12">
                           {child.children.map((grandChild, grandIndex) => (

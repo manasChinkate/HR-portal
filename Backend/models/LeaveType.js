@@ -8,14 +8,14 @@ const leaveTypeSchema = new mongoose.Schema(
     companyId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "addcompnany",
+      ref: "Company",
     },
     createdAt: {
       type: Date,
       default: Date.now,
     },
   },
-  { collection: "LeaveTypes" }
+  { collection: "LeaveType" }
 );
 
 const leaveTypeZodSchema = z.object({
@@ -23,6 +23,6 @@ const leaveTypeZodSchema = z.object({
   count: z.string().min(1, "Count is required"),
 });
 
-const leaveTypeModel = mongoose.model("LeaveTypes", leaveTypeSchema);
+const leaveTypeModel = mongoose.model("LeaveType", leaveTypeSchema);
 
 module.exports = { leaveTypeModel, leaveTypeZodSchema };

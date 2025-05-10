@@ -1,12 +1,12 @@
 const express = require("express")
-const { handleGetAttendance, handleCheckIn, handleCheckout } = require("../controller/AttendanceController")
+const { handleGetAttendance, handleCheckIn, handleCheckOut } = require("../controller/AttendanceController")
 
 
 const attendanceRouter = express.Router()
 
 attendanceRouter.get('/',handleGetAttendance)
-attendanceRouter.post('/checkin',handleCheckIn)
-attendanceRouter.post('/checkout',handleCheckout)
+attendanceRouter.post('/check-in',handleCheckIn)
+attendanceRouter.post('/check-out',handleCheckOut)
 
 
 

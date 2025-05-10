@@ -37,7 +37,7 @@ const OngoingProjects = () => {
   }, []);
 
   return (
-    <div className="p-2 min-h-[90vh]  bg-background2 dark:bg-primary1">
+    <div className="py-2 pr-2 min-h-[90vh]  bg-background2 dark:bg-primary1">
       <h2 className="text-2xl font-bold mb-6 text-gray-700 dark:text-gray-100">Ongoing Projects</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projects.map((project) => {

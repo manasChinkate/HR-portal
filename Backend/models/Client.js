@@ -12,10 +12,10 @@ const clientSchema = new mongoose.Schema({
     },
     companyId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'newCompnany'
+        ref:'Company'
     }
-},{collection:'Clients'})
+},{collection:'Client'})
 
-const Clientmodel = mongoose.model('client',clientSchema)
+const Clientmodel = mongoose.model('Client',clientSchema)
 
 module.exports = Clientmodel

@@ -14,7 +14,7 @@ const TaskSchema = new mongoose.Schema(
     assignees: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "newEmployee",
+        ref: "Employee",
         required: true,
       },
     ],
@@ -22,16 +22,16 @@ const TaskSchema = new mongoose.Schema(
     companyId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "addcompnany",
+      ref: "Company",
     },
     createdAt: {
       type: Date,
       default: Date.now,
     },
   },
-  { collection: "Tasks" }
+  { collection: "Task" }
 );
 
-const TaskModel = mongoose.model("Tasks", TaskSchema);
+const TaskModel = mongoose.model("Task", TaskSchema);
 
 module.exports = TaskModel;

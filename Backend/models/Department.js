@@ -4,7 +4,7 @@ const departmentSchema = new mongoose.Schema({
     department:String,
     companyId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'newcompnany'
+        ref:'Company'
     },
     createdAt:{
         type:Date,

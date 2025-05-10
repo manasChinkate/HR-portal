@@ -197,7 +197,7 @@ const ApplyLeave = () => {
               >
                 <option value="">Select</option>
                 {leavetypes.map((e) => {
-                  return <option value={e.leaveType}>{e.leaveType}</option>;
+                  return <option value={e._id}>{e.leaveType}</option>;
                 })}
               </select>
               <p className=" pl-2 text-xs text-red-500 font-semibold">
@@ -208,14 +208,13 @@ const ApplyLeave = () => {
               <label>Department</label>
               <select
                 {...register("department", { required: true })}
-                id="clientname"
                 className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
               >
                 <option className="dark:text-white" value="">
                   Select
                 </option>
                 {department.map((e) => {
-                  return <option value={e.department}>{e.department}</option>;
+                  return <option value={e._id}>{e.department}</option>;
                 })}
               </select>
               <p className=" pl-2 text-xs text-red-500 font-semibold">

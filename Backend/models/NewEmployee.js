@@ -27,7 +27,7 @@ const EmployeeSchema = new mongoose.Schema(
     companyName: String,
     companyId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "addcompnany",
+      ref: "Company",
     },
 
     createdDate: {
@@ -35,10 +35,10 @@ const EmployeeSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { collection: "newEmployee" }
+  { collection: "Employee" }
 );
 
-const EmployeeModel = mongoose.model("newEmployee", EmployeeSchema);
+const EmployeeModel = mongoose.model("Employee", EmployeeSchema);
 
 const getEmployeeByEmployeeId = async (employeeId) =>
   EmployeeModel.find(employeeId);

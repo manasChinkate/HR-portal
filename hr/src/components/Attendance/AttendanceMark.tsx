@@ -37,8 +37,7 @@ import { Table } from "../ui/table";
 
 const AttendanceMark = () => {
   const [status, setStatus] = useState("Not Checked In");
-  const [checkInTime, setCheckInTime] = useState(null);
-  const [checkOutTime, setCheckOutTime] = useState(null);
+
   const [loading, setloading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -94,10 +93,9 @@ const AttendanceMark = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/attendance`);
+      const res = await axios.get(`${BASE_URL}/attendance/`);
       // Handle the response, e.g., store in state or display the data
-      console.log(res.data);
-      setAttendance(res.data);
+      setAttendance(res.data.data);
       setloading(false);
     } catch (error) {
       // Handle any errors that occur during the request
@@ -106,27 +104,16 @@ const AttendanceMark = () => {
   };
 
   const handleCheckIn = async () => {
-    const now = new Date(); // Current date and time
-    setCheckInTime(now);
-
-    // Format the date to YYYY-MM-DD
-    const formattedDate = now.toISOString().split("T")[0];
-
-    const data = {
-      checkInTime: now.toLocaleTimeString(), // Include the check-in time in HH:MM:SS format
-      date: formattedDate, // Include today's date
-    };
-
-    console.log(data);
-
+  
     try {
-      const res = await axios.post(`${BASE_URL}/mark-in`, data);
+      const res = await axios.post(`${BASE_URL}/attendance/check-in`);
 
       if (res.status === 400) {
         // toast.success(res.data)
-        setStatus("Already Checked In");
+        setStatus(res.data?.message);
       } else {
         setStatus("Present");
+        getData();
         toast.success("Successfully Checked In");
       }
     } catch (error) {
@@ -141,29 +128,18 @@ const AttendanceMark = () => {
   };
 
   const confirmCheckOut = async () => {
-    setIsModalOpen(false); // Close the modal
-    // Perform the check-out logic here
-
-    const now = new Date();
-    setCheckOutTime(now);
-    setStatus("Checked Out");
-    // API call to save check-out
-
-    const formattedDate = now.toISOString().split("T")[0];
-
-    const data = {
-      checkOutTime: now.toLocaleTimeString(), // Include the check-in time in HH:MM:SS format
-      date: formattedDate, // Include today's date
-    };
+    
     try {
-      const res = await axios.post(`${BASE_URL}/mark-out`, data);
+      const res = await axios.post(`${BASE_URL}/attendance/check-out`);
 
       if (res.status === 200) {
         toast.success("Success CheckOut");
         getData();
+        setIsModalOpen(false); // Close the modal
       } else toast.error(res.data.message);
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message)
     }
 
     console.log("Checked out successfully!");

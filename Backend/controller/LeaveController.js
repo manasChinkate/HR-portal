@@ -1,6 +1,6 @@
 const { LeaveModel, LeaveZodSchema } = require("../models/Leave");
 const jwt = require("jsonwebtoken");
-const EmployeeModel = require("../models/NewEmployee");
+require("../models/NewEmployee");
 const pendingLeavesModel = require("../models/PendingLeaves");
 const extractToken = require("../db");
 
@@ -83,6 +83,8 @@ const handleGetManageLeaves = async (req, res) => {
     const decodedToken = extractToken(req);
     const companyId = decodedToken.companyId;
     const leavesData = await LeaveModel.find({ companyId });
+    const employeeData = await LeaveModel.find({ companyId }).populate("employeeId");
+    console.log("LEAVES DATA", leavesData);
 
     if (leavesData.length === 0) {
       return res.status(404).json({
@@ -93,7 +95,7 @@ const handleGetManageLeaves = async (req, res) => {
     // Send the data as response
     res
       .status(200)
-      .json({ data: leavesData, message: "Leaves data fetched successfully" });
+      .json({ data: employeeData, message: "Leaves data fetched successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server error" });

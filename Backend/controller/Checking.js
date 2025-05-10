@@ -1,6 +1,6 @@
 const extractToken = require("../db");
 const LoginSchema = require("../models/Login");
-const CompanySchema = require("../models/NewCompany");
+const {CompanyModel} = require("../models/Company");
 
 // @desc    Authorization of user
 // @route   POST /checking
@@ -17,7 +17,7 @@ const handleChecking = async (req, res) => {
     const { companyId, userId: employeeId, authority } = decodedToken;
 
     if (authority === "Admin") {
-      const admin = await CompanySchema.findOne({ _id: companyId });
+      const admin = await CompanyModel.findOne({ _id: companyId });
       if (!admin) {
         return res.status(401).json({ message: "Unauthorized Admin" });
       }

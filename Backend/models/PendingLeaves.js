@@ -5,12 +5,12 @@ const pendingLeave = new mongoose.Schema(
     employeeId: {
       type: mongoose.Schema.Types.ObjectId,
       require: true,
-      ref: "newEmployee",
+      ref: "Employee",
     },
     companyId: {
       type: mongoose.Schema.Types.ObjectId,
       require: true,
-      ref: "addcompnany",
+      ref: "Company",
     },
     pendingLeaves: {
       type: [
@@ -26,9 +26,9 @@ const pendingLeave = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { collection: "PendingLeaves" }
+  { collection: "PendingLeave" }
 );
 
-const pendingLeavesModel = mongoose.model("PendingLeaves", pendingLeave);
+const pendingLeavesModel = mongoose.model("PendingLeave", pendingLeave);
 
 module.exports = pendingLeavesModel;

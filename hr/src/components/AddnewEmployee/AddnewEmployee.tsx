@@ -103,8 +103,10 @@ const AddnewEmployee = () => {
   }, []);
 
   return (
-    <div className="w-full max-h-[90vh] dark:bg-primary1 bg-background2 p-2 overflow-y-auto">
+    <div className="w-full max-h-[90vh] dark:bg-primary1 bg-background2 py-2 pr-2 overflow-y-auto">
       <div className=" bg-background1  rounded-lg w-full p-4 text-sm dark:bg-secondary1">
+      <div className=" flex justify-between">
+
         <div className=" ">
           <h1 className=" text-2xl font-bold     ">Add Employee</h1>
           <p className=" text-gray-500 text-sm">
@@ -113,12 +115,13 @@ const AddnewEmployee = () => {
         </div>
         <div className="flex justify-end mt-4">
           <Link
-            to={"/admin/employees/view"}
+            to={"/employee-table"}
             className="inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md"
           >
-            Employee List
+            Employees List
           </Link>
         </div>
+      </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-6 mb-5 ">
             <p className=" col-span-full border-b-2 pb-1 font-semibold">

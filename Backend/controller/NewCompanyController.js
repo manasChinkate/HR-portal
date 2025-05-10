@@ -1,18 +1,21 @@
-const CompanySchema = require("../models/NewCompany");
+const { CompanyModel, CompanyZodSchema } = require("../models/Company");
 const LoginSchema = require("../models/Login");
 const { generateUserId } = require("./NewEmployeeController");
 
 const handleCreateCompany = async (req, res) => {
-  const body = req.body;
-
-  console.log("EMPLOYEEIDDD", body);
-
   try {
     const Companydata = {
       ...req.body,
       authority: "Admin",
     };
-  const createdCompany = await CompanySchema.create(Companydata);
+    const parsed = CompanyZodSchema.safeParse(Companydata);
+    if (!parsed.success) {
+      return res
+        .status(400)
+        .json({ message: "Invalid data", errors: parsed.error.errors });
+    }
+
+    const createdCompany = await CompanyModel.create(parsed.data);
 
     const LoginData = {
       name: req.body.fullname,
@@ -34,10 +37,8 @@ const handleCreateCompany = async (req, res) => {
 
 const handleGetCompanies = async (req, res) => {
   try {
-    const companies = await CompanySchema.find();
-    res.status(200).json(companies);
-
-    console.log(companies);
+    const companies = await CompanyModel.find();
+    res.status(200).json({ message: "Companies fetched", data: companies });
   } catch (error) {
     console.log("error", error);
   }

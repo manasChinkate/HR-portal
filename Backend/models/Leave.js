@@ -3,21 +3,29 @@ const { z } = require("zod");
 
 const leaveSchema = new mongoose.Schema(
   {
-    leaveType: String,
+    leaveType: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "LeaveType",
+      require: true,
+    },
     count: String,
-    department: String,
+    department: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Department",
+      require: true,
+    },
     fromDate: String,
     toDate: String,
     reason: String,
     status: String,
     companyId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "addcompnany",
+      ref: "Company",
       require: true,
     },
     employeeId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "newEmployee",
+      ref: "Employee",
       require: true,
     },
     createdAt: {
@@ -25,10 +33,10 @@ const leaveSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { collection: "Leaves" }
+  { collection: "Leave" }
 );
 
-const LeaveModel = mongoose.model("Leaves", leaveSchema);
+const LeaveModel = mongoose.model("Leave", leaveSchema);
 
 const LeaveZodSchema = z
   .object({

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Navbar from "./Pages/Navbar/Navbar";
 import Dashboard from "./Pages/Dashboard/Dashboard";
-import Sidebar from "./Pages/Sidebar/Sidebar";
 import AddnewCompany from "./components/AddnewCompany/AddnewCompany";
 import Login from "./Pages/Login/Login";
 import Protected from "../src/Protected";
@@ -26,12 +25,12 @@ import AttendanceMark from "./components/Attendance/AttendanceMark";
 import AddTask from "./components/ProjectMaster/ProjectTask/AddTask";
 import Task from "./components/ProjectMaster/ProjectTask/AddTask";
 import ViewTasks from "./components/ProjectMaster/ProjectTask/ViewTasks";
+import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
+import AppSidebar from "./components/Sidebar/AppSidebar";
+import { ThemeProvider } from "./components/Theme-Provider";
 
 const App = () => {
   const Layout = () => {
-    const [showMenu, setShowMenu] = useState(false);
-    const [showMobileMenu, setShowMobileMenu] = useState(false);
-
     axios.interceptors.request.use(
       function (config) {
         // Do something before request is sent
@@ -45,40 +44,21 @@ const App = () => {
       }
     );
 
-    {
-      showMenu ? console.log("showmenu") : console.log("not showmenu");
-    }
-
     return (
       <>
-        <div className="grid grid-rows-[auto_1fr] h-screen overflow-hidden custom">
-          {/* Navbar */}
+       
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 
-          {/* Main Content */}
-          <div className="relative h-full">
-            {/* Sidebar */}
-            <div
-              className={`transition-all duration-300 ease-in-out fixed top-15 left-0 z-50 ${
-                showMenu ? "w-[280px]" : "w-0"
-              } h-full dark:bg-primary1 bg-background2 flex items-start  justify-center`}
-              style={{ left: showMenu ? "0" : "-100%" }}
-            >
-              <Sidebar showMenu={showMenu} setShowMenu={setShowMenu} />
-            </div>
-
-            {/* Outlet */}
-            <div
-              className={`h-full  overflow-y-auto custom ${
-                showMenu ? "ml-[270px]" : "ml-0"
-              }`}
-            >
-              <div className="dark:border-4 dark:border-primary1 dark:shadow-md border-b dark:bg-primary1">
-                <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
-              </div>
+        <SidebarProvider className="flex  bg-background2 dark:bg-primary1">
+          <AppSidebar />
+          <main className="flex flex-col flex-1 h-full">
+            <Navbar className="h-16 shrink-0" />
+            <div className="flex-1 overflow-y-auto">
               <Outlet />
             </div>
-          </div>
-        </div>
+          </main>
+        </SidebarProvider>
+        </ThemeProvider>
       </>
     );
   };
@@ -93,7 +73,7 @@ const App = () => {
           path: "/",
           element: (
             <Protected>
-              <Dashboard />,
+              <Dashboard />
             </Protected>
           ),
         },
@@ -106,7 +86,7 @@ const App = () => {
           ),
         },
         {
-          path: "/masteradmin/company/new",
+          path: "/company/new",
           element: <AddnewCompany />,
         },
         {

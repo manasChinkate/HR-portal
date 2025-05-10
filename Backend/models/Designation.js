@@ -5,7 +5,7 @@ const designationSchema = new mongoose.Schema({
     companyName:String,
     companyId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'newCompnany',
+        ref:'Company',
         required:true
     },
     createdAt:{

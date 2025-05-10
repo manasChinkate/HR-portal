@@ -8,15 +8,24 @@ const loginSchema = new mongoose.Schema({
     companyName:String,
     employeeId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'newEmployee'
+        ref:'Employee'
     },
     companyId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'newCompnany'
+        ref:'Company'
     }
-}, { collection: 'logindata' })
+}, { collection: 'User' })
 
- const LoginSchema = mongoose.model('login', loginSchema)
+ const LoginSchema = mongoose.model('User', loginSchema)
 
 
  module.exports = LoginSchema
+
+
+ const data ={
+    
+    "authority": "MasterAdmin",
+    "email": "manas@gmail.com",
+    "name": "Manas Chinkate",
+    "password": "admin"
+  }

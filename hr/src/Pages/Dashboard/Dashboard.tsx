@@ -6,7 +6,7 @@ import Chart4 from "@/components/Charts/Chart4";
 const Dashboard = () => {
   return (
     <>
-      <div className=" h-screen dark:bg-primary1 flex flex-1 bg-background2 overflow-scroll flex-col gap-4 p-4 ">
+      <div className=" dark:bg-primary1 flex flex-1 bg-background2 overflow-scroll flex-col gap-4 p-4 ">
         <div className="grid  gap-4 md:grid-cols-3 ">
           <div className=" col-span-3">
           <Chart4 />

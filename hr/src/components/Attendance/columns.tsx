@@ -73,7 +73,7 @@ export const COLUMNS: Column<AttendanceRecord>[] = [
   },
   {
     Header: "Total Hours",
-    accessor: "totalhours",
+    accessor: "totalHours",
   },
 
 
