@@ -96,7 +96,7 @@ const AppSidebar = () => {
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton>
-                        {Icon && <Icon className="w-5 h-5" />}
+                        {Icon && <Icon className="w-5 h-5 " />}
                         <span>{item.title}</span>
                         <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
                       </SidebarMenuButton>

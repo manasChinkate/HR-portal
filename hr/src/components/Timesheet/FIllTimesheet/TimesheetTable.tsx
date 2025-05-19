@@ -34,7 +34,7 @@ import {
 import Checkbox from "../../Checkbox";
 import axios from "axios";
 import BackButton from "../../BackButton";
-import { setauthority } from "app/authslice";
+import { setauthority } from "app/authSlice";
 
 const TimesheetTable = () => {
   const [loading, setloading] = useState(false);

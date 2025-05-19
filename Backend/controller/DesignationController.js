@@ -2,8 +2,7 @@ const mongoose = require("mongoose");
 const DesignationModel = require("../models/Designation");
 const jwt = require("jsonwebtoken");
 const { z } = require("zod");
-
-
+const  extractToken  = require("../utils/extractToken");
 
 const handleCreateDesignation = async (req, res) => {
   const token = req.headers.token;
@@ -30,17 +29,9 @@ const handleCreateDesignation = async (req, res) => {
 
 const handleGetDesignation = async (req, res) => {
   try {
-    // Extract companyName from URL parameters
-    const token = req.headers.token;
-    if (!token) {
-      return res.status(401).json({ message: "No token provided" });
-    }
-
     // Verify and decode the token to get the companyName
-    const decodedToken = jwt.verify(token, "jwt-secret-key"); // Replace 'jwt-secret-key' with your actual secret key
+    const decodedToken = extractToken(req); // Replace 'jwt-secret-key' with your actual secret key
     const companyId = decodedToken.companyId; // Assuming companyName is stored in the token payload
-    console.log("decoded companyId:", companyId);
-    // console.log('companyName :',companyName)
 
     // Query the database to find reporting managers for the given company€
     const designations = await DesignationModel.find({ companyId });
@@ -53,7 +44,12 @@ const handleGetDesignation = async (req, res) => {
     }
 
     // Send the found reporting managers as the response
-    res.status(200).json(designations);
+    res
+      .status(200)
+      .json({
+        data: designations,
+        message: "Designations fetched successfully",
+      });
   } catch (error) {
     // Handle any errors that occur during the query
     res

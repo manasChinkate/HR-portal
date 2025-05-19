@@ -86,4 +86,4 @@ export const {
     setCompanyId
   } = authSlice.actions;
   
-  export default authSlice.reducer;
+  export const authReducer =  authSlice.reducer;

@@ -149,7 +149,7 @@ const AttendanceMark = () => {
     getData();
   }, []);
   return (
-    <div className="w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-primary1 p-2 overflow-y-auto">
+    <div className="w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-primary1 py-2 pr-2 overflow-y-auto">
       <div className=" bg-background1 dark:bg-secondary1  rounded-lg w-full p-4 text-sm">
         {isModalOpen && (
           <div
@@ -196,8 +196,8 @@ const AttendanceMark = () => {
           </button>
         </div>
       </div>
-      <div className="bg-background1 dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg ">
-        <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
+      <div className="bg-background1 dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg  ">
+        <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center w-full">
           <div>
             <h1 className=" text-2xl font-bold     ">My Attendance</h1>
             <p className="text-xs text-muted-foreground">
@@ -275,7 +275,7 @@ const AttendanceMark = () => {
           </div>
         </div>
         {/* ------------------------------------Table-------------------------------------- */}
-        <div className="overflow-auto mt-4 border  rounded-lg">
+        <div className="overflow-auto mt-4 border w-full  rounded-lg">
           {loading ? (
             <div className="w-full flex items-center justify-center h-[65vh]">
               <img src="" className="w-[5rem]" alt="Loading..." />

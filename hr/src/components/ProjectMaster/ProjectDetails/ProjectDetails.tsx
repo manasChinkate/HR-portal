@@ -127,7 +127,7 @@ const ProjectDetails = () => {
               >
                 <option value="">Select</option>
                 {clients.map((e: { clientName: string }) => {
-                  return <option value={e.clientName}>{e.clientName}</option>;
+                  return <option value={e._id}>{e.clientName}</option>;
                 })}
               </select>
               <p className=" pl-2 text-xs text-red-500 font-semibold">

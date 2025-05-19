@@ -1,9 +1,17 @@
+import { holidayReducer } from "./../src/components/MainMaster/AddHoliday/holidaySlice";
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./authslice";
+import {authReducer} from "./authSlice";
+import departmentReducer from "@/components/MainMaster/AddDepartment/departmentSlice";
+import { designationReducer } from "@/components/MainMaster/AddDesignation/DesignationSlice";
+import { clientReducer } from "@/components/MainMaster/AddClient/clientSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    department: departmentReducer,
+    designation: designationReducer,
+    holiday: holidayReducer,
+    client:clientReducer
   },
 });
 

@@ -34,7 +34,7 @@ const handleGetProjects = async (req, res) => {
 
     const Projects = await ProjectModel.find({ companyId }).populate(
       "projectManager"
-    );
+    ).populate("clientName");
     if (Projects.length === 0) {
       return res
         .status(404)

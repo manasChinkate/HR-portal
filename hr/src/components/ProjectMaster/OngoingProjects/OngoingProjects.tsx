@@ -1,12 +1,20 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { BASE_URL } from '../../../constants';
 
+interface Client {
+  clientName: string;
+  _id: string;
+}
+interface ProjectManager{
+  fullname: string;
+  _id: string;
+}
 type Inputs = {
   _id: string;
   projectName: string;
-  clientName: string;
-  projectManager: string;
+  clientName: Client;
+  projectManager: ProjectManager;
   startDate: string;
   deadline: string;
   priority: 'High' | 'Medium' | 'Low';
@@ -30,7 +38,6 @@ const OngoingProjects = () => {
       console.error('Error fetching Projects:', error);
     }
   };
-  console.log("PROJHE",projects)
 
   useEffect(() => {
     getProjects();
@@ -38,8 +45,8 @@ const OngoingProjects = () => {
 
   return (
     <div className="py-2 pr-2 min-h-[90vh]  bg-background2 dark:bg-primary1">
-      <h2 className="text-2xl font-bold mb-6 text-gray-700 dark:text-gray-100">Ongoing Projects</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <h2 className="text-2xl font-bold mb-3 pl-6 text-gray-700 dark:text-gray-100">Ongoing Projects</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 ">
         {projects.map((project) => {
           const deadline = new Date(project.deadline).getTime();
           const currentDate = new Date().getTime();
@@ -54,10 +61,10 @@ const OngoingProjects = () => {
           return (
             <div
               key={project._id}
-              className="bg-background1 dark:bg-secondary1 shadow-lg rounded-lg p-6 border border-gray-200 dark:border-primary1"
+              className="bg-background1 dark:bg-secondary1  shadow-lg rounded-lg p-6 border border-gray-200 dark:border-primary1"
             >
               <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">{project.projectName}</h1>
-              <p className="text-gray-600 dark:text-gray-400 mb-2">{project.clientName}</p>
+              <p className="text-gray-600 dark:text-gray-400 mb-2">{project.clientName.clientName}</p>
               <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">{project.description}</p>
 
               <div className="flex justify-between items-center px-3">

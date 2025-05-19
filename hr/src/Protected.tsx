@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { SyncLoader } from 'react-spinners';
 import axios from 'axios';
 import { BASE_URL } from './constants';
-import { setauthority, setName, setEmail, setCompany, setNotifications, setUserId, setCompanyId } from '../app/authslice';
+import { setauthority, setName, setEmail, setCompany, setNotifications, setUserId, setCompanyId } from '../app/authSlice';
 
 
 

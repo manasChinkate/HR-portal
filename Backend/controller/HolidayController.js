@@ -5,7 +5,7 @@ const EmployeeModel = require("../models/NewEmployee");
 const NotificationModel = require("../models/Notifications");
 const LoginSchema = require("../models/Login");
 const { sendNotifications } = require("./NotificationController");
-
+const extractToken = require("../utils/ExtractToken");
 const handleCreateHoliday = async (req, res) => {
   const token = req.headers.token;
   if (!token) {
@@ -47,12 +47,7 @@ const handleCreateHoliday = async (req, res) => {
 
 const handleGetHoliday = async (req, res) => {
   try {
-    const token = req.headers.token;
-    if (!token) {
-      return res.status(401).json({ message: "No token provided" });
-    }
-
-    const decodedToken = jwt.verify(token, "jwt-secret-key");
+    const decodedToken = extractToken(req);
     const companyId = decodedToken.companyId;
 
     console.log("Decoded companyId:", companyId);
@@ -67,7 +62,9 @@ const handleGetHoliday = async (req, res) => {
         .json({ message: "No holidays found for this company." });
     }
 
-    res.status(200).json(holiday);
+    res
+      .status(200)
+      .json({ data: holiday, message: "Holidays fetched successfully" });
   } catch (error) {
     console.error("Error fetching holidays:", error);
     res

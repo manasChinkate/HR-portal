@@ -3,7 +3,7 @@ import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
-import { cleanUp } from "../../../app/authslice";
+import { cleanUp } from "../../../app/authSlice";
 import { useEffect, useState } from "react";
 import {
   MdLogout,
@@ -15,15 +15,20 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { BASE_URL } from "@/constants";
 import axios from "axios";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Moon, Sun } from "lucide-react";
+
 import { useTheme } from "@/components/Theme-Provider";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
 
 interface Notification {
   _id: string;
@@ -144,9 +149,15 @@ const Navbar = () => {
           </Sheet>
         </div>
 
-        <div onClick={toggleDarkMode} className=' text-2xl border cursor-pointer border-black hover:border-button  rounded-md   p-1 hover:text-button  ease-in-out duration-400 transition-opacity'>
-          {isDarkMode ? <MdOutlineLightMode onClick={() => setTheme("light")} /> : <MdOutlineDarkMode onClick={() => setTheme("dark")} />}
-
+        <div
+          onClick={toggleDarkMode}
+          className=" text-2xl border cursor-pointer border-black hover:border-button  rounded-md   p-1 hover:text-button  ease-in-out duration-400 transition-opacity"
+        >
+          {isDarkMode ? (
+            <MdOutlineLightMode onClick={() => setTheme("light")} />
+          ) : (
+            <MdOutlineDarkMode onClick={() => setTheme("dark")} />
+          )}
         </div>
         {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -171,12 +182,24 @@ const Navbar = () => {
           </DropdownMenuContent>
         </DropdownMenu> */}
 
-        <button
-          className="p-1  text-2xl border cursor-pointer border-black hover:border-red-500 hover:text-red-500 rounded-lg  "
-          onClick={handleLogout}
-        >
-          <MdLogout />
-        </button>
+        <AlertDialog >
+          <AlertDialogTrigger asChild>
+            <button className="p-1  text-2xl border dark:bg-transparent cursor-pointer border-black hover:border-red-500 hover:text-red-500 rounded-lg"  variant="outline"><MdLogout /></button>
+          </AlertDialogTrigger>
+          <AlertDialogContent className=" dark:bg-primary1 bg-background2" >
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                You will be completely Logged out. Need to Log In again
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className=" bg-background1 dark:bg-primary1 dark:text-white">Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleLogout} className="bg-red-600 dark:text-white dark:hover:bg-red-600">Continue</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+        
       </div>
     </div>
   );

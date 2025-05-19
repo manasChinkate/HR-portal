@@ -9,7 +9,7 @@ import {
 
 import { IoHome } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { cleanUp } from "../../../app/authslice";
+import { cleanUp } from "../../../app/authSlice";
 import { RootState } from "../../../app/store";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";

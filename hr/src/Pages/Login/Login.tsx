@@ -15,7 +15,7 @@ import {
   setEmail,
   setName,
   setUserId,
-} from "../../../app/authslice";
+} from "../../../app/authSlice";
 
 type Inputs = {
   email: string;
@@ -71,7 +71,7 @@ const Login = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2">
-      <div className="hidden lg:block h-screen w-full bg-gradient-to-r from-blue-500 to-white">
+      <div className="hidden lg:block dark:bg-primary1 h-screen w-full bg-gradient-to-r from-blue-500 to-white">
         <img
           src={login2}
           alt="login"
