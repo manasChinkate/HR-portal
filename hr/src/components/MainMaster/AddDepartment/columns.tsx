@@ -8,7 +8,7 @@ import axios from "axios";
 // import { useEffect, useState } from "react";
 import { BASE_URL } from "@/components/Constants";
 
-export interface Account {
+export interface Department {
   
   department: string;
   
@@ -16,7 +16,7 @@ export interface Account {
 
 
 
-export const COLUMNS: Column<Account>[] = [
+export const COLUMNS: Column<Department>[] = [
   {
     Header: "Department",
     accessor: "department",
@@ -106,3 +106,19 @@ export const COLUMNS: Column<Account>[] = [
 //     },
 //   },
 ];
+
+
+
+// import { ColumnDef } from "@tanstack/react-table"
+
+// export const columns: ColumnDef<Department>[] = [
+//   {
+//     accessorKey: "department",
+//     header: "Department",
+//   },
+//   {
+//     accessorKey: "createdAt",
+//     header: "Created At",
+//   },
+ 
+// ]

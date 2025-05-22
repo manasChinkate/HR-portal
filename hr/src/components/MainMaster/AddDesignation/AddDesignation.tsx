@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { fetchDesignations } from "./DesignationSlice";
 import TableWrapper from "@/components/ui/TableWrapper";
 import { COLUMNS } from "./columns";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const designationSchema = z.object({
   designation: z.string().min(1, { message: "Designation is required" }),
@@ -31,34 +32,64 @@ const AddDesignation = () => {
   } = useForm<Inputs>({
     resolver: zodResolver(designationSchema),
   });
+  const queryClient = useQueryClient()
+
+  const getDesignation = async () => {
+    const res = await axios.get(`${BASE_URL}/designation`);
+    return res.data?.data
+  };
+
+  const {data,isLoading} = useQuery({
+    queryKey:["designation"],
+    queryFn:getDesignation,
+    staleTime:Infinity
+    
+  })
+  const addDesignation = async(data:any)=>{
+    return axios.post(`${BASE_URL}/designation`, data)
+  }
+
+  const mutation = useMutation({
+    mutationFn:addDesignation,
+    onSuccess:()=>{
+      queryClient.invalidateQueries({queryKey:["designation"]})
+      toast.success("Created Successfully")
+      reset()
+    }
+  })
 
   const companyName = useSelector((state: RootState) => state.auth.companyName);
-  const { data, loading, error } = useSelector(
-    (state: RootState) => state.designation
-  );
+  // const { data, loading, error } = useSelector(
+  //   (state: RootState) => state.designation
+  // );
   const columns: any = useMemo(() => COLUMNS, []);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
-    const formdata = {
+    const formData = {
       ...data,
-      companyName: companyName,
-    };
-
-    const res = await axios.post(`${BASE_URL}/designation`, formdata);
-
-    if (res.status === 201) {
-      toast.success("Added Successfully");
-      reset();
-      dispatch(fetchDesignations());
+      companyName
     }
+    mutation.mutate(formData)
+    // console.log(data);
+    // const formdata = {
+    //   ...data,
+    //   companyName: companyName,
+    // };
+
+    // const res = await axios.post(`${BASE_URL}/designation`, formdata);
+
+    // if (res.status === 201) {
+    //   toast.success("Added Successfully");
+    //   reset();
+    //   dispatch(fetchDesignations());
+    // }
   };
 
-  useEffect(() => {
-    if (data.length == 0) {
-      dispatch(fetchDesignations());
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   if (data.length == 0) {
+  //     dispatch(fetchDesignations());
+  //   }
+  // }, [dispatch]);
 
   return (
     <div className="w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-primary1 py-2 pr-2 overflow-y-auto">
@@ -96,7 +127,7 @@ const AddDesignation = () => {
       </div>
       <TableWrapper
         data={data || []}
-        loading={loading}
+        loading={isLoading}
         columns={columns}
         description="Here's a list of Departments."
         title="Designations"

@@ -2,11 +2,12 @@ import { Button } from "../ui/button";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { BASE_URL } from "../../constants";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../app/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../app/store";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import { fetchDesignations } from "../MainMaster/AddDesignation/DesignationSlice";
 
 type Inputs = {
   // Personal Details
@@ -17,7 +18,7 @@ type Inputs = {
   maritialStatus: string;
   adhaarNo: string;
   panNo: string;
-  dob:string,
+  dob: string;
 
   // Employment Details
   joiningDate: string;
@@ -42,10 +43,10 @@ interface designation {
 }
 
 const AddnewEmployee = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const [reportingmanager, setreportingmanager] = useState<reportingmanager[]>(
     []
   );
-  const [desigantion, setDesignation] = useState<designation[]>([]);
 
   const {
     register,
@@ -56,29 +57,8 @@ const AddnewEmployee = () => {
   } = useForm<Inputs>();
 
   const companyName = useSelector((state: RootState) => state.auth.companyName);
+  const  designation  = useSelector((state: RootState) => state.designation.data);
 
-  const getReportingManager = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/employee/reporting`);
-      // Handle the response, e.g., store in state or display the data
-      setreportingmanager(res.data.data);
-    } catch (error) {
-      // Handle any errors that occur during the request
-      console.error("Error fetching reporting managers:", error);
-    }
-  };
-
-  const getDesignation = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/designation`);
-      // Handle the response, e.g., store in state or display the data
-      console.log(res.data);
-      setDesignation(res.data);
-    } catch (error) {
-      // Handle any errors that occur during the request
-      console.error("Error fetching Designations:", error);
-    }
-  };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
@@ -98,30 +78,31 @@ const AddnewEmployee = () => {
   };
 
   useEffect(() => {
-    getReportingManager();
-    getDesignation();
-  }, []);
+    // getReportingManager();
+    if (designation == null) {
+      dispatch(fetchDesignations());
+    }
+  }, [dispatch]);
 
   return (
     <div className="w-full max-h-[90vh] dark:bg-primary1 bg-background2 py-2 pr-2 overflow-y-auto">
       <div className=" bg-background1  rounded-lg w-full p-4 text-sm dark:bg-secondary1">
-      <div className=" flex justify-between">
-
-        <div className=" ">
-          <h1 className=" text-2xl font-bold     ">Add Employee</h1>
-          <p className=" text-gray-500 text-sm">
-            Add new employees to your company
-          </p>
+        <div className=" flex justify-between">
+          <div className=" ">
+            <h1 className=" text-2xl font-bold     ">Add Employee</h1>
+            <p className=" text-gray-500 text-sm">
+              Add new employees to your company
+            </p>
+          </div>
+          <div className="flex justify-end mt-4">
+            <Link
+              to={"/employee-table"}
+              className="inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md"
+            >
+              Employees List
+            </Link>
+          </div>
         </div>
-        <div className="flex justify-end mt-4">
-          <Link
-            to={"/employee-table"}
-            className="inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md"
-          >
-            Employees List
-          </Link>
-        </div>
-      </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-6 mb-5 ">
             <p className=" col-span-full border-b-2 pb-1 font-semibold">
@@ -255,7 +236,7 @@ const AddnewEmployee = () => {
                 className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
               >
                 <option value="">Select</option>
-                {desigantion.map((data) => {
+                {designation.map((data) => {
                   return (
                     <option value={data.designation}>{data.designation}</option>
                   );

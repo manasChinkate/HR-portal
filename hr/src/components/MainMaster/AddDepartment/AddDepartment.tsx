@@ -5,13 +5,14 @@ import { BASE_URL } from "../../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../app/store";
 import { useEffect, useMemo, useState } from "react";
-import "../../table.css";
-import { COLUMNS } from "./columns";
+// import "../../table.css";
+import { columns, COLUMNS } from "./columns";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { fetchDepartments } from "./departmentSlice";
 import TableWrapper from "@/components/ui/TableWrapper";
+import { DataTable } from "@/components/DataTable";
 
 type Inputs = z.infer<typeof departmentSchema>;
 const departmentSchema = z.object({
@@ -95,6 +96,7 @@ const AddDepartment = () => {
         title="Departments"
         loading={loading}
       />
+      {/* <DataTable columns={columns} data={data || []} /> */}
     </div>
   );
 };

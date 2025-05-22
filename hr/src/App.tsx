@@ -28,8 +28,16 @@ import ViewTasks from "./components/ProjectMaster/ProjectTask/ViewTasks";
 import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
 import AppSidebar from "./components/Sidebar/AppSidebar";
 import { ThemeProvider } from "./components/Theme-Provider";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 
 const App = () => {
+  const queryClient = new QueryClient();
   const Layout = () => {
     axios.interceptors.request.use(
       function (config) {
@@ -46,19 +54,19 @@ const App = () => {
 
     return (
       <>
-       
-        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-
-        <SidebarProvider className="flex  bg-background2 dark:bg-primary1">
-          <AppSidebar />
-          <main className="flex flex-col flex-1 h-full">
-            <Navbar className="h-16 shrink-0" />
-            <div className="flex-1 overflow-y-auto">
-              <Outlet />
-            </div>
-          </main>
-        </SidebarProvider>
-        </ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+            <SidebarProvider className="flex  bg-background2 dark:bg-primary1">
+              <AppSidebar />
+              <main className="flex flex-col flex-1 h-full">
+                <Navbar className="h-16 shrink-0" />
+                <div className="flex-1 overflow-y-auto">
+                  <Outlet />
+                </div>
+              </main>
+            </SidebarProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
       </>
     );
   };

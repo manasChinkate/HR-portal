@@ -5,40 +5,16 @@ import { BASE_URL } from "../../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../app/store";
 import { useEffect, useMemo, useState } from "react";
-import { exportToExcel } from "../../xlsx";
-import {
-  useTable,
-  useSortBy,
-  useGlobalFilter,
-  useFilters,
-  usePagination,
-} from "react-table";
 
 import "../../table.css";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@radix-ui/react-popover";
-
 import { COLUMNS } from "./columns";
-import ColumnFiltering from "../../ColumnFiltering";
-import GlobalFiltering from "../../GlobalFiltering";
-import { FaFileExcel } from "react-icons/fa";
-import {
-  RxChevronLeft,
-  RxChevronRight,
-  RxDoubleArrowLeft,
-  RxDoubleArrowRight,
-  RxMixerHorizontal,
-} from "react-icons/rx";
-import Checkbox from "../../Checkbox";
+
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { fetchHolidays } from "./holidaySlice";
 import TableWrapper from "@/components/ui/TableWrapper";
+import {  useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 type Inputs = {
   holiday: string;
@@ -69,39 +45,44 @@ const AddDesignation = () => {
     register,
     handleSubmit,
     reset,
-    watch,
     formState: { errors },
   } = useForm<Inputs>({
     resolver: zodResolver(HolidaySchema),
   });
+  const queryClient = useQueryClient()
 
-  const dispatch = useDispatch<AppDispatch>();
-  const { data, loading, error } = useSelector(
-    (state: RootState) => state.holiday
-  );
-  const columns: any = useMemo(() => COLUMNS, []);
-
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
-
-    try {
-      const res = await axios.post(`${BASE_URL}/holiday`, data);
-
-      if (res.status === 201) {
-        toast.success(res.data.message);
-        reset();
-        dispatch(fetchHolidays());
-      }
-    } catch (error) {
-      toast.error("Error adding holiday");
-    }
+  const getHoliday = async () => {
+    const res = await axios.get(`${BASE_URL}/holiday`);
+    return res.data?.data;
   };
 
-  useEffect(() => {
-    if (data.length == 0) {
-      dispatch(fetchHolidays());
+  const { data, isLoading } = useQuery({
+    queryKey: ["holiday"],
+    queryFn: getHoliday,
+    staleTime: Infinity,
+  });
+  const columns: any = useMemo(() => COLUMNS, []);
+
+  const addHoliday = async (data: any) => {
+    return axios.post(`${BASE_URL}/holiday`, data);
+  };
+
+  const mutation = useMutation({
+    mutationFn: addHoliday,
+    onSuccess:()=>{
+      queryClient.invalidateQueries({queryKey:["holiday"]})
+      toast.success("Fetched Successfully")
+      reset()
+    },
+    onError:()=>{
+      toast.error("Failed fetching data")
     }
-  }, [dispatch]);
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    mutation.mutate(data)
+  };
+
 
   return (
     <div className="w-full max-h-[90vh] bg-background2 flex flex-col gap-2  dark:bg-primary1 py-2 pr-2 overflow-y-auto">
@@ -162,7 +143,7 @@ const AddDesignation = () => {
       </div>
       <TableWrapper
         data={data || []}
-        loading={loading}
+        loading={isLoading}
         columns={columns}
         description="Here's a list of Holidays."
         title="Holidays"

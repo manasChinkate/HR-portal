@@ -6,6 +6,7 @@ import { store } from "../app/store.ts";
 import { Provider } from "react-redux";
 import { Toaster } from "react-hot-toast";
 
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <Toaster position="top-center" />
