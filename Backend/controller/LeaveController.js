@@ -10,9 +10,9 @@ const extractToken = require("../db");
 const handleCreateLeave = async (req, res) => {
   try {
     const decodedToken = extractToken(req);
-    const  companyId  = decodedToken.companyId;
+    const companyId = decodedToken.companyId;
     const employeeId = decodedToken.userId._id;
-    console.log("EMPLOEE",employeeId)
+    console.log("EMPLOEE", employeeId);
 
     const parsed = LeaveZodSchema.safeParse(req.body);
     if (!parsed.success) {
@@ -52,12 +52,15 @@ const handleGetLeaves = async (req, res) => {
       return res.status(401).json({ message: "No token provided" });
     }
     const decodedToken = extractToken(req);
-    const  employeeId  = decodedToken.userId?._id;
+    const employeeId = decodedToken.userId?._id;
 
     // Fetch all leaves for the company
 
     // If the user is an Employee, fetch leave data for that specific user in the company
-    const leaveData = await LeaveModel.find({ employeeId });
+    const leaveData = await LeaveModel.find({ employeeId }).populate(
+      "leaveType",
+      "leaveType"
+    );
     // If no leave data is found
     if (leaveData.length === 0) {
       return res.status(404).json({
@@ -82,11 +85,12 @@ const handleGetManageLeaves = async (req, res) => {
   try {
     const decodedToken = extractToken(req);
     const companyId = decodedToken.companyId;
-    const leavesData = await LeaveModel.find({ companyId });
-    const employeeData = await LeaveModel.find({ companyId }).populate("employeeId");
-    console.log("LEAVES DATA", leavesData);
+    const leaveData = await LeaveModel.find({ companyId })
+      .populate("employeeId", "fullname")
+      .populate("leaveType", "leaveType");
+    console.log("LEAVES DATA", leaveData);
 
-    if (leavesData.length === 0) {
+    if (leaveData.length === 0) {
       return res.status(404).json({
         message: "No leave data found for this user in the specified company",
       });
@@ -95,7 +99,7 @@ const handleGetManageLeaves = async (req, res) => {
     // Send the data as response
     res
       .status(200)
-      .json({ data: employeeData, message: "Leaves data fetched successfully" });
+      .json({ data: leaveData, message: "Leaves data fetched successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server error" });
@@ -103,38 +107,42 @@ const handleGetManageLeaves = async (req, res) => {
 };
 
 const handleLeaveStatusChange = async (req, res) => {
-  const status = req.params.status;
-  const employeeId = req.params.id;
+  const { status, id: leaveId } = req.params;
   const { data } = req.body;
-
   const token = req.headers.token;
+
+  console.log("ME", data);
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
 
-  const decodedToken = jwt.verify(token, "jwt-secret-key");
-  // console.log(decodedToken)
-  console.log("BODYYYYY", data);
-
   try {
+    // Only decrease leave count if leave is accepted
     if (status === "Accepted") {
-      await handleDecreaseLeaveCount(employeeId, data.count, data.leaveType);
+      await handleDecreaseLeaveCount(
+        data.employeeId._id,
+        data.count,
+        data.leaveType.leaveType
+      );
     }
-    const statusChange = await LeaveModel.findOneAndUpdate(
-      { employeeId: employeeId }, // Find leave record by ID and companyName
-      { status: status }, // Update the status field
-      { new: true } // Return the updated document
+
+    const statusChange = await LeaveModel.findByIdAndUpdate(
+      leaveId, // Use leave _id instead of employeeId
+      { status },
+      { new: true }
     );
 
     if (!statusChange) {
       return res.status(404).json({ message: "Leave record not found" });
     }
 
-    res
-      .status(200)
-      .json({ message: "Status updated successfully", statusChange });
+    res.status(200).json({
+      message: "Status updated successfully",
+      statusChange,
+    });
   } catch (error) {
-    console.log(error);
+    console.error("Error updating leave status:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -150,10 +158,11 @@ const handleDecreaseLeaveCount = async (employeeId, count, leaveType) => {
 
   if (!leave) {
     console.log("No leave found");
-  }
+  } 
   const newCount = +leave.count - +count;
 
   if (newCount < 0) {
+    
     console.log("Not enough Leaves");
   }
   const result = await pendingLeavesModel.findOneAndUpdate(

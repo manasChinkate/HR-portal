@@ -1,6 +1,7 @@
 /* Table Container */
 table {
   width: 100%;
+  overflow-x:auto;
   border-collapse: collapse;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -83,7 +84,7 @@ table th:last-child {
   background-color: #fff;
 } */
 
-.dark table tr:nth-child(odd) {
+.dark table tr {
   background-color: #121212; /* Darker background for odd rows */
 }
 

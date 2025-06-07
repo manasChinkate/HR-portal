@@ -29,7 +29,7 @@ export const COLUMNS: Column<LeaveRecord>[] = [
   {
     Header: "Created At",
     accessor: "createdAt",
-    Cell: ({ value }) => {
+    Cell: ({ value }:{value:string}) => {
       const convertDate = (isoDate: string) => {
         const date = new Date(isoDate);
         const day = String(date.getDate()).padStart(2, '0');

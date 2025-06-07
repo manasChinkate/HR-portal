@@ -19,3 +19,4 @@ export const fetchHoliday = async () => {
   const res = await axios.get(`${BASE_URL}/holiday`);
   return res.data?.data;
 };
+    

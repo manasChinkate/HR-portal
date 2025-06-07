@@ -2,42 +2,54 @@
 
 import { Column } from "react-table";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
-// import toast from "react-hot-toast";
-// import { useEffect, useState } from "react";
-import { BASE_URL } from "../../../constants";
 import toast from "react-hot-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Ellipsis } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { handleAcceptLeave, handleRejectLeave } from "./services";
+import { convertDate } from "@/utils/dateHelper";
+import { Row } from "@tanstack/react-table";
 
-interface LeaveData {
+export interface LeaveData {
   _id: string;
   name: string;
   email: string;
-  leaveType: string;
+  leaveType: leaveType;
   count: string;
   department: string;
   fromDate: string;
   toDate: string;
   reason: string;
-  employeeId:string,
+  employeeId: employeeSchema;
   status: string;
   companyName: string;
   createdAt: string;
   __v: number;
 }
+interface employeeSchema {
+  id: string;
+  fullname: string;
+}
 
-
-
+interface leaveType {
+  id: string;
+  leaveType: string;
+}
 
 export const COLUMNS: Column<LeaveData>[] = [
   {
     Header: "Employee Name",
-    accessor: "name",
+    accessor: (row: LeaveData) => row.employeeId?.fullname,
   },
-  
+
   {
     Header: "Leave Type",
-    accessor: "leaveType",
+    accessor: (row: LeaveData) => row.leaveType?.leaveType,
   },
   {
     Header: "Days",
@@ -46,32 +58,14 @@ export const COLUMNS: Column<LeaveData>[] = [
   {
     Header: "From Date",
     accessor: "fromDate",
-    Cell: ({ value }) => {
-      const convertDate = (isoDate: string) => {
-        const date = new Date(isoDate);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
-        const year = date.getFullYear();
-
-        return `${day}/${month}/${year}`;
-      };
-
+    Cell: ({ value }: { value: string }) => {
       return <span>{convertDate(value)}</span>;
     },
   },
   {
     Header: "To Date",
     accessor: "toDate",
-    Cell: ({ value }) => {
-      const convertDate = (isoDate: string) => {
-        const date = new Date(isoDate);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
-        const year = date.getFullYear();
-
-        return `${day}/${month}/${year}`;
-      };
-
+    Cell: ({ value }: { value: string }) => {
       return <span>{convertDate(value)}</span>;
     },
   },
@@ -79,92 +73,103 @@ export const COLUMNS: Column<LeaveData>[] = [
     Header: "Reason",
     accessor: "reason",
   },
-  {
-    Header: "Action",
-    accessor: "action",
-    Cell: ({ row,getLeaves }) => {
 
-      const setAccept = async () => {
-        const res = await axios.patch(`${BASE_URL}/leaves/Accepted/${row.original.employeeId}`,{data:row.original})
-        if (res.status == 200) {
-          toast.success("Status Updated")
-          getLeaves()
-        }
-      }
-      const setReject = async () => {
-        const res = await axios.patch(`${BASE_URL}/leaves/Rejected/${row.original.employeeId}`)
-        if (res.status == 200) {
-          toast.success("Status Updated")
-          getLeaves()
-        }
-      }
-      return (
-        <>
-
-          {
-            row.original.status === 'pending' ? (
-              <>
-              <p
-                onClick={setAccept}
-                className=" border hover:bg-green-500 hover:text-white transition-all border-green-500 mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2  rounded-lg text-green-600 w-fit text-xs"
-              >
-                Accept
-              </p>
-                <p
-                  onClick={setReject}
-                  className="mt-2 border hover:bg-red-500 hover:text-white transition-all border-red-500 mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2 rounded-lg text-red-600 w-fit text-xs"
-                >
-                  Reject
-                </p>
-              </>
-            ) : (<></>)
-        }
-
-        </>
-      )
-    }
-  },
   {
     Header: "Status",
     accessor: "status",
-    Cell: ({ row }) => {
+    Cell: ({ row }: { row: Row<LeaveData> }) => {
       return (
         <>
-            {
-              row.original.status === "Accepted" ? ( <p className="bg-cyan-100 mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2 rounded-lg dark:bg-secondary1 dark:border-blue-600 dark:border text-blue-600 w-fit text-xs">
-                {row.original.status}
-              </p>) : row.original.status === "Rejected" ?(
-                 <p className="bg-cyan-100 mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2 rounded-lg dark:bg-secondary1 dark:border-red-600 dark:border text-red-600 w-fit text-xs">
-                 {row.original.status}
-               </p>
-              ) : row.original.status === "pending" ? (
-                <p className="bg-cyan-100 mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2 rounded-lg dark:bg-secondary1 dark:border-yellow-400 dark:border text-yellow-500 w-fit text-xs">
-                 Pending
-               </p>
-              ) :(<></>)
-            }
-          </>
-      )
-    }
+          {row.original.status === "Accepted" ? (
+            <p className="bg-cyan-100 mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2 rounded-lg dark:bg-secondary1 dark:border-blue-600 dark:border text-blue-600 w-fit text-xs">
+              {row.original.status}
+            </p>
+          ) : row.original.status === "Rejected" ? (
+            <p className="bg-cyan-100 mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2 rounded-lg dark:bg-secondary1 dark:border-red-600 dark:border text-red-600 w-fit text-xs">
+              {row.original.status}
+            </p>
+          ) : row.original.status === "pending" ? (
+            <p className="bg-cyan-100 mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2 rounded-lg dark:bg-secondary1 dark:border-yellow-400 dark:border text-yellow-500 w-fit text-xs">
+              Pending
+            </p>
+          ) : (
+            <></>
+          )}
+        </>
+      );
+    },
   },
   {
     Header: "Created At",
     accessor: "createdAt",
-    Cell: ({ value }) => {
-      const convertDate = (isoDate: string) => {
-        const date = new Date(isoDate);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
-        const year = date.getFullYear();
-
-        return `${day}/${month}/${year}`;
-      };
-
+    Cell: ({ value }: { value: string }) => {
       return <span>{convertDate(value)}</span>;
     },
   },
+  {
+    Header: "Action", // Column header for actions (e.g., Accept/Reject leave)
+    accessor: "action", // Accessor key for this column
+    Cell: ({ row }: { row: Row<LeaveData> }) => {
+      const queryClient = useQueryClient(); // To interact with TanStack Query client
 
+      // Mutation for accepting a leave request
+      const acceptMutation = useMutation({
+        mutationFn: handleAcceptLeave, // Function to handle the acceptance logic
+        onSuccess: () => {
+          toast.success("Leave Accepted"); // Success message on successful leave acceptance
+          queryClient.invalidateQueries({ queryKey: ["manageleave"] }); // Invalidate the "manageleave" query to refresh the data
+        },
+        onError: () => {
+          toast.error("Something went wrong"); // Error message if mutation fails
+        },
+      });
 
+      // Mutation for rejecting a leave request
+      const rejectMutation = useMutation({
+        mutationFn: handleRejectLeave, // Function to handle the rejection logic
+        onSuccess: () => {
+          toast.success("Leave Rejected"); // Success message on successful leave rejection
+          queryClient.invalidateQueries({ queryKey: ["manageleave"] }); // Invalidate the "manageleave" query to refresh the data
+        },
+        onError: () => {
+          toast.error("Something went wrong"); // Error message if mutation fails
+        },
+      });
+
+      return (
+        <>
+          {/* Conditionally render the action buttons if the leave status is "pending" */}
+          {row.original.status === "pending" && (
+            <div className="flex items-center justify-start">
+              {/* Dropdown menu for actions */}
+              <DropdownMenu>
+                <DropdownMenuTrigger className="p-1 rounded-lg dark:hover:bg-zinc-900">
+                  <Ellipsis size={20} /> {/* Ellipsis icon for dropdown */}
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="dark:bg-secondary1">
+                  {/* Accept button - triggers accept mutation */}
+                  <DropdownMenuItem
+                    className="pl-4"
+                    onClick={() => acceptMutation.mutate(row.original)} // Trigger accept mutation
+                  >
+                    Accept
+                  </DropdownMenuItem>
+
+                  {/* Reject button - triggers reject mutation */}
+                  <DropdownMenuItem
+                    className="pl-4"
+                    onClick={() => rejectMutation.mutate(row.original)} // Trigger reject mutation
+                  >
+                    Reject
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          )}
+        </>
+      );
+    },
+  },
 
   //   {
   //     Header: "Edit",

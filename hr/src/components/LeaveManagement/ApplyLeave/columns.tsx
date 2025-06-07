@@ -2,9 +2,13 @@
 
 import { Column } from "react-table";
 
+interface leaveType {
+  id: string;
+  leaveType: string;
+}
 interface LeaveRecord {
   _id: string;
-  leaveType: string;
+  leaveType: leaveType;
   count: string;
   fromDate: string;
   toDate: string;
@@ -17,7 +21,7 @@ interface LeaveRecord {
 export const COLUMNS: Column<LeaveRecord>[] = [
   {
     Header: "Leave type",
-    accessor: "leaveType",
+    accessor: (row: LeaveRecord) => row.leaveType.leaveType,
   },
   {
     Header: "Count",

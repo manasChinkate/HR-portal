@@ -2,19 +2,24 @@ const { EmployeeModel } = require("../models/NewEmployee");
 const LoginSchema = require("../models/Login");
 const jwt = require("jsonwebtoken");
 const extractToken = require("../db");
+const pendingLeavesModel = require("../models/PendingLeaves");
+const { leaveTypeModel } = require("../models/LeaveType");
 
 const handleCreateEmployee = async (req, res) => {
   // const userId = await generateUserId(req.body.companyName)
   const { fullname } = req.body;
   const decodedToken = extractToken(req);
+  const companyId = decodedToken.companyId;
 
   try {
+    //Create New Employee
     const employee = {
       ...req.body,
-      companyId: decodedToken.companyId,
+      companyId: companyId,
     };
+    const newEmployee = await EmployeeModel.create(employee); //Create Employee Document
 
-    const newEmployee = await EmployeeModel.create(employee);
+    //Create Login Credentials of new Employee
     const loginData = {
       email: req.body.email,
       password:
@@ -23,27 +28,39 @@ const handleCreateEmployee = async (req, res) => {
           : "123456",
       employeeId: newEmployee._id,
       companyId: decodedToken.companyId,
-      authority:req.body.authority
+      authority: req.body.authority,
     };
 
     await LoginSchema.create(loginData);
 
-    res.status(201);
-    res.json("Employee Creted successfully");
-    console.log(employee);
+    const allLeaveTypes = await leaveTypeModel.find({ companyId }); //Create Login Document
+
+    //Initiallize leaves as per company leave policy
+    const pendingLeaves = {
+      employeeId: newEmployee._id,
+      companyId: companyId,
+      pendingLeaves: allLeaveTypes.map((leave) => {
+        return {
+          leaveType: leave.leaveType,
+          count: leave.count,
+        };
+      }),
+    };
+    await pendingLeavesModel.create(pendingLeaves); //Createing Pending Leave Document
+
+    //Sending response to Client side
+    res.status(201).json("Employee Creted successfully");
+    console.log("Craeted Employee", employee);
   } catch (error) {
-    res.status(500);
-    res.json("Failed creting Employee");
-    console.log("error creating employee");
-    console.log(error);
+    res.status(500).json("Failed creting Employee");
+    console.log("error creating employee", error);
   }
 };
 
 const handleGetEmployees = async (req, res) => {
   try {
-    
-    const decodedToken = extractToken(req)
-    const companyId = decodedToken.companyId
+    const decodedToken = extractToken(req);
+    const companyId = decodedToken.companyId;
     // Query the database to find reporting managers for the given company€
     const Employee = await EmployeeModel.find({ companyId });
     console.log(Employee);
@@ -55,7 +72,7 @@ const handleGetEmployees = async (req, res) => {
     }
 
     // Send the found reporting managers as the response
-    res.status(200).json({data:Employee,message:"Fetched Succesfully"});
+    res.status(200).json({ data: Employee, message: "Fetched Succesfully" });
   } catch (error) {
     // Handle any errors that occur during the query
     res

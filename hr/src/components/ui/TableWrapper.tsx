@@ -78,7 +78,7 @@ const TableWrapper = ({
   console.log("Loading", loading);
 
   return (
-    <div className="bg-background1 dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg w-full">
+    <div className="bg-background1 dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg max-w-full">
       <div className="space-y-3 sm:space-y-0 sm:flex justify-between items-center">
         <div>
           {title && <h1 className="text-2xl font-bold">{title}</h1>}
@@ -137,7 +137,7 @@ const TableWrapper = ({
       </div>
 
       {/* Table */}
-      <div className="mt-4 border rounded-lg overflow-x-auto max-w-full">
+      <div className="mt-4 border rounded-lg overflow-x-auto min-w-full table-auto">
         {loading ? (
           <div className="w-full flex items-center justify-center h-[65vh]">
             Loading...

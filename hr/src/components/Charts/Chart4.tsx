@@ -5,13 +5,11 @@ import { BASE_URL } from "@/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "app/store";
 
-
 export interface PendingLeave {
   leaveType: string;
   count: string;
   _id: string;
 }
-
 
 const Chart4: React.FC = () => {
   const [leaveData, setLeaveData] = useState<PendingLeave[]>([]);
@@ -38,19 +36,29 @@ const Chart4: React.FC = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        
         {leaveData.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {leaveData.map((e, key) => (
-              <button
-                key={key}
-                className="py-8 bg-background1 rounded-lg border dark:border-gray-700"
-              >
-                <p className="text-sm text-muted-foreground">{e.leaveType}</p>
-                <span className="text-lg font-bold leading-none sm:text-3xl">
-                  {e.count}
-                </span>
-              </button>
+              <Card key={key} className="text-center">
+                <CardHeader>
+                  <p className="text-sm text-muted-foreground">{e.leaveType}</p>
+                </CardHeader>
+                <CardContent>
+                  <span className="text-lg font-bold leading-none sm:text-3xl">
+                    {e.count}
+                  </span>
+                </CardContent>
+              </Card>
+              // <button
+
+              //   key={key}
+              //   className="py-8 bg-background1 rounded-lg border "
+              // >
+              //   <p className="text-sm text-muted-foreground">{e.leaveType}</p>
+              //   <span className="text-lg font-bold leading-none sm:text-3xl">
+              //     {e.count}
+              //   </span>
+              // </button>
             ))}
           </div>
         ) : (

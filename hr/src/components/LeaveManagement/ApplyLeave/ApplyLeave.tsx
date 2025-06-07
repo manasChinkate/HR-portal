@@ -1,9 +1,7 @@
 import { Button } from "../../ui/button";
-import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { BASE_URL } from "../../../constants";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import "../../table.css";
 
