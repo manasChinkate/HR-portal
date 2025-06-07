@@ -18,7 +18,11 @@ import {
   RxMixerHorizontal,
 } from "react-icons/rx";
 import { FaFileExcel } from "react-icons/fa";
-import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@radix-ui/react-popover";
 import Checkbox from "../Checkbox";
 import { exportToExcel } from "../xlsx";
 
@@ -30,7 +34,13 @@ interface TableWrapperProps {
   description?: string;
 }
 
-const TableWrapper = ({ columns, data, loading=false, title, description }: TableWrapperProps) => {
+const TableWrapper = ({
+  columns,
+  data,
+  loading = false,
+  title,
+  description,
+}: TableWrapperProps) => {
   const defaultColumn = useMemo(() => ({ Filter: ColumnFiltering }), []);
   const {
     getTableProps,
@@ -65,7 +75,7 @@ const TableWrapper = ({ columns, data, loading=false, title, description }: Tabl
   );
 
   const { globalFilter, pageIndex } = state;
-  console.log("Loading",loading)
+  console.log("Loading", loading);
 
   return (
     <div className="bg-background1 dark:bg-secondary1 md:p-4 p-2 rounded-md shadow-lg w-full">
@@ -92,7 +102,11 @@ const TableWrapper = ({ columns, data, loading=false, title, description }: Tabl
           />
           <Popover>
             <PopoverTrigger>
-              <Button variant="outline" size="sm" className="hidden lg:flex h-8 dark:bg-secondary1">
+              <Button
+                variant="outline"
+                size="sm"
+                className="hidden lg:flex h-8 dark:bg-secondary1"
+              >
                 <RxMixerHorizontal className="mr-2 h-4 w-4" />
                 View
               </Button>
@@ -107,7 +121,10 @@ const TableWrapper = ({ columns, data, loading=false, title, description }: Tabl
                 {allColumns.map((column: any) => (
                   <div key={column.id}>
                     <label className="flex items-center gap-2">
-                      <input type="checkbox" {...column.getToggleHiddenProps()} />{" "}
+                      <input
+                        type="checkbox"
+                        {...column.getToggleHiddenProps()}
+                      />{" "}
                       {column.Header}
                     </label>
                   </div>
@@ -120,9 +137,11 @@ const TableWrapper = ({ columns, data, loading=false, title, description }: Tabl
       </div>
 
       {/* Table */}
-      <div className="overflow-auto mt-4 border rounded-lg">
+      <div className="mt-4 border rounded-lg overflow-x-auto max-w-full">
         {loading ? (
-          <div className="w-full flex items-center justify-center h-[65vh]">Loading...</div>
+          <div className="w-full flex items-center justify-center h-[65vh]">
+            Loading...
+          </div>
         ) : (
           <table {...getTableProps()} className="w-full">
             <thead>
@@ -202,16 +221,36 @@ const TableWrapper = ({ columns, data, loading=false, title, description }: Tabl
           </span>
         </div>
         <div className="flex gap-2 my-3 sm:my-0">
-          <Button variant="outline" className="h-8 w-8 p-0" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => gotoPage(0)}
+            disabled={!canPreviousPage}
+          >
             <RxDoubleArrowLeft />
           </Button>
-          <Button variant="outline" className="h-8 w-8 p-0" onClick={previousPage} disabled={!canPreviousPage}>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={previousPage}
+            disabled={!canPreviousPage}
+          >
             <RxChevronLeft />
           </Button>
-          <Button variant="outline" className="h-8 w-8 p-0" onClick={nextPage} disabled={!canNextPage}>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={nextPage}
+            disabled={!canNextPage}
+          >
             <RxChevronRight />
           </Button>
-          <Button variant="outline" className="h-8 w-8 p-0" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => gotoPage(pageCount - 1)}
+            disabled={!canNextPage}
+          >
             <RxDoubleArrowRight />
           </Button>
         </div>

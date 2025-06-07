@@ -2,17 +2,16 @@ import { Button } from "../../ui/button";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { BASE_URL } from "../../../constants";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../app/store";
-import { useEffect, useMemo, useState } from "react";
+
+import {  useMemo } from "react";
 // import "../../table.css";
-import { columns, COLUMNS } from "./columns";
+import {  COLUMNS } from "./columns";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { fetchDepartments } from "./departmentSlice";
 import TableWrapper from "@/components/ui/TableWrapper";
-import { DataTable } from "@/components/DataTable";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchDepartment } from "@/components/MainMaster/services/masterServices";
 
 type Inputs = z.infer<typeof departmentSchema>;
 const departmentSchema = z.object({
@@ -28,30 +27,37 @@ const AddDepartment = () => {
   } = useForm<Inputs>({
     resolver: zodResolver(departmentSchema),
   });
-  const dispatch = useDispatch<any>();
-  const { data, loading, error } = useSelector(
-    (state: RootState) => state.department
-  );
+ 
 
   const columns: any = useMemo(() => COLUMNS, []);
+  const addDepartment = async (data:Inputs) => {
+    return await axios.post(`${BASE_URL}/department`, data);
+  };
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: addDepartment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["department"] });
+      toast.success("Created Successfully");
+      reset();
+    },
+    onError: () => {
+      toast.error("Failed");
+    },
+  });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
-
-    const res = await axios.post(`${BASE_URL}/department`, data);
-
-    if (res.status === 201) {
-      toast.success("Added Successfully");
-      reset();
-      dispatch(fetchDepartments())
-    }
+    console.log("data", data);
+    mutation.mutate(data);
   };
 
-  useEffect(() => {
-    if (data.length == 0) {
-      dispatch(fetchDepartments());
-    }
-  }, [dispatch]);
+ 
+  const { data, isLoading } = useQuery({
+    queryKey: ["department"],
+    queryFn: fetchDepartment,
+    staleTime: Infinity,
+  });
 
   return (
     <div className="w-full h-full bg-background2 flex flex-col gap-2 dark:bg-primary1 py-2 pr-2 overflow-y-auto">
@@ -94,7 +100,7 @@ const AddDepartment = () => {
         data={data || []}
         description="Here's a list of Departments."
         title="Departments"
-        loading={loading}
+        loading={isLoading}
       />
       {/* <DataTable columns={columns} data={data || []} /> */}
     </div>

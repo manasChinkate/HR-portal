@@ -55,7 +55,7 @@ const AddnewCompany = () => {
 </div>
 <div className="flex justify-end mt-4">
   <Link
-    to={"/company-table"}
+    to={"/company/view"}
     className="inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md"
   >
     Company List

@@ -27,6 +27,14 @@ export const COLUMNS: Column<Company>[] = [
     accessor: "clientName",
   },
   {
+    Header: "Contact Person",
+    accessor: "contactPerson",
+  },
+  {
+    Header: "Contact",
+    accessor: "contactPersonPhone",
+  },
+  {
     Header: "State",
     accessor: "state",
   },

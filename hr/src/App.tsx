@@ -60,7 +60,7 @@ const App = () => {
               <AppSidebar />
               <main className="flex flex-col flex-1 h-full">
                 <Navbar className="h-16 shrink-0" />
-                <div className="flex-1 overflow-y-auto">
+                <div className="flex-1  ">
                   <Outlet />
                 </div>
               </main>
@@ -98,11 +98,11 @@ const App = () => {
           element: <AddnewCompany />,
         },
         {
-          path: "masteradmin/company/view",
+          path: "/company/view",
           element: <CompanyTable />,
         },
         {
-          path: "/admin/employees/new",
+          path: "/employees/new",
           element: (
             <Protected>
               <AddnewEmployee />
@@ -110,7 +110,7 @@ const App = () => {
           ),
         },
         {
-          path: "/admin/employees/view",
+          path: "/employees/view",
           element: <EmployeeTable />,
         },
 

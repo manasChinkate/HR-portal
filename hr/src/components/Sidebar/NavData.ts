@@ -96,7 +96,7 @@ export const AdminNavData = [
   {
     title: "Add Employee",
     icon: "BsPersonWorkspace",
-    link: "/admin/employees/new",
+    link: "/employees/new",
   },
   {
     title: "HelpDesk",

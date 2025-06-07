@@ -2,9 +2,8 @@ import { Button } from "../../ui/button";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { BASE_URL } from "../../../constants";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../../app/store";
-import { useEffect, useMemo, useState } from "react";
+
+import {  useMemo } from "react";
 
 import "../../table.css";
 
@@ -15,6 +14,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TableWrapper from "@/components/ui/TableWrapper";
 import {  useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchHoliday } from "@/components/MainMaster/services/masterServices";
 
 type Inputs = {
   holiday: string;
@@ -51,14 +51,11 @@ const AddDesignation = () => {
   });
   const queryClient = useQueryClient()
 
-  const getHoliday = async () => {
-    const res = await axios.get(`${BASE_URL}/holiday`);
-    return res.data?.data;
-  };
+ 
 
   const { data, isLoading } = useQuery({
     queryKey: ["holiday"],
-    queryFn: getHoliday,
+    queryFn: fetchHoliday,
     staleTime: Infinity,
   });
   const columns: any = useMemo(() => COLUMNS, []);

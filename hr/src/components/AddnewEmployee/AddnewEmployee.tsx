@@ -1,15 +1,14 @@
 import { Button } from "../ui/button";
-import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { BASE_URL } from "../../constants";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../app/store";
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../app/store";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
-import { fetchDesignations } from "../MainMaster/AddDesignation/DesignationSlice";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchDesignation } from "../MainMaster/services/masterServices";
+import { addEmployee, fetchEmployees } from "./services";
 
-type Inputs = {
+export type Inputs = {
   // Personal Details
   fullname: string;
   email: string;
@@ -35,54 +34,44 @@ type Inputs = {
   address: string;
 };
 
-interface reportingmanager {
-  fullname: string;
-}
-interface designation {
-  designation: string;
-}
-
 const AddnewEmployee = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const [reportingmanager, setreportingmanager] = useState<reportingmanager[]>(
-    []
-  );
-
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
   } = useForm<Inputs>();
 
   const companyName = useSelector((state: RootState) => state.auth.companyName);
-  const  designation  = useSelector((state: RootState) => state.designation.data);
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: addEmployee,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+      queryClient.invalidateQueries({ queryKey: ["departments"] });
+      toast.success("Created Successfully");
+      reset();
+    },
+  });
 
+  const { data: designations = [] } = useQuery({
+    queryKey: ["designation"],
+    queryFn: fetchDesignation,
+    staleTime: Infinity,
+  });
+  const { data: reportingManager = [] } = useQuery({
+    queryKey: ["employees"],
+    queryFn: fetchEmployees,
+    staleTime: Infinity,
+  });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
-
-    const formdata = {
+    const formData = {
       ...data,
       companyName: companyName,
     };
-    const res = await axios.post(`${BASE_URL}/employee`, formdata);
-
-    if (res.status === 201) {
-      toast.success("Added Successfully");
-      reset();
-    } else {
-      toast.error("Something went wrong");
-    }
+    mutation.mutate(formData);
   };
-
-  useEffect(() => {
-    // getReportingManager();
-    if (designation == null) {
-      dispatch(fetchDesignations());
-    }
-  }, [dispatch]);
 
   return (
     <div className="w-full max-h-[90vh] dark:bg-primary1 bg-background2 py-2 pr-2 overflow-y-auto">
@@ -96,7 +85,7 @@ const AddnewEmployee = () => {
           </div>
           <div className="flex justify-end mt-4">
             <Link
-              to={"/employee-table"}
+              to={"/employees/view"}
               className="inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md"
             >
               Employees List
@@ -236,7 +225,7 @@ const AddnewEmployee = () => {
                 className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
               >
                 <option value="">Select</option>
-                {designation.map((data) => {
+                {designations.map((data) => {
                   return (
                     <option value={data.designation}>{data.designation}</option>
                   );
@@ -252,7 +241,7 @@ const AddnewEmployee = () => {
                 className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
               >
                 <option value="">Select</option>
-                {reportingmanager.map((data) => {
+                {reportingManager.map((data) => {
                   return <option value={data.fullname}>{data.fullname}</option>;
                 })}
               </select>

@@ -2,22 +2,19 @@ import { Button } from "../../ui/button";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { BASE_URL } from "../../../constants";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../../app/store";
-import { useEffect, useMemo } from "react";
 
+import {  useMemo } from "react";
 
 import "../../table.css";
-
-
 
 import { COLUMNS } from "./columns";
 
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { fetchClients } from "./clientSlice";
 import TableWrapper from "@/components/ui/TableWrapper";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchClient } from "@/components/MainMaster/services/masterServices";
 
 type Inputs = z.infer<typeof ClientSchema>;
 
@@ -33,8 +30,6 @@ const ClientSchema = z.object({
 });
 
 const AddClient = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
   const {
     register,
     handleSubmit,
@@ -45,31 +40,31 @@ const AddClient = () => {
   });
 
   const columns: any = useMemo(() => COLUMNS, []);
-  const { data, loading, error } = useSelector(
-    (state: RootState) => state.client
-  );
+  const queryClient = useQueryClient();
+
+ 
+  const addClient = async (data: Inputs) =>
+    await axios.post(`${BASE_URL}/client`, data);
+
+  const mutation = useMutation({
+    mutationFn: addClient,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["client"] });
+      toast.success("Create Successfully");
+      reset();
+    },
+    onError: () => toast.error("Failed"),
+  });
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["client"],
+    queryFn: fetchClient,
+    staleTime: Infinity,
+  });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
-
-    try {
-      const res = await axios.post(`${BASE_URL}/client`, data);
-
-      if (res.status === 201) {
-        reset();
-        dispatch(fetchDesignations());
-        toast.success("Added Successfully");
-      }
-    } catch (error) {
-      toast.error("Failed adding client");
-    }
+    mutation.mutate(data);
   };
-
-  useEffect(() => {
-    if (data.length == 0) {
-      dispatch(fetchClients());
-    }
-  }, [dispatch]);
 
   return (
     <div className="w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-primary1 py-2 pr-2 overflow-y-auto">
@@ -151,7 +146,7 @@ const AddClient = () => {
       </div>
       <TableWrapper
         data={data || []}
-        loading={loading}
+        loading={isLoading}
         columns={columns}
         description="Here's a list of Clients."
         title="Clients"
