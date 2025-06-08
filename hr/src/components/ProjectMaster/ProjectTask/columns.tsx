@@ -13,11 +13,15 @@ import { Ellipsis } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "app/store";
+import { Row } from "@tanstack/react-table";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { handleChangeStatus } from "./services";
 
 interface Task {
   _id: string;
   taskName: string;
   status: string;
+  projectId: string;
 }
 
 interface Project {
@@ -44,44 +48,35 @@ export const COLUMNS: Column<Project>[] = [
     Header: "Due Date",
     accessor: "dueDate", // Still the same accessor
   },
-  // {
-  //   Header: "Status",
-  //   accessor: "status", // Still the same accessor
-  // },
+
   {
     Header: "Status",
-    Cell: ({ row, updater }) => {
+    Cell: ({ row }: { row: Row<Task> }) => {
       const { status, projectId, _id } = row.original;
-      const [data, setData] = useState(status);
+      const [newStatus, setStatus] = useState(status);
+      const queryClient = useQueryClient();
 
-      useEffect(() => {
-        setData(status); // Keep in sync with row data
-      }, [status]);
+      // useEffect(() => {
+      //   setStatus(status); // Keep in sync with row data
+      // }, [status]);
 
-      const handleChange = async (e) => {
-        const newStatus = e.target.value;
-        setData(newStatus);
-
-        try {
-          const body = { projectId, _id, status: newStatus };
-          const response = await axios.post(`${BASE_URL}/tasks/update`, body);
-
-          if (response.status === 200) {
-            toast.success("Status updated");
-            updater(projectId); // refresh data
-          } else {
-            toast.error("Failed to update status");
-          }
-        } catch (error) {
-          console.error("Update error:", error);
-          toast.error("Something went wrong");
-        }
+      const body = { projectId, _id, status: newStatus };
+      const mutation = useMutation({
+        mutationFn: handleChangeStatus,
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["task"] });
+          toast.success("Status changed");
+        },
+      });
+      const handleChange = async (value: string) => {
+        setStatus(value);
+        mutation.mutate(body);
       };
 
       return (
         <select
-          value={data}
-          onChange={handleChange}
+          value={newStatus}
+          onChange={(e) => handleChange(e.target.value)}
           className=" dark:bg-primary1  rounded-sm px-2 py-1"
         >
           <option value="Not Started">Not Started</option>
@@ -94,9 +89,9 @@ export const COLUMNS: Column<Project>[] = [
 
   {
     Header: "Actions",
-    Cell: ({ row }) => {
+    Cell: ({ row }: { row: Row<Task> }) => {
       const navigate = useNavigate();
-  const authority = useSelector((state: RootState) => state.auth.authority);
+      const authority = useSelector((state: RootState) => state.auth.authority);
       return (
         <div className=" flex items-center justify-start">
           <DropdownMenu>
@@ -106,7 +101,7 @@ export const COLUMNS: Column<Project>[] = [
             <DropdownMenuContent className=" dark:bg-secondary1">
               {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
               {/* <DropdownMenuSeparator /> */}
-              
+
               <DropdownMenuItem
                 onClick={() =>
                   navigate("/add-task", {
@@ -117,21 +112,18 @@ export const COLUMNS: Column<Project>[] = [
               >
                 View
               </DropdownMenuItem>
-              {
-                authority !== "Employee" && (
-
-              <DropdownMenuItem
-                onClick={() =>
-                  navigate("/add-task", {
-                    state: { mode: "edit", data: row.original },
-                  })
-                }
-                className=" hover:bg-zinc-900"
-              >
-                Edit
-              </DropdownMenuItem>
-                )
-              }
+              {authority !== "Employee" && (
+                <DropdownMenuItem
+                  onClick={() =>
+                    navigate("/add-task", {
+                      state: { mode: "edit", data: row.original },
+                    })
+                  }
+                  className=" hover:bg-zinc-900"
+                >
+                  Edit
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

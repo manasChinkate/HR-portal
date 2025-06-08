@@ -9,47 +9,16 @@ import { RootState } from "../../../../app/store";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-import {
-  useTable,
-  useSortBy,
-  useGlobalFilter,
-  useFilters,
-  usePagination,
-} from "react-table";
-
-import "../../table.css";
-
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@radix-ui/react-popover";
-
-import { COLUMNS } from "./columns";
-import ColumnFiltering from "../../ColumnFiltering";
-import GlobalFiltering from "../../GlobalFiltering";
-import { FaFileExcel } from "react-icons/fa";
-import {
-  RxChevronLeft,
-  RxChevronRight,
-  RxDoubleArrowLeft,
-  RxDoubleArrowRight,
-  RxMixerHorizontal,
-} from "react-icons/rx";
-import { exportToExcel } from "../../xlsx";
-import Checkbox from "../../Checkbox";
 import MultiSelectComboBox from "@/components/ui/MultiSelectCombobox";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useLocation } from "react-router-dom";
+import { fetchProjects } from "../OngoingProjects/services";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createTask, fetchTeamMembers } from "./services";
+import { projectInputs } from "../ProjectDetails/ProjectDetails";
 
-type Task = {
-  id: number;
-  value: string;
-  status: "Pending";
-};
-
-type Inputs = z.infer<typeof TaskSchema>;
+export type TaskInputs = z.infer<typeof TaskSchema>;
 
 const TaskSchema = z.object({
   projectId: z.string().min(1, "Please select project"),
@@ -62,15 +31,7 @@ const TaskSchema = z.object({
 
 const AddTask = () => {
   const location = useLocation();
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: 1, value: "", status: "Pending" },
-  ]); // State to manage tasks
-  const [projects, setProjects] = useState<Inputs[]>([]);
-  const [fiteredEmployees, setFilteredEmployees] = useState<Inputs[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-
-  const authority = useSelector((state: RootState) => state.auth.authority);
 
   const {
     register,
@@ -80,52 +41,39 @@ const AddTask = () => {
     watch,
     trigger,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<TaskInputs>({
     resolver: zodResolver(TaskSchema),
     defaultValues: {
       taskDesc: "",
       assignees: [],
     },
   });
-
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const formattedData = {
-      ...data,
-      status: "Not Started",
-    };
-
-    try {
-      const response = await axios.post(`${BASE_URL}/tasks`, formattedData);
-      console.log("Task added successfully:", response.data.data);
-      toast.success("Task added successfully");
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: createTask,
+    onSuccess: () => {
+      toast.success("Created Successfully");
       reset();
-    } catch (error) {
-      console.error("Error adding tasks:", error);
-      toast.error("Error adding tasks");
-    }
+      queryClient.invalidateQueries({ queryKey: ["task"] });
+    },
+    onError: () => toast.error("Failed Creating task"),
+  });
+
+  const onSubmit: SubmitHandler<TaskInputs> = async (data) => {
+    mutation.mutate(data);
   };
 
-  const getProjects = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/projects`);
-      setProjects(res.data.data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching Projects:", error);
-    }
-  };
-  const getPm = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/employee/reporting`);
+  const { data: projects = [] } = useQuery({
+    queryKey: ["project"],
+    queryFn: fetchProjects,
+    staleTime: Infinity,
+  });
 
-      const filtered = res.data.data.filter(
-        (e: Inputs) => e.authority !== "ProjectManager"
-      );
-      setFilteredEmployees(filtered);
-    } catch (error) {
-      console.error("Error fetching project managers:", error);
-    }
-  };
+  const { data: projectManagerData = [] } = useQuery({
+    queryKey: ["teamMember"],
+    queryFn: fetchTeamMembers,
+    staleTime: Infinity,
+  });
 
   const rowData = location.state?.data;
   const pageType = location.state?.mode;
@@ -137,14 +85,8 @@ const AddTask = () => {
     }
   }, [pageType, rowData]);
 
-  useEffect(() => {
-    getProjects();
-    getPm();
-  }, []);
-
   console.log(watch());
   console.log(errors);
-
 
   return (
     <div className="w-full h-[90vh] bg-background2 dark:bg-primary1 py-2 pr-2   overflow-y-auto">
@@ -163,7 +105,7 @@ const AddTask = () => {
                 className="hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm text-sm"
               >
                 <option value="">Select</option>
-                {projects.map((e) => (
+                {projects.map((e: { _id: string; projectName: string }) => (
                   <option key={e._id} value={e._id}>
                     {e.projectName}
                   </option>
@@ -178,7 +120,7 @@ const AddTask = () => {
               <input type="hidden" {...register("assignees")} />
               <MultiSelectComboBox
                 disabled={pageType == "view"}
-                options={fiteredEmployees}
+                options={projectManagerData}
                 selectedValues={selectedUsers}
                 setSelectedValues={setSelectedUsers}
                 placeholder="Select team members"
@@ -245,41 +187,11 @@ const AddTask = () => {
             </div>
           </div>
 
-          {/* <div className="grid col-span-3 gap-4 mt-4 mb-2">
-            {tasks.map((task, index) => (
-              <div key={task.id} className="flex items-center gap-2">
-                <input
-                  className="flex-1 hover:border-gray-400 dark:hover:border-gray-600 dark:border-primary1 dark:border-[0.2px] dark:bg-secondary1 ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm text-sm"
-                  type="text"
-                  placeholder={`Task ${index + 1}`}
-                  value={task.value}
-                  onChange={(e) => handleTaskChange(task.id, e.target.value)}
-                />
-                {tasks.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeTaskField(task.id)}
-                    className="text-red-500 text-sm px-2 py-1 rounded hover:bg-red-100"
-                  >
-                    Remove
-                  </button>
-                )}
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={addTaskField}
-              className="flex items-center w-40 gap-1 text-blue-500 text-sm px-3 py-1 rounded"
-            >
-              + Add Multiple Task
-            </button>
-          </div> */}
-
           {pageType == "view" ? (
-            <Link to={'/view-task'}>
-            <Button className="dark:bg-[#3b5ae4] w-24 dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md">
-              Back
-            </Button>
+            <Link to={"/view-task"}>
+              <Button className="dark:bg-[#3b5ae4] w-24 dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md">
+                Back
+              </Button>
             </Link>
           ) : (
             <Button

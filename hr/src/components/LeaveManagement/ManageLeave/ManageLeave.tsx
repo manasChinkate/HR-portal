@@ -1,59 +1,15 @@
-import { Button } from "../../ui/button";
-import axios from "axios";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { BASE_URL } from "../../../constants";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../app/store";
-import { useEffect, useMemo, useState } from "react";
-import { exportToExcel } from "../../xlsx";
-import {
-  useTable,
-  useSortBy,
-  useGlobalFilter,
-  useFilters,
-  usePagination,
-} from "react-table";
+
+import {  useMemo } from "react";
 
 import "../../table.css";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@radix-ui/react-popover";
 
 import { COLUMNS } from "./columns";
-import ColumnFiltering from "../../ColumnFiltering";
-import GlobalFiltering from "../../GlobalFiltering";
-import { FaFileExcel } from "react-icons/fa";
-import {
-  RxChevronLeft,
-  RxChevronRight,
-  RxDoubleArrowLeft,
-  RxDoubleArrowRight,
-  RxMixerHorizontal,
-} from "react-icons/rx";
-import Checkbox from "../../Checkbox";
-import toast from "react-hot-toast";
+
 import TableWrapper from "@/components/ui/TableWrapper";
 import { useQuery } from "@tanstack/react-query";
 import { fetchManageleaves } from "./services";
 
-// type Inputs = {
-//   _id: string;
-//   name: string;
-//   email: string;
-//   leaveType: string;
-//   count: string;
-//   department: string;
-//   from_date: string;
-//   to_date: string;
-//   reason: string;
-//   status: string;
-//   companyName: string;
-//   createdAt: string;
-//   __v: number;
-// };
 
 
 

@@ -8,6 +8,8 @@ const handleCreateTimesheet = async (req, res) => {
       return res.status(401).json({ message: "No token provided" });
     }
 
+    console.log("TIME",req.body)
+
     // Verify and decode the token to get the companyName
     const decodedToken = jwt.verify(token, "jwt-secret-key"); // Replace 'jwt-secret-key' with your actual secret key
     // console.log(decodedToken)

@@ -1,16 +1,15 @@
-import { useEffect, useState } from "react";
 import { Button } from "../../ui/button";
-import { BASE_URL } from "../../../constants";
-import axios from "axios";
+
 import { useForm, SubmitHandler } from "react-hook-form";
-import { RootState } from "../../../../app/store";
-import { useSelector } from "react-redux";
+
 import toast from "react-hot-toast";
 import { z } from "zod";
-import ErrorMessage from "@/components/ui/ErrorMessage";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchClient } from "@/components/MainMaster/services/masterServices";
+import { addProject, fetchProjectManager } from "./services";
 
-type Inputs = z.infer<typeof ProjectSchema>;
+export type projectInputs = z.infer<typeof ProjectSchema>;
 const ProjectSchema = z
   .object({
     projectName: z.string().min(1, "Project is required"),
@@ -34,68 +33,40 @@ const ProjectSchema = z
   );
 
 const ProjectDetails = () => {
-  const [clients, setClient] = useState<Inputs[]>([]);
-  const [FilteredPm, setFilteredPm] = useState<Inputs[]>([]);
-  const [loading, setloading] = useState(true);
-
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<projectInputs>({
     resolver: zodResolver(ProjectSchema),
   });
 
-  const getClient = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/client`);
-      // Handle the response, e.g., store in state or display the data
-      console.log(res.data);
-      setClient(res.data.clients);
-      // setloading(false)
-    } catch (error) {
-      // Handle any errors that occur during the request
-      console.error("Error fetching Clients:", error);
-    }
+  const queryClient = useQueryClient();
+
+  const { data: clientData = [] } = useQuery({
+    queryKey: ["client"],
+    queryFn: fetchClient,
+    staleTime: Infinity,
+  });
+  const { data: projectManagerData = [] } = useQuery({
+    queryKey: ["projectmanager"],
+    queryFn: fetchProjectManager,
+    staleTime: Infinity,
+  });
+
+  const mutation = useMutation({
+    mutationFn: addProject,
+    onSuccess: () => {
+      toast.success("Created Successfully");
+      queryClient.invalidateQueries({ queryKey: ["project"] });
+      reset();
+    },
+  });
+
+  const onSubmit: SubmitHandler<projectInputs> = async (data) => {
+    mutation.mutate(data);
   };
-
-  const getPm = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/employee/reporting`);
-
-      const filtered = res.data.data.filter(
-        (e: Inputs) => e.authority === "ProjectManager"
-      );
-      setFilteredPm(filtered);
-    } catch (error) {
-      console.error("Error fetching project managers:", error);
-    }
-  };
-
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
-
-    try {
-      const res = await axios.post(`${BASE_URL}/projects`, data);
-      console.log("DATA", data);
-      if (res.status === 201) {
-        reset();
-        toast.success("Added Successfully");
-      }
-    } catch (error) {
-      toast.error("Failed adding client");
-    }
-  };
-
-  useEffect(() => {
-    getClient();
-    getPm();
-  }, []);
-
-  console.log(errors);
-  console.log(watch());
 
   return (
     <div className="w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-primary1 py-2 pr-2 overflow-y-auto">
@@ -126,7 +97,7 @@ const ProjectDetails = () => {
                 className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
               >
                 <option value="">Select</option>
-                {clients.map((e: { clientName: string }) => {
+                {clientData.map((e: { clientName: string; _id: string }) => {
                   return <option value={e._id}>{e.clientName}</option>;
                 })}
               </select>
@@ -141,9 +112,11 @@ const ProjectDetails = () => {
                 className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
               >
                 <option value="">Select</option>
-                {FilteredPm.map((e: any) => {
-                  return <option value={e._id}>{e.fullname}</option>;
-                })}
+                {projectManagerData.map(
+                  (e: { _id: string; fullname: string }) => {
+                    return <option value={e._id}>{e.fullname}</option>;
+                  }
+                )}
               </select>
               <p className=" pl-2 text-xs text-red-500 font-semibold">
                 {errors.projectManager?.message}

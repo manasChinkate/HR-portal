@@ -19,8 +19,8 @@ import ApplyLeave from "./components/LeaveManagement/ApplyLeave/ApplyLeave";
 import AddDepartment from "./components/MainMaster/AddDepartment/AddDepartment";
 import ProjectDetails from "./components/ProjectMaster/ProjectDetails/ProjectDetails";
 import OngoingProjects from "./components/ProjectMaster/OngoingProjects/OngoingProjects";
-import Filltimesheet from "./components/Timesheet/FIllTimesheet/Filltimesheet";
-import TimesheetTable from "./components/Timesheet/FIllTimesheet/TimesheetTable";
+import Filltimesheet from "./components/Timesheet/Filltimesheet";
+import TimesheetTable from "./components/Timesheet/TimesheetTable";
 import AttendanceMark from "./components/Attendance/AttendanceMark";
 import AddTask from "./components/ProjectMaster/ProjectTask/AddTask";
 import Task from "./components/ProjectMaster/ProjectTask/AddTask";
@@ -37,7 +37,13 @@ import {
 } from "@tanstack/react-query";
 
 const App = () => {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions:{
+      queries:{
+        retry:false
+      }
+    }
+  });
   const Layout = () => {
     axios.interceptors.request.use(
       function (config) {

@@ -1,26 +1,28 @@
-import { Button } from "../../ui/button";
+import { Button } from "../ui/button";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { BASE_URL } from "../../../constants";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../app/store";
+import { BASE_URL } from "../../constants";
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { format } from "date-fns";
 import toast from "react-hot-toast";
 import { date, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { fetchProjects } from "@/components/ProjectMaster/OngoingProjects/services";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { addTimesheet } from "./services";
+import { fetchTasks } from "../ProjectMaster/ProjectTask/services";
 
 type Inputs = z.infer<typeof TimesheetSchema>;
 
 const TimesheetSchema = z.object({
-  projectName: z.string().min(1, "ProjectName is required"),
-  task: z.string().min(1, "Task performed is required"),
+  projectId: z.string().min(1, "ProjectName is required"),
+  taskId: z.string().min(1, "Task performed is required"),
+  taskDesc: z.string().min(1, "required"),
   date: z.string().min(1, "Date is required"),
   startTime: z.string().min(1, "Start time is required"),
   endTime: z.string().min(1, "End time is required"),
   totalTime: z.string(),
-  remarks: z.string(),
 });
 
 const Filltimesheet = () => {
@@ -35,26 +37,32 @@ const Filltimesheet = () => {
   });
 
   const [totalTime, setTotalTime] = useState<string>("");
-  const [loading, setloading] = useState(false);
-  const [projects, setProjects] = useState<Inputs[]>([]);
 
   const startTime = watch("startTime");
   const endTime = watch("endTime");
+  const queryClient = useQueryClient();
+  const selectedProject = watch("projectId");
 
-  const getProjects = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/projects`);
-      setProjects(res.data); // Keep original dates for calculations
-      setloading(false);
-    } catch (error) {
-      console.error("Error fetching Projects:", error);
-    }
-  };
+  const { data: projects = [] } = useQuery({
+    queryKey: ["project"],
+    queryFn: fetchProjects,
+    staleTime: Infinity,
+  });
+  const { data: tasks = [] } = useQuery({
+    queryKey: ["task", selectedProject],
+    queryFn: () => fetchTasks(selectedProject),
+    enabled: !!selectedProject,
+    staleTime: Infinity,
+  });
 
-  useEffect(() => {
-    getProjects();
-  }, []);
-
+  const mutation = useMutation({
+    mutationFn: addTimesheet,
+    onSuccess: () => {
+      toast.success("Created Successfully");
+      queryClient.invalidateQueries({ queryKey: ["timesheet"] });
+      reset();
+    },
+  });
   // Calculate total time whenever start or end time changes
   useEffect(() => {
     if (startTime && endTime) {
@@ -71,31 +79,12 @@ const Filltimesheet = () => {
   }, [startTime, endTime]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    // console.log(data)
-    const convertTo12HourFormat = (time: string) => {
-      const date = new Date(`1970-01-01T${time}`);
-      return format(date, "hh:mm a"); // Format as 12-hour with AM/PM
-    };
-
-    const formattedStartTime = convertTo12HourFormat(data.startTime);
-    const formattedEndTime = convertTo12HourFormat(data.endTime);
-
-    const formdata = {
+    const finalData = {
       ...data,
-      startTime: formattedStartTime,
-      endTime: formattedEndTime,
-      totaltime: totalTime,
+      totalTime,
     };
 
-    console.log(formdata);
-    const res = await axios.post(`${BASE_URL}/timesheet`, formdata);
-
-    if (res.status === 201) {
-      reset();
-      toast.success("Added Successfully");
-    } else {
-      toast.error("Failed adding Timesheet");
-    }
+    mutation.mutate(finalData);
   };
 
   return (
@@ -126,28 +115,32 @@ const Filltimesheet = () => {
               <label>Select Project</label>
 
               <select
-                {...register("projectName", { required: true })}
-                id="clientname"
+                {...register("projectId", { required: true })}
                 className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
               >
                 <option value="">Select</option>
-                {projects.map((e) => {
-                  return <option value={e.projectName}>{e.projectName}</option>;
+                {projects.map((e: { _id: string; projectName: string }) => {
+                  return <option value={e._id}>{e.projectName}</option>;
                 })}
               </select>
               <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.projectName?.message}
+                {errors.projectId?.message}
               </p>
             </div>
             <div className=" flex flex-col gap-2">
-              <label>Task performed</label>
-              <textarea
-                {...register("task")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                placeholder=" Task performed by you today"
-              ></textarea>
+              <label>Select Project</label>
+
+              <select
+                {...register("taskId", { required: true })}
+                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
+              >
+                <option value="">Select</option>
+                {tasks.map((e: { _id: string; taskTitle: string }) => {
+                  return <option value={e._id}>{e.taskTitle}</option>;
+                })}
+              </select>
               <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.task?.message}
+                {errors.taskId?.message}
               </p>
             </div>
 
@@ -204,12 +197,12 @@ const Filltimesheet = () => {
             <div className=" flex flex-col gap-2 col-span-3">
               <label>Additional Remarks</label>
               <textarea
-                {...register("remarks")}
+                {...register("taskDesc")}
                 className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                placeholder=" any remarks"
+                placeholder=" any taskDesc"
               ></textarea>
               <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.remarks?.message}
+                {errors.taskDesc?.message}
               </p>
             </div>
           </div>
