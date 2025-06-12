@@ -71,7 +71,7 @@ const Navbar = () => {
 
   const getNotifications = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/notifications`);
+      const res = await axios.get(`${BASE_URL}/notification`);
       // Handle the response, e.g., store in state or display the data
       console.log(res.data);
       setNotificationData(res.data);

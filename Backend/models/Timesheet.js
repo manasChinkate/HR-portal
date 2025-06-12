@@ -10,14 +10,18 @@ const timesheetschema = new mongoose.Schema(
     projectId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "Projects",
+      ref: "Project",
     },
     taskId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "Task",
     },
-    taskDesc:String,
+    employeeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employee",
+    },
+    taskDesc: String,
     date: String,
     startTime: String,
     endTime: String,

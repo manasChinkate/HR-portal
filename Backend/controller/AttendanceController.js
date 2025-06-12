@@ -1,23 +1,28 @@
-const { toZonedTime } = require('date-fns-tz');
-const { format, differenceInMinutes } = require('date-fns');
+const { toZonedTime } = require("date-fns-tz");
+const { format, differenceInMinutes } = require("date-fns");
+const { parse } = require("date-fns");
 
 const extractToken = require("../db");
-const { AttendanceModel, getAttendanceById, getAttendanceByEmployeeId } = require("../models/Attendance");
+const {
+  AttendanceModel,
+  getAttendanceById,
+  getAttendanceByEmployeeId,
+} = require("../models/Attendance");
 const jwt = require("jsonwebtoken");
 
-const IST_TIMEZONE = 'Asia/Kolkata';
+const IST_TIMEZONE = "Asia/Kolkata";
 
 const handleCheckIn = async (req, res) => {
   const getCurrentISTTime = () => {
     const now = new Date();
     const istTime = toZonedTime(now, IST_TIMEZONE);
-    return format(istTime, 'HH:mm:ss a'); // e.g., 09:05:22 AM
+    return format(istTime, "hh:mm:ss a"); // Use 12-hour format with AM/PM
   };
   const decodedToken = extractToken(req);
   const employeeId = decodedToken.userId?._id || decodedToken.userId;
-  const companyId =decodedToken.companyId;
+  const companyId = decodedToken.companyId;
   const date = format(new Date(), "dd-MM-yyyy");
-  const time = getCurrentISTTime()
+  const time = getCurrentISTTime();
 
   const existing = await AttendanceModel.findOne({ employeeId, date });
   if (existing) return res.status(400).json({ message: "Already checked in." });
@@ -44,7 +49,10 @@ const handleCheckOut = async (req, res) => {
     const decodedToken = extractToken(req);
     const employeeId = decodedToken.userId?._id || decodedToken.userId;
 
-    const attendance = await AttendanceModel.findOne({ employeeId, date: currentDate });
+    const attendance = await AttendanceModel.findOne({
+      employeeId,
+      date: currentDate,
+    });
 
     if (!attendance) {
       return res.status(404).json({ message: "Check-in not found for today." });
@@ -55,8 +63,16 @@ const handleCheckOut = async (req, res) => {
     }
 
     // Parse check-in and check-out time to calculate total hours
-    const checkInDateTime = new Date(`${currentDate} ${attendance.checkInTime}`);
-    const checkOutDateTime = new Date(`${currentDate} ${checkOutTime}`);
+    const checkInDateTime = parse(
+      `${currentDate} ${attendance.checkInTime}`,
+      "dd-MM-yyyy hh:mm:ss a",
+      new Date()
+    );
+    const checkOutDateTime = parse(
+      `${currentDate} ${checkOutTime}`,
+      "dd-MM-yyyy hh:mm:ss a",
+      new Date()
+    );
 
     // Convert to IST before calculating difference
     const zonedCheckIn = toZonedTime(checkInDateTime, IST_TIMEZONE);
@@ -70,7 +86,7 @@ const handleCheckOut = async (req, res) => {
       .toString()
       .padStart(2, "0")} hrs`;
 
-// Update attendance record
+    // Update attendance record
     attendance.checkOutTime = checkOutTime;
     attendance.totalHours = totalHours;
 
@@ -90,15 +106,13 @@ const handleCheckOut = async (req, res) => {
 };
 
 const handleGetAttendance = async (req, res) => {
-
-  
   try {
     const decodedToken = extractToken(req);
     const employeeId = decodedToken.userId?._id;
     console.log("employeeId", employeeId);
 
     const attendance = await getAttendanceByEmployeeId(employeeId);
-    console.log('attendance',attendance)
+    console.log("attendance", attendance);
 
     if (!attendance) {
       return res.status(400).json({ message: "No Attendance found" });

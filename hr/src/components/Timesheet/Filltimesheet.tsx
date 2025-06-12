@@ -12,8 +12,9 @@ import { fetchProjects } from "@/components/ProjectMaster/OngoingProjects/servic
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addTimesheet } from "./services";
 import { fetchTasks } from "../ProjectMaster/ProjectTask/services";
+import { Input } from "../ui/input";
 
-type Inputs = z.infer<typeof TimesheetSchema>;
+export type Inputs = z.infer<typeof TimesheetSchema>;
 
 const TimesheetSchema = z.object({
   projectId: z.string().min(1, "ProjectName is required"),
@@ -128,7 +129,7 @@ const Filltimesheet = () => {
               </p>
             </div>
             <div className=" flex flex-col gap-2">
-              <label>Select Project</label>
+              <label>Select Task</label>
 
               <select
                 {...register("taskId", { required: true })}
@@ -158,24 +159,28 @@ const Filltimesheet = () => {
             </div>
             <div className=" flex flex-col gap-2">
               <label>Start Time</label>
-              <input
-                {...register("startTime")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
+              <Input
                 type="time"
-                placeholder=" start time"
-              ></input>
+                id="time"
+                step="1"
+                {...register("startTime")}
+                defaultValue="10:00:00"
+                className="bg-background dark:bg-secondary1 dark:border-primary1 appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none "
+              />
               <p className=" pl-2 text-xs text-red-500 font-semibold">
                 {errors.startTime?.message}
               </p>
             </div>
             <div className=" flex flex-col gap-2">
               <label>End Time</label>
-              <input
-                {...register("endTime")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
+              <Input
                 type="time"
-                placeholder=" end time"
-              ></input>
+                id="time"
+                step="1"
+                {...register("endTime")}
+                defaultValue="07:00:00"
+                className="bg-background dark:bg-secondary1 dark:border-primary1 appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+              />
               <p className=" pl-2 text-xs text-red-500 font-semibold">
                 {errors.endTime?.message}
               </p>
@@ -195,11 +200,11 @@ const Filltimesheet = () => {
               </p>
             </div>
             <div className=" flex flex-col gap-2 col-span-3">
-              <label>Additional Remarks</label>
+              <label>What you performed today? </label>
               <textarea
                 {...register("taskDesc")}
                 className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                placeholder=" any taskDesc"
+                placeholder=" "
               ></textarea>
               <p className=" pl-2 text-xs text-red-500 font-semibold">
                 {errors.taskDesc?.message}
