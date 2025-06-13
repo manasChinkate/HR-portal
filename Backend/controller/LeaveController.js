@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 require("../models/NewEmployee");
 const pendingLeavesModel = require("../models/PendingLeaves");
 const extractToken = require("../db");
+const { leaveTypeModel } = require("../models/LeaveType");
 
 // @desc     Apply Leaves for each employee
 // @route    POST /applyleave
@@ -110,11 +111,14 @@ const handleLeaveStatusChange = async (req, res) => {
   const { status, id: leaveId } = req.params;
   const { data } = req.body;
   const token = req.headers.token;
+  console.log("DATA", data);
 
   console.log("ME", data);
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
+  const leaveType = await leaveTypeModel.findById(data.leaveType._id);
+  console.log("LLLLLLLL", leaveType);
 
   try {
     // Only decrease leave count if leave is accepted
@@ -122,7 +126,7 @@ const handleLeaveStatusChange = async (req, res) => {
       await handleDecreaseLeaveCount(
         data.employeeId._id,
         data.count,
-        data.leaveType.leaveType
+        data.leaveType
       );
     }
 
@@ -147,35 +151,43 @@ const handleLeaveStatusChange = async (req, res) => {
 };
 
 const handleDecreaseLeaveCount = async (employeeId, count, leaveType) => {
-  const employee = await pendingLeavesModel.findOne({ employeeId });
+  const employee = await pendingLeavesModel
+    .findOne({ employeeId })
+    .populate("pendingLeaves.leaveType");
   console.log("Employee-------------------------", employee);
   console.log("PendingLEAVE-------------------------", employee?.pendingLeaves);
+
+  // console.log('LEAVETYPE',leaveType)
 
   if (!employee) {
     console.log("NO employee found");
   }
-  const leave = employee.pendingLeaves.find((e) => e.leaveType == leaveType);
+  const leave = employee.pendingLeaves.find(
+    (e) => e.leaveType.leaveType == leaveType.leaveType
+  );
+  console.log("Leave", leave);
 
   if (!leave) {
     console.log("No leave found");
-  } 
-  const newCount = +leave.count - +count;
+  }
+  const newCount = +leave.leaveType.count - +count;
+  console.log("newcount",newCount)
 
   if (newCount < 0) {
-    
     console.log("Not enough Leaves");
   }
+  const id = leave.leaveType._id
   const result = await pendingLeavesModel.findOneAndUpdate(
-    { employeeId, "pendingLeaves.leaveType": leaveType },
-    {
+    { employeeId, "pendingLeaves.leaveType": id },
+    {              
       $set: {
         "pendingLeaves.$.count": newCount,
       },
     },
     { new: true }
   );
-  if (result) {
-    console.log("COunt updated successfulyy");
+  if (!result) {
+    console.log("FAIELDED",result);
   }
 };
 
@@ -190,9 +202,11 @@ const handleGetPendingLeaves = async (req, res) => {
     }
     const decodedToken = extractToken(req);
     const employeeId = decodedToken.userId?._id;
-    console.log("EMPLOYEE", employeeId);
 
-    const pendingLeavesData = await pendingLeavesModel.find({ employeeId });
+    const pendingLeavesData = await pendingLeavesModel
+      .find({ employeeId })
+      .populate("pendingLeaves.leaveType");
+    console.log("Pending", pendingLeavesData);
     if (pendingLeavesData.length == 0) {
       return res.status(404).json({ message: "No Pending Leaves" });
     } else {

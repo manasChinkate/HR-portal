@@ -15,7 +15,11 @@ const pendingLeave = new mongoose.Schema(
     pendingLeaves: {
       type: [
         {
-          leaveType: String,
+          leaveType: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "LeaveType",
+            require: true,
+          },
           count: String,
         },
       ],

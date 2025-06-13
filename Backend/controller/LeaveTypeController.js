@@ -21,44 +21,44 @@ const handleCreateLeaveType = async (req, res) => {
       .json({ message: "Invalid data", errors: parsed.error.errors });
   }
 
-  let temp = [];
-  for (let i = 0; i < employees.length; i++) {
-    const existingEmployee = await pendingLeavesModel.findOne({
-      employeeId: employees[i]._id,
+  try {
+    const leaveTypeData = await leaveTypeModel.create({
+      ...req.body,
+      companyId,
     });
 
-    if (existingEmployee) {
-      console.log("EXISTINGGGGGG");
-      // Push new leave data to the existing employee's pendingLeaves array
-      existingEmployee.pendingLeaves.push({
-        leaveType: leaveType,
-        count: "" + count, // Ensure count is a string if schema requires it
-      });
-
-      // Save the updated document to MongoDB
-      await existingEmployee.save();
-    } else {
-      // Create a new entry for employees not found
-      temp.push({
+    let temp = [];
+    for (let i = 0; i < employees.length; i++) {
+      const existingEmployee = await pendingLeavesModel.findOne({
         employeeId: employees[i]._id,
-        companyId: companyId,
-        pendingLeaves: [{ leaveType: leaveType, count: "" + count }],
       });
+
+      if (existingEmployee) {
+        // Push new leave data to the existing employee's pendingLeaves array
+        existingEmployee.pendingLeaves.push({
+          leaveType: leaveTypeData._id,
+          count: "" + count, // Ensure count is a string if schema requires it
+        });
+
+        // Save the updated document to MongoDB
+        await existingEmployee.save();
+      } else {
+        // Create a new entry for employees not found
+        temp.push({
+          employeeId: employees[i]._id,
+          companyId: companyId,
+          pendingLeaves: [{ leaveType: leaveTypeData._id, count: "" + count }],
+        });
+      }
     }
-  }
 
-  console.log("TEMPPP", temp);
-
-  // Insert new employees in bulk if any
-  if (temp.length > 0) {
-    const finalLeaves = await pendingLeavesModel.insertMany(temp);
-    console.log("finalLeaves", finalLeaves);
-  } else {
-    console.log("No new employees to insert.");
-  }
-
-  try {
-    const leaveTypeData = leaveTypeModel.create({ ...req.body, companyId });
+    // Insert new employees in bulk if any
+    if (temp.length > 0) {
+      const finalLeaves = await pendingLeavesModel.insertMany(temp);
+      console.log("finalLeaves", finalLeaves);
+    } else {
+      console.log("No new employees to insert.");
+    }
     res
       .status(201)
       .json({ message: "LeaveType created successfully", data: leaveTypeData });

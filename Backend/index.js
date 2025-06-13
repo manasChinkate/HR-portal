@@ -6,22 +6,7 @@ app.use(express.json());
 const mongoose = require('mongoose');
 
 //Module Imports 
-const login = require('./controller/logincontrol');
-const {AddnewCompany,GetCompany} = require('./controller/NewCompanyController')
-const {AddnewEmployee,getEmployeeData} = require('./controller/NewEmployeeController')
-const ReportingManager = require('./controller/ReportingManager')
-const {Designation,GetDesignation} = require('./controller/DesignationController');
-const { Holiday, GetHoliday } = require('./controller/HolidayController');
-const { AddClient, GetClient } = require('./controller/ClientController');
-const { LeaveType, getLeaveType, createLeaveType } = require('./controller/LeaveTypeController');
-const { AddLeave, GetLeaveData, StatusChange, GetManageLeave, getPendingLeaves, applyLeave, getLeaveData, getManageLeaveData } = require('./controller/LeaveController');
-const { Department, GetDepartment } = require('./controller/DepartmentController');
-const { CreateProject, getProjects, AddTask, getTask, UpdateTaskStatus } = require('./controller/ProjectController');
-const { AddTimesheet, getTimesheet } = require('./controller/TimesheetController');
-const { CheckIn, CheckOut, GetAttendance } = require('./controller/AttendanceController');
-const Checking = require('./controller/Checking');
-const { getNotifications } = require('./controller/NotificationController');
-const EmployeeModel = require('./models/NewEmployee');
+
 const { designationRouter } = require('./routes/Designation.Routes');
 const { clientRouter } = require('./routes/Client.Routes');
 const { leaveTypeRouter } = require('./routes/LeaveType.Routes');

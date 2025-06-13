@@ -4,30 +4,39 @@ import {
   Card,
   CardHeader,
   CardTitle,
-  CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
 } from "@/components/ui/card";
 import { BASE_URL } from "@/constants";
-import { Car, Users } from "lucide-react";
+import { Users } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Progress } from "../ui/progress";
 
-export interface PendingLeave {
-  leaveType: string;
-  count: string;
+interface ILeaveType {
   _id: string;
+  leaveType: string;
+  count: string; // or number if it should be numeric
+  companyId: string;
+  createdAt: string | Date;
+  __v: number;
+}
+
+interface IPendingLeave {
+  _id: string;
+  leaveType: ILeaveType; // Embedded leaveType object
+  count: string; // or number if it should be numeric
+  // Add other fields if they exist in your actual data
 }
 
 const Chart4: React.FC = () => {
-  const [leaveData, setLeaveData] = useState<PendingLeave[]>([]);
+  const [leaveData, setLeaveData] = useState<IPendingLeave[]>([]);
 
   const fetchLeaveData = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/leaves/pending`);
 
       setLeaveData(res.data.data);
+      console.log(res.data.data);
     } catch (error) {
       console.error("Error fetching leave data:", error);
     }
@@ -110,23 +119,23 @@ const Chart4: React.FC = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {leaveBalances.map((leave, index) => (
+            {leaveData.map((leave, index) => (
               <div key={index} className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="font-medium text-gray-900">
-                    {leave.type}
+                  <span className="font-medium text-gray-900 dark:text-gray-100">
+                    {leave.leaveType.leaveType}
                   </span>
                   <span className="text-sm text-gray-600">
-                    {leave.remaining}/{leave.total} days
+                    {leave.count}/{leave.leaveType.count} days
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  {/* <Progress 
-                        value={(leave.remaining / leave.total) * 100} 
-                        className="flex-1 h-2"
-                      /> */}
+                  <Progress
+                    value={(+leave.count / +leave.leaveType.count) * 100}
+                    className="flex-1 h-2"
+                  />
                   <Badge variant="outline" className="text-xs">
-                    {leave.used} used
+                    {+leave.leaveType.count - +leave.count} used
                   </Badge>
                 </div>
               </div>

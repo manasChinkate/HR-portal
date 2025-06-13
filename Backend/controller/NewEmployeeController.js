@@ -41,7 +41,7 @@ const handleCreateEmployee = async (req, res) => {
       companyId: companyId,
       pendingLeaves: allLeaveTypes.map((leave) => {
         return {
-          leaveType: leave.leaveType,
+          leaveType: leave._id,
           count: leave.count,
         };
       }),
