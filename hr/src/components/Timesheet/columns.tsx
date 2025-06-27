@@ -5,6 +5,7 @@ import { Column } from "react-table";
 import { useState } from "react";
 
 import { convertDate } from "@/utils/dateHelper";
+import { Row } from "@tanstack/react-table";
 
 interface Timesheet {
   _id: {
@@ -32,7 +33,7 @@ export const COLUMNS: Column<Timesheet>[] = [
   {
     Header: "Full Name",
     accessor: "fullname",
-    Cell: ({ row }) => {
+    Cell: ({ row }: {row:Row<Employee>}) => {
       const [show, setShow] = useState(false);
       return (
         <>
@@ -57,7 +58,7 @@ export const COLUMNS: Column<Timesheet>[] = [
                 >
                   &times;
                 </span>
-                <div className="">
+                <div className=" dark:bg-primary1">
                   <h1 className=" text-xl font-bold border text-center text-black dark:text-white  py-[7px] px-[15px] rounded-sm">
                     {row.original.fullname}
                     <span> Details</span>

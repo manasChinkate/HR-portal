@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const HolidayModel = require("../models/Holiday");
 const jwt = require("jsonwebtoken");
-const EmployeeModel = require("../models/NewEmployee");
+const { EmployeeModel } = require("../models/NewEmployee");
 const NotificationModel = require("../models/Notifications");
 const LoginSchema = require("../models/Login");
 const { sendNotifications } = require("./NotificationController");
@@ -29,7 +29,7 @@ const handleCreateHoliday = async (req, res) => {
     // Fetch employees for the given company
     await sendNotifications(
       decodedToken.companyId,
-      `${holiday}, Holiday has been created`
+      `${data.holiday}, Holiday has been created`
     );
 
     // Send success response

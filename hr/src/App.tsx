@@ -23,15 +23,11 @@ import Filltimesheet from "./components/Timesheet/Filltimesheet";
 import TimesheetTable from "./components/Timesheet/TimesheetTable";
 import AttendanceMark from "./components/Attendance/AttendanceMark";
 import AddTask from "./components/ProjectMaster/ProjectTask/AddTask";
-import Task from "./components/ProjectMaster/ProjectTask/AddTask";
 import ViewTasks from "./components/ProjectMaster/ProjectTask/ViewTasks";
-import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
+import { SidebarProvider } from "./components/ui/sidebar";
 import AppSidebar from "./components/Sidebar/AppSidebar";
 import { ThemeProvider } from "./components/Theme-Provider";
 import {
-  useQuery,
-  useMutation,
-  useQueryClient,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";

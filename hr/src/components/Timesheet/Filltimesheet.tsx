@@ -99,7 +99,8 @@ const Filltimesheet = () => {
           <div className="flex justify-end mt-4">
             <Link to={"/timesheet/view"}>
               <Button
-                className=" dark:bg-blue-600 dark:text-white"
+           
+                className="  dark:text-white"
                 type="submit"
               >
                 Timesheet History
@@ -211,7 +212,7 @@ const Filltimesheet = () => {
               </p>
             </div>
           </div>
-          <Button className=" dark:bg-blue-600 dark:text-white" type="submit">
+          <Button className="  dark:text-white" type="submit">
             Save
           </Button>
         </form>

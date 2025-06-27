@@ -2,19 +2,24 @@ import { Button } from "../../ui/button";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { BASE_URL } from "../../../constants";
-
-import {  useMemo } from "react";
-
+import { useMemo } from "react";
 import "../../table.css";
-
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { COLUMNS } from "./columns";
-
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TableWrapper from "@/components/ui/TableWrapper";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchClient } from "@/components/MainMaster/services/masterServices";
+import { Input } from "@/components/ui/input";
 
 type Inputs = z.infer<typeof ClientSchema>;
 
@@ -30,19 +35,26 @@ const ClientSchema = z.object({
 });
 
 const AddClient = () => {
+  const form = useForm<Inputs>({
+    resolver: zodResolver(ClientSchema),
+    defaultValues: {
+      clientName: "",
+      state: "",
+      country: "",
+      contactPerson: "",
+      contactPersonPhone: "",
+    },
+  });
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<Inputs>({
-    resolver: zodResolver(ClientSchema),
-  });
+  } = form;
 
   const columns: any = useMemo(() => COLUMNS, []);
   const queryClient = useQueryClient();
 
- 
   const addClient = async (data: Inputs) =>
     await axios.post(`${BASE_URL}/client`, data);
 
@@ -56,7 +68,7 @@ const AddClient = () => {
     onError: () => toast.error("Failed"),
   });
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["client"],
     queryFn: fetchClient,
     staleTime: Infinity,
@@ -75,74 +87,91 @@ const AddClient = () => {
             Add new clients for your company
           </p>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-4 mb-5 ">
-            {/* <p className=' col-span-full border-b-2 pb-1 font-semibold'>Add Details</p> */}
-            <div className=" flex flex-col gap-2">
-              <label>Client Name *</label>
-              <input
-                {...register("clientName")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                placeholder="Tata Consultancy Services"
-              />
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.clientName?.message}
-              </p>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Contact Person *</label>
-              <input
-                {...register("contactPerson")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                placeholder="John Doe"
-              />
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.contactPerson?.message}
-              </p>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Contact Person Phone *</label>
-              <input
-                {...register("contactPersonPhone")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                placeholder=""
-              />
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.contactPersonPhone?.message}
-              </p>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>state *</label>
-              <input
-                {...register("state")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="text"
-                placeholder="Maharashtra"
-              />
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.state?.message}
-              </p>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Country *</label>
-              <input
-                {...register("country")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="text"
-                placeholder="India"
-              />
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.country?.message}
-              </p>
-            </div>
-          </div>
-          <Button
-            className=" dark:bg-[#3b5ae4] dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md  "
-            type="submit"
+        <Form {...form}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className=" flex flex-col gap-3 py-3"
           >
-            Add
-          </Button>
-        </form>
+            <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-4 mb-5 ">
+              <FormField
+                control={form.control}
+                name="clientName"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Client Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Tata" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="contactPerson"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Contact Person</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Person name" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="contactPersonPhone"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Contact Person Phone</FormLabel>
+                    <FormControl>
+                      <Input placeholder="98*******" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="state"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>State</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Maharashtra" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="country"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Country</FormLabel>
+                    <FormControl>
+                      <Input placeholder="India" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <Button
+              className="dark:bg-black dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
+              type="submit"
+            >
+              Add
+            </Button>
+          </form>
+        </Form>
       </div>
       <TableWrapper
         data={data || []}
@@ -150,6 +179,7 @@ const AddClient = () => {
         columns={columns}
         description="Here's a list of Clients."
         title="Clients"
+        refetch={refetch}
       />
     </div>
   );

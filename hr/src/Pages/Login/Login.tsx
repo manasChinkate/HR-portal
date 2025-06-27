@@ -4,7 +4,6 @@ import { FaUser, FaLock } from "react-icons/fa";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import login2 from "../../assets/login2.svg";
 import axios from "axios";
 import { BASE_URL } from "../../constants";
 import { useDispatch } from "react-redux";
@@ -38,8 +37,7 @@ const Login = () => {
       const res = await axios.post(`${BASE_URL}/auth/login`, data);
 
       if (res.status === 200 && res?.data?.token) {
-        toast.success("Login Successfully");
-        // setResData(res.data); // Assuming setResData is a function to update state
+        toast.success("Login Successful");
         dispatch(setauthority(res.data.authority));
         dispatch(setName(res.data.name));
         dispatch(setCompany(res.data.companyName));
@@ -51,15 +49,12 @@ const Login = () => {
         localStorage.setItem("userID", res.data.userId);
         navigate("/");
       }
-
-      // console.log(res?.data);
     } catch (error: any) {
-      // Catch the error as any type, since axios errors have a response object
       if (
         (error.response && error.response.status === 404) ||
         error.response.status === 401
       ) {
-        toast.error(error.response.data || "Unauthorized"); // Show the error message from the response
+        toast.error(error.response.data || "Unauthorized");
         localStorage.removeItem("token");
       } else {
         console.error("Error during login:", error);
@@ -70,107 +65,130 @@ const Login = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2">
-      <div className="hidden lg:block dark:bg-primary1 h-screen w-full bg-gradient-to-r from-blue-500 to-white">
-        <img
-          src={login2}
-          alt="login"
-          className="hidden lg:block h-screen w-full bg-gradient-to-r from-blue-500 to-white "
-        />
+    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-gray-100">
+      {/* Left Side */}
+      <div className="hidden lg:flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-10 relative">
+        <div className="z-10 text-center space-y-6">
+          <h1 className="text-4xl font-bold leading-tight">Welcome Back!</h1>
+          <p className="text-lg font-medium">
+            Login to manage your employees, projects, and more.
+          </p>
+        </div>
+        {/* Decorative SVG background */}
+        <svg
+          className="absolute w-full h-full top-0 left-0 opacity-20 z-0"
+          viewBox="0 0 200 200"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill="#ffffff"
+            d="M50.8,-68.2C65.2,-60.7,75.2,-43.2,75.6,-26.6C76,-10,66.8,5.7,59.2,20.9C51.5,36.1,45.3,50.8,34.2,59.2C23.1,67.7,7.1,70,-10.4,73.3C-27.8,76.6,-55.5,80.8,-69.8,69.5C-84.1,58.1,-84.9,31.2,-80.4,9.3C-76,-12.6,-66.4,-29.6,-54.5,-38.5C-42.6,-47.5,-28.5,-48.5,-15.4,-57.8C-2.3,-67.1,9.8,-84.7,23.4,-86.3C37.1,-87.9,52.4,-73.6,50.8,-68.2Z"
+            transform="translate(100 100)"
+          />
+        </svg>
       </div>
 
-      <div className="h-screen flex flex-col justify-center items-center gap-5 bg-white">
-        <div className="w-full lg:w-[45vw] md:w-[50vw] border-none">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4 p-5 shadow-sm"
-          >
-            <div>
-              <p className="text-2xl font-bold">Log in</p>
-              <p className="text-xs text-gray-600">Enter your credentials</p>
-            </div>
+      {/* Right Form Side */}
+      <div className="flex items-center justify-center p-6">
+        <div className="bg-white dark:bg-slate-900 shadow-2xl rounded-2xl w-full max-w-md p-8 space-y-6">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-800 dark:text-white">
+              Login to Your Account
+            </h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Enter your email and password
+            </p>
+          </div>
 
-            {/* Email Input */}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {/* Email */}
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-200"
               >
                 Email
               </label>
-              <div className="mt-2 flex items-center relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <FaUser className="text-gray-500" />
+              <div className="mt-1 relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaUser className="text-gray-400" />
                 </div>
                 <input
-                  {...register("email", { required: true })}
                   id="email"
-                  type="text"
-                  autoComplete="email"
-                  className="block w-full rounded-full border-0 py-3 pl-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black-600 sm:text-sm sm:leading-6"
+                  type="email"
+                  {...register("email", { required: true })}
+                  className="w-full pl-10 py-2 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                  placeholder="you@example.com"
                 />
               </div>
               {errors.email && (
-                <span className="text-pink-700 text-sm">Email is required</span>
+                <p className="text-sm text-red-600 mt-1">Email is required</p>
               )}
             </div>
 
-            {/* Password Input */}
+            {/* Password */}
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-200"
               >
                 Password
               </label>
-              <div className="mt-2 flex items-center relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <FaLock className="text-gray-500" />
+              <div className="mt-1 relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaLock className="text-gray-400" />
                 </div>
                 <input
-                  {...register("password", { required: true })}
                   id="password"
                   type={hideEye ? "password" : "text"}
-                  autoComplete="current-password"
-                  className="block w-full rounded-full border-0 py-3 pl-10 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black-600 sm:text-sm sm:leading-6"
+                  {...register("password", { required: true })}
+                  className="w-full pl-10 pr-10 py-2 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                  placeholder="••••••••"
                 />
                 <div
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
                   onClick={() => setHideEye(!hideEye)}
                 >
                   {hideEye ? (
-                    <IoMdEyeOff className="text-gray-500" />
+                    <IoMdEyeOff className="text-gray-400" />
                   ) : (
-                    <IoMdEye className="text-gray-500" />
+                    <IoMdEye className="text-gray-400" />
                   )}
                 </div>
               </div>
               {errors.password && (
-                <span className="text-pink-700 text-sm">
+                <p className="text-sm text-red-600 mt-1">
                   Password is required
-                </span>
+                </p>
               )}
-              <div className="flex flex-col items-end space-y-2">
+              <div className="text-right mt-2">
                 <Link
                   to="/forgotpassword"
-                  className="capitalize text-blue-600 text-[0.85rem] mt-2"
+                  className="text-blue-600 text-sm hover:underline"
                 >
-                  forgot password?
+                  Forgot password?
                 </Link>
               </div>
             </div>
 
-            {/* Submit Button */}
+            {/* Submit */}
             <div>
               <button
-                disabled={isSubmitting}
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-primary1 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                disabled={isSubmitting}
+                className="w-full py-2 px-4 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
               >
                 {isSubmitting ? "Logging in..." : "Log In"}
               </button>
             </div>
           </form>
+
+          <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+            Don’t have an account?{" "}
+            <Link to="/register" className="text-blue-600 hover:underline">
+              Register
+            </Link>
+          </p>
         </div>
       </div>
     </div>

@@ -33,7 +33,7 @@ const ViewTasks = () => {
     queryFn: fetchProjects,
     staleTime: Infinity,
   });
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["task", selectedProject],
     queryFn: () => fetchTasks(selectedProject),
     enabled: !!selectedProject,
@@ -71,6 +71,7 @@ const ViewTasks = () => {
           columns={columns}
           description="Here's a list of Tasks."
           title="View Tasks"
+          refetch={refetch}
         />
       </div>
     </div>

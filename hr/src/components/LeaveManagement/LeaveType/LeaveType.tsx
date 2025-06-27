@@ -44,7 +44,7 @@ const LeaveType = () => {
     onError: () => toast.error("Failed"),
   });
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading,refetch } = useQuery({
     queryKey: ["leavetype"],
     queryFn: fetchLeaveType,
     staleTime: Infinity,
@@ -105,6 +105,7 @@ const LeaveType = () => {
         columns={columns}
         description="Here's a list of Leave Types."
         title="Leave Types"
+        refetch={refetch}
       />
     </div>
   );

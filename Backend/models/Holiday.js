@@ -6,6 +6,7 @@ const holidaySchema = new mongoose.Schema(
       required: true,
       type: String,
     },
+    holidayType:String,
     fromDate: String,
     toDate: String,
     createdAt: {

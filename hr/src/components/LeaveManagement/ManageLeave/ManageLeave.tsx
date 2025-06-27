@@ -16,7 +16,7 @@ import { fetchManageleaves } from "./services";
 const ManageLeave = () => {
   const columns: any = useMemo(() => COLUMNS, []);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading,refetch } = useQuery({
     queryKey: ["manageleave"],
     queryFn: fetchManageleaves,
     staleTime:Infinity
@@ -30,6 +30,7 @@ const ManageLeave = () => {
         columns={columns}
         description="Here's a list of Leaves."
         title="Manage Leaves"
+        refetch={refetch}
       />
     </div>
   );

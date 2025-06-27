@@ -14,7 +14,7 @@ const notificationSchema = new mongoose.Schema({
     ref: "Company",
     required: true,
   },
-});
+},{collection:"Notification"});
 
 const NotificationModel = mongoose.model("Notification", notificationSchema);
 module.exports = NotificationModel;

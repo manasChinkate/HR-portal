@@ -11,7 +11,7 @@ import { fetchEmployees } from "./services";
 const EmployeeTable = () => {
   const columns: any = useMemo(() => COLUMNS, []);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading,refetch } = useQuery({
     queryKey: ["employees"],
     queryFn: fetchEmployees,
     staleTime: Infinity,
@@ -25,6 +25,7 @@ const EmployeeTable = () => {
         columns={columns}
         description="Here's a list of Employees."
         title="Employee Management"
+        refetch={refetch}
       />
     </div>
   );

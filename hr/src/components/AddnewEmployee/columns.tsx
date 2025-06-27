@@ -62,7 +62,7 @@ export const COLUMNS: Column<Employee>[] = [
                   &times;
                 </span>
                 <div className="">
-                  <h1 className=" text-xl font-bold border text-center bg-background1 text-black dark:text-white  py-[7px] px-[15px] rounded-sm">
+                  <h1 className=" text-xl font-bold border text-center bg-background1 text-black dark:text-white dark:bg-primary1  py-[7px] px-[15px] rounded-sm">
                     {row.original.fullname}<span> Details</span>
                   </h1>
                 </div>

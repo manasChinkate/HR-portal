@@ -27,8 +27,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
 
 interface Notification {
   _id: string;
@@ -41,8 +42,7 @@ interface Notification {
 }
 
 const Navbar = () => {
-  const [notificationData, setNotificationData] = useState<Notification[]>([]);
-  const [loading, setLoading] = useState(true);
+
   const { setTheme } = useTheme();
 
   const name = useSelector((state: RootState) => state.auth.name);
@@ -70,19 +70,17 @@ const Navbar = () => {
   };
 
   const getNotifications = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/notification`);
-      // Handle the response, e.g., store in state or display the data
-      console.log(res.data);
-      setNotificationData(res.data);
-      setLoading(false);
-    } catch (error) {
-      // Handle any errors that occur during the request
-      console.error("Error fetching Designations:", error);
-    }
+    const res = await axios.get(`${BASE_URL}/notification`);
+    return res.data
   };
 
-  console.log("notificationData", notificationData);
+  const {data, isPending} = useQuery({
+    queryKey:["notification"],
+    queryFn:getNotifications,
+    staleTime:Infinity
+  })
+
+ 
   return (
     <div className="h-[7vh] flex items-center justify-between px-5 mt-2 mr-2 rounded-md border  bg-background1 dark:bg-secondary1 dark:text-white">
       <div className="flex gap-4 items-center">
@@ -101,7 +99,7 @@ const Navbar = () => {
         <div>
           <Sheet>
             <SheetTrigger
-              onClick={() => getNotifications()}
+              // onClick={() => getNotifications()}
               className="p-1 rounded-md border border-black "
             >
               <IoMdNotificationsOutline className=" text-2xl" />
@@ -110,7 +108,7 @@ const Navbar = () => {
               <div className=" h-[90vh] overflow-y-auto">
                 <h2 className="text-lg font-bold mb-4">Notifications</h2>
                 <ul className="space-y-3">
-                  {notificationData?.notifications?.map(
+                  {data?.notifications?.map(
                     (notification: Notification) => {
                       const formattedDate = new Date(
                         notification.createdAt
@@ -159,34 +157,18 @@ const Navbar = () => {
             <MdOutlineDarkMode onClick={() => setTheme("dark")} />
           )}
         </div>
-        {/* <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-        
+       
 
-            <div className=" text-2xl border cursor-pointer border-black hover:border-button  rounded-md   p-1 hover:text-button  ease-in-out duration-400 transition-opacity">
-              {isDarkMode ? (
-                <MdOutlineLightMode className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              ) : (
-                <MdOutlineDarkMode className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              )}
-            </div>
-          </DropdownMenuTrigger>z
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem >
-              Light
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("dark")}>
-              Dark
-            </DropdownMenuItem>
-            
-          </DropdownMenuContent>
-        </DropdownMenu> */}
-
-        <AlertDialog >
+        <AlertDialog>
           <AlertDialogTrigger asChild>
-            <button className="p-1  text-2xl border dark:bg-transparent cursor-pointer border-black hover:border-red-500 hover:text-red-500 rounded-lg"  variant="outline"><MdLogout /></button>
+            <Button
+              className=" p-2 h-auto border dark:bg-transparent cursor-pointer border-black hover:border-red-500 hover:text-red-500 rounded-lg"
+              variant="outline"
+            >
+              <MdLogout />
+            </Button>
           </AlertDialogTrigger>
-          <AlertDialogContent className=" dark:bg-primary1 bg-background2" >
+          <AlertDialogContent className=" dark:bg-primary1 bg-background2">
             <AlertDialogHeader>
               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
               <AlertDialogDescription>
@@ -194,12 +176,18 @@ const Navbar = () => {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel className=" bg-background1 dark:bg-primary1 dark:text-white">Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleLogout} className="bg-red-600 dark:text-white dark:hover:bg-red-600">Continue</AlertDialogAction>
+              <AlertDialogCancel className=" bg-background1 dark:bg-primary1 dark:text-white">
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleLogout}
+                className="bg-red-600 dark:text-white dark:hover:bg-red-600"
+              >
+                Continue
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        
       </div>
     </div>
   );
