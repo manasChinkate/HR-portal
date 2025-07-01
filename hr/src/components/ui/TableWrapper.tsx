@@ -31,6 +31,8 @@ import {
 import Checkbox from "../Checkbox";
 import { exportToExcel } from "../xlsx";
 import { RefreshCcw } from "lucide-react";
+import { useSelector } from "react-redux";
+import { RootState } from "app/store";
 
 interface TableWrapperProps {
   columns: any;
@@ -38,8 +40,8 @@ interface TableWrapperProps {
   loading?: boolean;
   title?: string;
   description?: string;
-  queryKey?:string,
-  refetch:()=>void
+  queryKey?: string;
+  refetch: () => void;
 }
 
 const TableWrapper = ({
@@ -48,7 +50,7 @@ const TableWrapper = ({
   loading = false,
   title,
   description,
-  refetch
+  refetch,
 }: TableWrapperProps) => {
   const defaultColumn = useMemo(() => ({ Filter: ColumnFiltering }), []);
   const {
@@ -84,6 +86,7 @@ const TableWrapper = ({
   );
 
   const { globalFilter, pageIndex } = state;
+  const authority = useSelector((state: RootState) => state.auth.authority);
 
   return (
     <div className="bg-background1 dark:bg-secondary1 border border-background2 dark:border-gray-700 md:p-6 p-4 rounded-xl shadow-sm transition-colors duration-200">
@@ -107,7 +110,7 @@ const TableWrapper = ({
           <Tooltip>
             <TooltipTrigger>
               <Button
-              onClick={refetch}
+                onClick={refetch}
                 className="hidden sm:flex items-center justify-center size-10 bg-background2 dark:bg-blue-900/20 hover:bg-background2/80 dark:hover:bg-blue-900/30 rounded-lg transition-colors duration-200 group"
                 title="Refresh Data"
               >
@@ -120,28 +123,31 @@ const TableWrapper = ({
           </Tooltip>
 
           {/* Excel Export Button */}
-          <Tooltip>
-            <TooltipTrigger>
-              <Button
-                onClick={() =>
-                  exportToExcel(
-                    visibleColumns.map((col) => ({
-                      label: col.Header,
-                      value: col.id,
-                    })),
-                    rows.map((row) => row.original),
-                    "dataSheet"
-                  )
-                }
-                className="hidden sm:flex items-center justify-center size-10 bg-background2 dark:bg-green-900/20 hover:bg-background2/80 dark:hover:bg-green-900/30 rounded-lg transition-colors duration-200 group"
-              >
-                <FaFileExcel className="text-lg text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors duration-200" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Export to Excel</p>
-            </TooltipContent>
-          </Tooltip>
+
+          {authority == "Admin" && (
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  onClick={() =>
+                    exportToExcel(
+                      visibleColumns.map((col) => ({
+                        label: col.Header,
+                        value: col.id,
+                      })),
+                      rows.map((row) => row.original),
+                      "dataSheet"
+                    )
+                  }
+                  className="hidden sm:flex items-center justify-center size-10 bg-background2 dark:bg-green-900/20 hover:bg-background2/80 dark:hover:bg-green-900/30 rounded-lg transition-colors duration-200 group"
+                >
+                  <FaFileExcel className="text-lg text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors duration-200" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Export to Excel</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
 
           {/* Column Visibility Popover */}
           <Tooltip>

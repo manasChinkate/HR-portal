@@ -162,7 +162,7 @@ const Navbar = () => {
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button
-              className=" p-2 h-auto border dark:bg-transparent cursor-pointer border-black hover:border-red-500 hover:text-red-500 rounded-lg"
+              className=" p-2 h-auto border bg-transparent cursor-pointer border-black hover:border-red-500 hover:text-red-500 rounded-lg"
               variant="outline"
             >
               <MdLogout />
@@ -181,7 +181,7 @@ const Navbar = () => {
               </AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleLogout}
-                className="bg-red-600 dark:text-white dark:hover:bg-red-600"
+                className="bg-red-600 dark:text-white dark:hover:bg-red-600 "
               >
                 Continue
               </AlertDialogAction>

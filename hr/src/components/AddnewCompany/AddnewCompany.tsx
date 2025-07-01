@@ -45,23 +45,20 @@ const AddnewCompany = () => {
   return (
     <div className="w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-primary1 py-2 pr-2 overflow-y-auto">
       <div className=" bg-background1 dark:bg-secondary1  rounded-lg w-full p-4 text-sm">
-      <div className=" flex justify-between">
-
-<div className=" ">
-  <h1 className=" text-2xl font-bold     ">Add Employee</h1>
-  <p className=" text-gray-500 text-sm">
-    Add new employees to your company
-  </p>
-</div>
-<div className="flex justify-end mt-4">
-  <Link
-    to={"/company/view"}
-    className="inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md"
-  >
-    Company List
-  </Link>
-</div>
-</div>
+        <div className=" flex justify-between">
+          <div className=" ">
+            <h1 className=" text-2xl font-bold     ">Add Company</h1>
+            <p className=" text-gray-500 text-sm">Add new company</p>
+          </div>
+          <div className="flex justify-end mt-4">
+            <Link
+              to={"/company/view"}
+              className="inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md"
+            >
+              Company List
+            </Link>
+          </div>
+        </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-6 mb-5 ">
