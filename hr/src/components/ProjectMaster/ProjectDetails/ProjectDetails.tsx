@@ -8,6 +8,33 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchClient } from "@/components/MainMaster/services/masterServices";
 import { addProject, fetchProjectManager } from "./services";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
+import { Textarea } from "@/components/ui/textarea";
 
 export type projectInputs = z.infer<typeof ProjectSchema>;
 const ProjectSchema = z
@@ -33,14 +60,10 @@ const ProjectSchema = z
   );
 
 const ProjectDetails = () => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<projectInputs>({
+  const form = useForm({
     resolver: zodResolver(ProjectSchema),
   });
+  const { handleSubmit, reset } = form;
 
   const queryClient = useQueryClient();
 
@@ -75,112 +98,239 @@ const ProjectDetails = () => {
           <h1 className=" text-2xl font-bold      ">Add Project</h1>
           <p className=" text-gray-500 text-sm">Add Projects here</p>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-4 mb-5 ">
-            <div className=" flex flex-col gap-2">
-              <label>Project Name</label>
-              <input
-                {...register("projectName")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600 dark:border-primary1 dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="text"
-                placeholder="name of your project"
-              />
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.projectName?.message}
-              </p>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Client</label>
-              <select
-                {...register("clientName")}
-                id="clientname"
-                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
-              >
-                <option value="">Select</option>
-                {clientData.map((e: { clientName: string; _id: string }) => {
-                  return <option value={e._id}>{e.clientName}</option>;
-                })}
-              </select>
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.clientName?.message}
-              </p>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Assign Project Manager</label>
-              <select
-                {...register("projectManager")}
-                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
-              >
-                <option value="">Select</option>
-                {projectManagerData.map(
-                  (e: { _id: string; fullname: string }) => {
-                    return <option value={e._id}>{e.fullname}</option>;
-                  }
-                )}
-              </select>
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.projectManager?.message}
-              </p>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Start Date</label>
-              <input
-                {...register("startDate")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="date"
-                placeholder="holiday"
-              />
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.startDate?.message}
-              </p>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Deadline</label>
-              <input
-                {...register("deadline")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="date"
-                placeholder="holiday"
-              ></input>
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.deadline?.message}
-              </p>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Priority</label>
-              <select
-                {...register("priority")}
-                id="clientname"
-                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
-              >
-                <option value="">Select</option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </select>
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.priority?.message}
-              </p>
-            </div>
-            <div className=" flex flex-col gap-2 col-span-3">
-              <label>Project Description</label>
-              <textarea
-                {...register("description")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                placeholder=" description"
-              ></textarea>
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.description?.message}
-              </p>
-            </div>
-          </div>
-          <Button
-            className=" dark:bg-[#3b5ae4] dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md  "
-            type="submit"
+        <Form {...form}>
+          <form
+            className=" flex flex-col gap-3 py-3"
+            onSubmit={handleSubmit(onSubmit)}
           >
-            Add
-          </Button>
-        </form>
+            <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-4 mb-5 ">
+              {/* Project Name */}
+              <FormField
+                control={form.control}
+                name="projectName"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Project Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Tata" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Client Name */}
+              <FormField
+                control={form.control}
+                name="clientName"
+                render={({ field }) => (
+                  <FormItem className=" space-y-2">
+                    <FormLabel>Email</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Client" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {clientData.map(
+                          (e: { clientName: string; _id: string }) => {
+                            return (
+                              <SelectItem value={e._id}>
+                                {e.clientName}
+                              </SelectItem>
+                            );
+                          }
+                        )}
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Project Manager */}
+              <FormField
+                control={form.control}
+                name="projectManager"
+                render={({ field }) => (
+                  <FormItem className=" space-y-2">
+                    <FormLabel>Project Manager</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Project Manager" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {projectManagerData.map(
+                          (e: { fullname: string; _id: string }) => {
+                            return (
+                              <SelectItem value={e._id}>
+                                {e.fullname}
+                              </SelectItem>
+                            );
+                          }
+                        )}
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Start Date */}
+              <FormField
+                control={form.control}
+                name="startDate"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Start Date</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(new Date(field.value), "PPP")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={
+                            field.value ? new Date(field.value) : undefined
+                          }
+                          onSelect={(date) => {
+                            field.onChange(
+                              date ? format(date, "yyyy-MM-dd") : ""
+                            );
+                          }}
+                          captionLayout="dropdown"
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/*Deadline*/}
+              <FormField
+                control={form.control}
+                name="deadline"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Deadline</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(new Date(field.value), "PPP")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={
+                            field.value ? new Date(field.value) : undefined
+                          }
+                          onSelect={(date) => {
+                            field.onChange(
+                              date ? format(date, "yyyy-MM-dd") : ""
+                            );
+                          }}
+                          captionLayout="dropdown"
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Priority */}
+              <FormField
+                control={form.control}
+                name="priority"
+                render={({ field }) => (
+                  <FormItem className=" space-y-2">
+                    <FormLabel>Priority</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Priority" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="low">Low</SelectItem>
+                        <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="high">High</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Text Area */}
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem className="space-y-2 col-span-3">
+                    <FormLabel>Project Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Tell about project"
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* Submit Button */}
+           <Button
+              className="dark:bg-black dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
+              type="submit"
+            >
+              Add
+            </Button>
+          </form>
+        </Form>
       </div>
     </div>
   );

@@ -1,11 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../../ui/button";
-import { BASE_URL } from "../../../constants";
-import axios from "axios";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../app/store";
+
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -16,7 +13,32 @@ import { Link, useLocation } from "react-router-dom";
 import { fetchProjects } from "../OngoingProjects/services";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createTask, fetchTeamMembers } from "./services";
-import { projectInputs } from "../ProjectDetails/ProjectDetails";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { Input } from "@/components/ui/input";
 
 export type TaskInputs = z.infer<typeof TaskSchema>;
 
@@ -33,21 +55,22 @@ const AddTask = () => {
   const location = useLocation();
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    reset,
-    watch,
-    trigger,
-    formState: { errors },
-  } = useForm<TaskInputs>({
+  const form = useForm({
     resolver: zodResolver(TaskSchema),
     defaultValues: {
       taskDesc: "",
+      taskTitle: "",
       assignees: [],
+      priority: "",
+      dueDate: "",
     },
   });
+  const {
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = form;
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: createTask,
@@ -95,113 +118,205 @@ const AddTask = () => {
           <h1 className="text-2xl font-bold">Add Tasks</h1>
           <p className="text-gray-500 text-sm">Add tasks here</p>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} className="">
-          <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-2 pt-4">
-            <div className="flex flex-col gap-2">
-              <label>Select Project</label>
-              <select
-                {...register("projectId", { required: true })}
-                disabled={pageType == "view"}
-                className="hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm text-sm"
-              >
-                <option value="">Select</option>
-                {projects.map((e: { _id: string; projectName: string }) => (
-                  <option key={e._id} value={e._id}>
-                    {e.projectName}
-                  </option>
-                ))}
-              </select>
-              {errors.projectId && (
-                <p className="text-red-500 text-sm">Project is required</p>
-              )}
-            </div>
-            <div className="flex flex-col gap-2">
-              <label>Assign</label>
-              <input type="hidden" {...register("assignees")} />
-              <MultiSelectComboBox
-                disabled={pageType == "view"}
-                options={projectManagerData}
-                selectedValues={selectedUsers}
-                setSelectedValues={setSelectedUsers}
-                placeholder="Select team members"
-                setFormValue={(val) => setValue("assignees", val)}
-              />
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Priority</label>
-              <select
-                {...register("priority")}
-                id="clientname"
-                disabled={pageType == "view"}
-                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
-              >
-                <option value="">Select</option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </select>
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.priority?.message}
-              </p>
-            </div>
+        <Form {...form}>
+          <form
+            className=" flex flex-col gap-3 py-3"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-4 mb-5 ">
+              {/* Task Name */}
+              <FormField
+                control={form.control}
+                name="taskTitle"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Task Title</FormLabel>
+                    <FormControl>
+                      <Input disabled={pageType == "view"} {...field} />
+                    </FormControl>
 
-            <div className=" flex flex-col gap-2">
-              <label>Due date</label>
-              <input
-                {...register("dueDate")}
-                disabled={pageType == "view"}
-                className=" hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="date"
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.dueDate?.message}
-              </p>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Task Title</label>
-              <input
-                disabled={pageType == "view"}
-                {...register("taskTitle")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600 dark:border-black dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="text"
-              />
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.taskTitle?.message}
-              </p>
-            </div>
-            <div className="mb-3 col-span-3 gap-2">
-              <label>Task Description</label>
-              <ReactQuill
-                readOnly={pageType == "view"}
-                id="content"
-                className=" rounded-md bg-white dark:bg-secondary1  "
-                value={watch("taskDesc")}
-                onChange={(value) => {
-                  setValue("taskDesc", value);
-                  trigger("taskDesc");
-                }}
-              />
-              <p className=" pl-2 text-xs text-red-500 font-semibold">
-                {errors.taskDesc?.message}
-              </p>
-            </div>
-          </div>
+              {/* Project Name  */}
+              <FormField
+                control={form.control}
+                name="projectId"
+                render={({ field }) => (
+                  <FormItem className=" space-y-2">
+                    <FormLabel>Project</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled={pageType == "view"}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Project" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {projects.map(
+                          (e: { projectName: string; _id: string }) => {
+                            return (
+                              <SelectItem value={e._id}>
+                                {e.projectName}
+                              </SelectItem>
+                            );
+                          }
+                        )}
+                      </SelectContent>
+                    </Select>
 
-          {pageType == "view" ? (
-            <Link to={"/view-task"}>
-              <Button className="dark:bg-[#3b5ae4] w-24 dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md">
-                Back
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Assignes  */}
+              <FormField
+                control={form.control}
+                name="assignees"
+                render={() => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Assign</FormLabel>
+                    <Controller
+                      control={form.control}
+                      name="assignees"
+                      render={({ field }) => (
+                        <MultiSelectComboBox
+                          disabled={pageType === "view"}
+                          options={projectManagerData}
+                          selectedValues={field.value || []}
+                          setSelectedValues={(val) => field.onChange(val)}
+                          placeholder="Select team members"
+                        />
+                      )}
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Priority */}
+              <FormField
+                control={form.control}
+                name="priority"
+                render={({ field }) => (
+                  <FormItem className=" space-y-2">
+                    <FormLabel>Priority</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled={pageType == "view"}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Priority" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="low">Low</SelectItem>
+                        <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="high">High</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/*Due Date*/}
+              <FormField
+                control={form.control}
+                name="dueDate"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Due Date</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(new Date(field.value), "PPP")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={
+                            field.value ? new Date(field.value) : undefined
+                          }
+                          disabled={pageType == "view"}
+                          onSelect={(date) => {
+                            field.onChange(
+                              date ? format(date, "yyyy-MM-dd") : ""
+                            );
+                          }}
+                          captionLayout="dropdown"
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="taskDesc"
+                render={({ field }) => (
+                  <FormItem className="col-span-3 mb-3">
+                    <FormLabel>Task Description</FormLabel>
+                    <Controller
+                      control={form.control}
+                      name="taskDesc"
+                      render={({ field: { onChange, value } }) => (
+                        <ReactQuill
+                          readOnly={pageType === "view"}
+                          value={value}
+                          onChange={(val) => {
+                            onChange(val);
+                            form.trigger("taskDesc"); // optional: if you want immediate validation
+                          }}
+                          className="rounded-md bg-white dark:bg-secondary1"
+                        />
+                      )}
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {pageType == "view" ? (
+              <Link to={"/view-task"}>
+                <Button
+                  className="dark:bg-black dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
+                  type="button"
+                >
+                  Back
+                </Button>
+              </Link>
+            ) : (
+              <Button
+                className="dark:bg-black dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
+                type="submit"
+              >
+                Add
               </Button>
-            </Link>
-          ) : (
-            <Button
-              className="dark:bg-[#3b5ae4] w-24 dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md"
-              type="submit"
-            >
-              Add
-            </Button>
-          )}
-        </form>
+            )}
+          </form>
+        </Form>
       </div>
     </div>
   );

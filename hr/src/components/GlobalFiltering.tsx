@@ -1,14 +1,23 @@
-const GlobalFiltering = ({ filter, setFilter }) => {
-    return (
-      <input
-        className="flex rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 h-8 w-[150px] lg:w-[250px]"
+import { Search } from "lucide-react"; // or your preferred icon library
+import { Input } from "./ui/input";
+
+const GlobalFiltering = ({
+  filter,
+  setFilter,
+}: {
+  filter: string;
+  setFilter: (value: string) => void;
+}) => {
+  return (
+    <div className="relative w-full lg:w-[250px]">
+      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+      <Input
+        className="w-full pl-9"
         placeholder="Search Here..."
-        type="text"
         value={filter || ""}
         onChange={(e) => setFilter(e.target.value)}
       />
-    );
-  };
-  
-  export default GlobalFiltering;
-  
+    </div>
+  );
+};
+export default GlobalFiltering;

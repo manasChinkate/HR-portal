@@ -80,14 +80,14 @@ const AddHoliday = () => {
     },
   });
 
-  const { setValue } = form
+  const { setValue } = form;
 
   const { handleSubmit, reset, watch } = form;
 
   const holidayType = watch("holidayType");
   const queryClient = useQueryClient();
 
-  const { data, isLoading,refetch } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["holiday"],
     queryFn: fetchHoliday,
     staleTime: Infinity,
@@ -117,7 +117,7 @@ const AddHoliday = () => {
   };
 
   useEffect(() => {
-    setValue("toDate","")
+    setValue("toDate", "");
   }, [watch("holidayType")]);
 
   return (
@@ -222,9 +222,6 @@ const AddHoliday = () => {
                               date ? format(date, "yyyy-MM-dd") : ""
                             );
                           }}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
                           captionLayout="dropdown"
                         />
                       </PopoverContent>

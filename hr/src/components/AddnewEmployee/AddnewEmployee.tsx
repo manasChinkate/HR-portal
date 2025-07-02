@@ -6,7 +6,35 @@ import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchDesignation } from "../MainMaster/services/masterServices";
-import { addEmployee, fetchEmployees } from "./services";
+import { addEmployee, fetchEmployees, getCountries } from "./services";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
+import { Textarea } from "@/components/ui/textarea";
 
 export type Inputs = {
   // Personal Details
@@ -35,12 +63,8 @@ export type Inputs = {
 };
 
 const AddnewEmployee = () => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const form = useForm<Inputs>();
+  const { register, handleSubmit, reset } = form;
 
   const companyName = useSelector((state: RootState) => state.auth.companyName);
   const queryClient = useQueryClient();
@@ -64,6 +88,11 @@ const AddnewEmployee = () => {
     queryFn: fetchEmployees,
     staleTime: Infinity,
   });
+  const { data: countries = [] } = useQuery({
+    queryKey: ["countries"],
+    queryFn: getCountries,
+    staleTime: Infinity,
+  });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const formData = {
@@ -74,8 +103,8 @@ const AddnewEmployee = () => {
   };
 
   return (
-    <div className="w-full max-h-[90vh] dark:bg-primary1 bg-background2 py-2 pr-2 overflow-y-auto">
-      <div className=" bg-background1  rounded-lg w-full p-4 text-sm dark:bg-secondary1">
+    <div className="w-full h-full  bg-background2 flex flex-col gap-2 dark:bg-primary1 py-2 pr-2 ">
+      <div className=" bg-background1 dark:bg-secondary1  rounded-lg w-full p-4 text-sm">
         <div className=" flex justify-between">
           <div className=" ">
             <h1 className=" text-2xl font-bold     ">Add Employee</h1>
@@ -86,218 +115,477 @@ const AddnewEmployee = () => {
           <div className="flex justify-end mt-4">
             <Link
               to={"/employees/view"}
-              className="inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md"
+              // className="inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md"
             >
-              Employees List
+              <Button
+                className="dark:bg-black dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
+                type="button"
+              >
+                Employees List
+              </Button>
             </Link>
           </div>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-6 mb-5 ">
-            <p className=" col-span-full border-b-2 pb-1 font-semibold">
-              Personal Details
-            </p>
-            <div className=" flex flex-col gap-2">
-              <label>Full name</label>
-              <input
-                {...register("fullname")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="text"
-                placeholder=" name"
-              ></input>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Email</label>
-              <input
-                {...register("email")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="text"
-                placeholder=" email"
-              ></input>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Mobile No</label>
-              <input
-                {...register("mobileNo")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="text"
-                placeholder=" Mobile no"
-              ></input>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Gender</label>
+        <Form {...form}>
+          <form
+            className=" flex flex-col gap-3 py-3"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-6 mb-5 ">
+              <p className=" col-span-full border-b-2 pb-1 font-semibold">
+                Personal Details
+              </p>
+              {/* Name */}
+              <FormField
+                control={form.control}
+                name="fullname"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Full name</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
 
-              <select
-                {...register("gender", { required: true })}
-                id="clientname"
-                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
-              >
-                <option value="">Select</option>
-                <option value="male">Male</option>
-                <option value="femlae">Female</option>
-              </select>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Maritial Status</label>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Email */}
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
 
-              <select
-                {...register("maritialStatus")}
-                id="clientname"
-                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
-              >
-                <option value="">Select</option>
-                <option value="single">Single</option>
-                <option value="married">Married</option>
-                <option value="devorced">Divorced</option>
-              </select>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Aadhaar Number</label>
-              <input
-                {...register("adhaarNo")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="number"
-                placeholder=" aadhaar number"
-              ></input>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Pan Number</label>
-              <input
-                {...register("panNo")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="text"
-                placeholder=" pan number"
-              ></input>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>DOB</label>
-              <input
-                {...register("dob")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="date"
-                placeholder=""
-              ></input>
-            </div>
-          </div>
-          <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-6 mb-5 ">
-            <p className=" col-span-full border-b-2 pb-1 font-semibold">
-              Employeement Details
-            </p>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Mobile No. */}
+              <FormField
+                control={form.control}
+                name="mobileNo"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Mobile No.</FormLabel>
+                    <FormControl>
+                      <Input placeholder="+91 234********" {...field} />
+                    </FormControl>
 
-            <div className=" flex flex-col gap-2">
-              <label>Joining Date</label>
-              <input
-                {...register("joiningDate")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="date"
-                placeholder=" name"
-              ></input>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Probation Period</label>
-              <input
-                {...register("probationPeriod")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="text"
-                placeholder=" in months"
-              ></input>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Authority</label>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Gender */}
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem className=" space-y-2">
+                    <FormLabel>Gender</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Gender" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="male">Male</SelectItem>
+                        <SelectItem value="female">Female</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
 
-              <select
-                {...register("authority")}
-                id="clientname"
-                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
-              >
-                <option value="">Select</option>
-                <option value="Employee">Employee</option>
-                <option value="ProjectManager">Project Manager</option>
-                <option value="HiringManager">Hiring Manager</option>
-              </select>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Designation</label>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Maritial Status */}
+              <FormField
+                control={form.control}
+                name="maritialStatus"
+                render={({ field }) => (
+                  <FormItem className=" space-y-2">
+                    <FormLabel>Maritial Status</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="married">Married</SelectItem>
+                        <SelectItem value="unmarried">Unmarried</SelectItem>
+                      </SelectContent>
+                    </Select>
 
-              <select
-                {...register("designation")}
-                id="clientname"
-                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
-              >
-                <option value="">Select</option>
-                {designations.map((data) => {
-                  return (
-                    <option value={data.designation}>{data.designation}</option>
-                  );
-                })}
-              </select>
-            </div>
-            <div className=" flex flex-col gap-2">
-              <label>Reporting manager</label>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Adhaar No. */}
+              <FormField
+                control={form.control}
+                name="adhaarNo"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Adhaar No.</FormLabel>
+                    <FormControl>
+                      <Input placeholder="234********" {...field} />
+                    </FormControl>
 
-              <select
-                {...register("reportingManager")}
-                id="clientname"
-                className={`hover:border-gray-400 dark:bg-secondary1 dark:border-primary1 ease-in-out duration-500 py-2 pl-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm  `}
-              >
-                <option value="">Select</option>
-                {reportingManager.map((data) => {
-                  return <option value={data.fullname}>{data.fullname}</option>;
-                })}
-              </select>
-            </div>
-          </div>
-          <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-6 mb-5 ">
-            <p className=" col-span-full border-b-2 pb-1 font-semibold">
-              Address Details
-            </p>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Pan No. */}
+              <FormField
+                control={form.control}
+                name="panNo"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>AdhaPanar No.</FormLabel>
+                    <FormControl>
+                      <Input placeholder="CMIPC****" {...field} />
+                    </FormControl>
 
-            <div className=" flex flex-col gap-2">
-              <label>City</label>
-              <input
-                {...register("city")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                placeholder=" city"
-              ></input>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/*Dob*/}
+              <FormField
+                control={form.control}
+                name="dob"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Date of Birth</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(new Date(field.value), "PPP")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          disabled={(date) =>
+                            date > new Date() || date < new Date("1900-01-01")
+                          }
+                          mode="single"
+                          selected={
+                            field.value ? new Date(field.value) : undefined
+                          }
+                          onSelect={(date) => {
+                            field.onChange(
+                              date ? format(date, "yyyy-MM-dd") : ""
+                            );
+                          }}
+                          captionLayout="dropdown"
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <div className=" flex flex-col gap-2">
-              <label>State</label>
-              <input
-                {...register("state")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                placeholder="state"
-              ></input>
+            <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-6 mb-5 ">
+              <p className=" col-span-full border-b-2 pb-1 font-semibold">
+                Employeement Details
+              </p>
+
+              {/*Joining Date*/}
+              <FormField
+                control={form.control}
+                name="joiningDate"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Joining Date </FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(new Date(field.value), "PPP")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={
+                            field.value ? new Date(field.value) : undefined
+                          }
+                          onSelect={(date) => {
+                            field.onChange(
+                              date ? format(date, "yyyy-MM-dd") : ""
+                            );
+                          }}
+                          captionLayout="dropdown"
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Probation Period  */}
+              <FormField
+                control={form.control}
+                name="probationPeriod"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Probation Period </FormLabel>
+                    <FormControl>
+                      <Input placeholder="In months" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Authority */}
+              <FormField
+                control={form.control}
+                name="authority"
+                render={({ field }) => (
+                  <FormItem className=" space-y-2">
+                    <FormLabel>Authority</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Authority" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Employee">Employee</SelectItem>
+                        <SelectItem value="ProjectManager">
+                          Project Manager
+                        </SelectItem>
+                        <SelectItem value="HiringMAnager">
+                          Hiring Manager
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Designation  */}
+              <FormField
+                control={form.control}
+                name="designation"
+                render={({ field }) => (
+                  <FormItem className=" space-y-2">
+                    <FormLabel>Project</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Designation" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {designations.map(
+                          (e: { designation: string; _id: string }) => {
+                            return (
+                              <SelectItem value={e.designation}>
+                                {e.designation}
+                              </SelectItem>
+                            );
+                          }
+                        )}
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Reporting Manager  */}
+              <FormField
+                control={form.control}
+                name="reportingManager"
+                render={({ field }) => (
+                  <FormItem className=" space-y-2">
+                    <FormLabel>Reporting Manager</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Reporting Manager" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {reportingManager.map(
+                          (e: { fullname: string; _id: string }) => {
+                            return (
+                              <SelectItem value={e.fullname}>
+                                {e.fullname}
+                              </SelectItem>
+                            );
+                          }
+                        )}
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <div className=" flex flex-col gap-2">
-              <label>Country</label>
-              <input
-                {...register("country")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                placeholder="country"
-              ></input>
+            <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-6 mb-5 ">
+              <p className=" col-span-full border-b-2 pb-1 font-semibold">
+                Address Details
+              </p>
+
+              {/* City  */}
+              <FormField
+                control={form.control}
+                name="city"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>City </FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* State  */}
+              <FormField
+                control={form.control}
+                name="state"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>State </FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Reporting Manager  */}
+              <FormField
+                control={form.control}
+                name="country"
+                render={({ field }) => (
+                  <FormItem className=" space-y-2">
+                    <FormLabel>Country</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Country" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {countries.map((e: { name: { common: string } }) => {
+                          return (
+                            <SelectItem value={e.name.common}>
+                              {e.name.common}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Pincode  */}
+              <FormField
+                control={form.control}
+                name="pincode"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Pincode </FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Text Area */}
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem className="space-y-2 col-span-3">
+                    <FormLabel>Address</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder=""
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <div className=" flex flex-col gap-2">
-              <label>Pincode</label>
-              <input
-                {...register("pincode")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                type="number"
-                placeholder="pincode"
-              ></input>
-            </div>
-            <div className=" flex flex-col gap-2 col-span-2">
-              <label>Address</label>
-              <textarea
-                {...register("address")}
-                className=" hover:border-gray-400 dark:hover:border-gray-600  dark:border-primary1  dark:border-[0.2px] dark:bg-secondary1    ease-in-out duration-500 py-2 px-3 border rounded-md border-gray-200 placeholder:text-sm  text-sm"
-                placeholder=" address"
-              ></textarea>
-            </div>
-          </div>
-          <Button className=" dark:bg-blue-600 dark:text-white" type="submit">
-            Add Employee
-          </Button>
-        </form>
+            <Button
+              className="dark:bg-black dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
+              type="submit"
+            >
+              Add
+            </Button>
+          </form>
+        </Form>
       </div>
     </div>
   );

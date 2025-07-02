@@ -27,6 +27,7 @@ type MultiSelectComboBoxProps = {
   setSelectedValues: (values: string[]) => void;
   placeholder?: string;
   setFormValue?: (val: any[]) => void;
+  disabled: boolean;
 
   widthClass?: string;
 };
@@ -63,7 +64,10 @@ export default function MultiSelectComboBox({
           disabled={disabled}
           variant="outline"
           role="combobox"
-          className={cn(widthClass, "w-full justify-between dark:bg-secondary1")}
+          className={cn(
+            widthClass,
+            "w-full justify-between "
+          )}
         >
           {selectedValues.length > 0
             ? options
