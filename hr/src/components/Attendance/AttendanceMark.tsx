@@ -1,7 +1,6 @@
 import axios from "axios";
-import { useForm } from "react-hook-form";
 import { BASE_URL } from "../../constants";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { COLUMNS } from "./columns";
 
@@ -29,7 +28,6 @@ const AttendanceMark = () => {
         setStatus(res.data?.message);
       } else {
         setStatus("Present");
-        getData();
         toast.success("Successfully Checked In");
       }
     } catch (error) {
@@ -49,7 +47,6 @@ const AttendanceMark = () => {
 
       if (res.status === 200) {
         toast.success("Success CheckOut");
-        getData();
         setIsModalOpen(false); // Close the modal
       } else toast.error(res.data.message);
     } catch (error) {

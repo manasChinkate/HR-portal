@@ -35,36 +35,42 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export type Inputs = {
+const EmployeeSchema = z.object({
   // Personal Details
-  fullname: string;
-  email: string;
-  mobileNo: string;
-  gender: string;
-  maritialStatus: string;
-  adhaarNo: string;
-  panNo: string;
-  dob: string;
+  fullname: z.string().min(1, "Employee name is required"),
+  email: z.string().email().min(1, "Email is required"),
+  mobileNo: z.string().min(1, "Mobile No. is required"),
+  gender: z.string().min(1, "gender is required"),
+  maritialStatus: z.string().min(1, "Maritial status is required"),
+  adhaarNo: z.string().min(1, "Aadhaar No. is required"),
+  panNo: z.string().optional(),
+  dob: z.string().min(1, "Dob is required"),
 
   // Employment Details
-  joiningDate: string;
-  probationPeriod: string;
-  authority: string;
-  designation: string;
-  reportingManager: string;
+  joiningDate: z.string().min(1, "Joining Date is required"),
+  probationPeriod: z.string().optional(),
+  authority: z.string().min(1, "authority is required"),
+  designation: z.string().min(1, "designation is required"),
+  reportingManager: z.string().optional(),
 
-  // Address Details
-  city: string;
-  state: string;
-  country: string;
-  pincode: number;
-  address: string;
-};
+  //Address
+  city: z.string().min(1, "City is required"),
+  state: z.string().min(1, "State is required"),
+  country: z.string().min(1, "Country is required"),
+  pincode: z.string().min(1, "Pincode is required"),
+  address: z.string().optional(),
+});
+
+export type Inputs = z.infer<typeof EmployeeSchema>;
 
 const AddnewEmployee = () => {
-  const form = useForm<Inputs>();
-  const { register, handleSubmit, reset } = form;
+  const form = useForm<Inputs>({
+    resolver: zodResolver(EmployeeSchema),
+  });
+  const { handleSubmit, reset } = form;
 
   const companyName = useSelector((state: RootState) => state.auth.companyName);
   const queryClient = useQueryClient();
@@ -254,7 +260,7 @@ const AddnewEmployee = () => {
                 name="panNo"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
-                    <FormLabel>AdhaPanar No.</FormLabel>
+                    <FormLabel>Pan No.</FormLabel>
                     <FormControl>
                       <Input placeholder="CMIPC****" {...field} />
                     </FormControl>

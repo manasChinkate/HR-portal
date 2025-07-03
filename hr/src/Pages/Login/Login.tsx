@@ -66,30 +66,31 @@ const Login = () => {
 
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-gray-100">
-      {/* Left Side */}
-      <div className="hidden lg:flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-10 relative">
-        <div className="z-10 text-center space-y-6">
-          <h1 className="text-4xl font-bold leading-tight">Welcome Back!</h1>
-          <p className="text-lg font-medium">
-            Login to manage your employees, projects, and more.
-          </p>
-        </div>
-        {/* Decorative SVG background */}
-        <svg
-          className="absolute w-full h-full top-0 left-0 opacity-20 z-0"
-          viewBox="0 0 200 200"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill="#ffffff"
-            d="M50.8,-68.2C65.2,-60.7,75.2,-43.2,75.6,-26.6C76,-10,66.8,5.7,59.2,20.9C51.5,36.1,45.3,50.8,34.2,59.2C23.1,67.7,7.1,70,-10.4,73.3C-27.8,76.6,-55.5,80.8,-69.8,69.5C-84.1,58.1,-84.9,31.2,-80.4,9.3C-76,-12.6,-66.4,-29.6,-54.5,-38.5C-42.6,-47.5,-28.5,-48.5,-15.4,-57.8C-2.3,-67.1,9.8,-84.7,23.4,-86.3C37.1,-87.9,52.4,-73.6,50.8,-68.2Z"
-            transform="translate(100 100)"
-          />
-        </svg>
-      </div>
+    {/* Left Side */}
+<div className="hidden lg:flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-gray-800 dark:to-gray-900 text-white p-10 relative">
+  <div className="z-10 text-center space-y-6">
+    <h1 className="text-4xl font-bold leading-tight">Welcome Back!</h1>
+    <p className="text-lg font-medium">
+      Login to manage your employees, projects, and more.
+    </p>
+  </div>
+  {/* Decorative SVG background */}
+  <svg
+    className="absolute w-full h-full top-0 left-0 opacity-20 z-0"
+    viewBox="0 0 200 200"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fill="#ffffff"
+      className="dark:fill-gray-700"
+      d="M50.8,-68.2C65.2,-60.7,75.2,-43.2,75.6,-26.6C76,-10,66.8,5.7,59.2,20.9C51.5,36.1,45.3,50.8,34.2,59.2C23.1,67.7,7.1,70,-10.4,73.3C-27.8,76.6,-55.5,80.8,-69.8,69.5C-84.1,58.1,-84.9,31.2,-80.4,9.3C-76,-12.6,-66.4,-29.6,-54.5,-38.5C-42.6,-47.5,-28.5,-48.5,-15.4,-57.8C-2.3,-67.1,9.8,-84.7,23.4,-86.3C37.1,-87.9,52.4,-73.6,50.8,-68.2Z"
+      transform="translate(100 100)"
+    />
+  </svg>
+</div>
 
       {/* Right Form Side */}
-      <div className="flex items-center justify-center p-6">
+      <div className="flex items-center justify-center p-6 dark:bg-primary1">
         <div className="bg-white dark:bg-slate-900 shadow-2xl rounded-2xl w-full max-w-md p-8 space-y-6">
           <div>
             <h2 className="text-3xl font-bold text-gray-800 dark:text-white">
