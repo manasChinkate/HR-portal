@@ -317,7 +317,7 @@ export const COLUMN1: Column<Timesheet>[] = [
     Header: "Task",
     accessor: "taskId",
     Cell: ({ value }: { value: { taskTitle: string } }) => {
-      return <span>{value.taskTitle}</span>;
+      return <span>{value.taskTitle }</span>;
     },
   },
   {

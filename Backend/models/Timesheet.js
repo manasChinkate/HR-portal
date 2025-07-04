@@ -14,7 +14,7 @@ const timesheetschema = new mongoose.Schema(
     },
     taskId: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: false,
       ref: "Task",
     },
     employeeId: {
