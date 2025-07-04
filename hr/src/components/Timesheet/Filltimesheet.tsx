@@ -14,7 +14,7 @@ import { addTimesheet } from "./services";
 import { fetchTasks } from "../ProjectMaster/ProjectTask/services";
 import { Input } from "../ui/input";
 
-export type Inputs = z.infer<typeof TimesheetSchema>;
+export type Inputs = z.infer<typeof TimesheetSchema>; 
 
 const TimesheetSchema = z.object({
   projectId: z.string().min(1, "ProjectName is required"),
@@ -29,7 +29,7 @@ const TimesheetSchema = z.object({
 const Filltimesheet = () => {
   const {
     register,
-    handleSubmit,
+    handleSubmit ,
     watch,
     reset,
     formState: { errors },
