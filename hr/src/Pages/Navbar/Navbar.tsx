@@ -42,7 +42,6 @@ interface Notification {
 }
 
 const Navbar = () => {
-
   const { setTheme } = useTheme();
 
   const name = useSelector((state: RootState) => state.auth.name);
@@ -71,18 +70,17 @@ const Navbar = () => {
 
   const getNotifications = async () => {
     const res = await axios.get(`${BASE_URL}/notification`);
-    return res.data
+    return res.data;
   };
 
-  const {data, isPending} = useQuery({
-    queryKey:["notification"],
-    queryFn:getNotifications,
-    staleTime:Infinity
-  })
+  const { data, isPending } = useQuery({
+    queryKey: ["notification"],
+    queryFn: getNotifications,
+    staleTime: Infinity,
+  });
 
- 
   return (
-    <div className="h-[7vh] flex items-center justify-between px-5 mt-2 mr-2 rounded-md border  bg-background1 dark:bg-secondary1 dark:text-white">
+    <div className=" flex items-center justify-between px-5 h-12 shrink-0 mt-2 mr-2 rounded-md border  bg-background1 dark:bg-secondary1 dark:text-white">
       <div className="flex gap-4 items-center">
         {/* <TiThMenu className='text-2xl cursor-pointer' onClick={sidebartoggle} /> */}
         {/* {!showMenu && (
@@ -108,39 +106,37 @@ const Navbar = () => {
               <div className=" h-[90vh] overflow-y-auto">
                 <h2 className="text-lg font-bold mb-4">Notifications</h2>
                 <ul className="space-y-3">
-                  {data?.notifications?.map(
-                    (notification: Notification) => {
-                      const formattedDate = new Date(
-                        notification.createdAt
-                      ).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                      });
+                  {data?.notifications?.map((notification: Notification) => {
+                    const formattedDate = new Date(
+                      notification.createdAt
+                    ).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    });
 
-                      const formattedTime = new Date(
-                        notification.createdAt
-                      ).toLocaleTimeString("en-US", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: true,
-                      });
+                    const formattedTime = new Date(
+                      notification.createdAt
+                    ).toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    });
 
-                      return (
-                        <li
-                          key={notification._id}
-                          className="p-3 rounded-md bg-gray-100 dark:bg-secondary1 hover:bg-gray-200 dark:hover:bg-gray-700"
-                        >
-                          <p className="text-sm text-gray-800 dark:text-gray-200">
-                            {notification.message}
-                          </p>
-                          <div className="text-xs text-gray-500 dark:text-gray-400  flex items-center justify-between  ">
-                            <span>{formattedDate}</span> {formattedTime}
-                          </div>
-                        </li>
-                      );
-                    }
-                  )}
+                    return (
+                      <li
+                        key={notification._id}
+                        className="p-3 rounded-md bg-gray-100 dark:bg-secondary1 hover:bg-gray-200 dark:hover:bg-gray-700"
+                      >
+                        <p className="text-sm text-gray-800 dark:text-gray-200">
+                          {notification.message}
+                        </p>
+                        <div className="text-xs text-gray-500 dark:text-gray-400  flex items-center justify-between  ">
+                          <span>{formattedDate}</span> {formattedTime}
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </SheetContent>
@@ -157,7 +153,6 @@ const Navbar = () => {
             <MdOutlineDarkMode onClick={() => setTheme("dark")} />
           )}
         </div>
-       
 
         <AlertDialog>
           <AlertDialogTrigger asChild>

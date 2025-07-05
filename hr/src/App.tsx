@@ -58,11 +58,11 @@ const App = () => {
       <>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-            <SidebarProvider className="flex h-screen overflow-hidden bg-background2 dark:bg-primary1">
+            <SidebarProvider className="flex   bg-background2 dark:bg-primary1">
               <AppSidebar />
 
               <main className="flex flex-col flex-1 h-full overflow-hidden">
-                <Navbar className="h-16 shrink-0" />
+                <Navbar  />
                 <div className="flex-1 overflow-auto ">
                   <Outlet />
                 </div>

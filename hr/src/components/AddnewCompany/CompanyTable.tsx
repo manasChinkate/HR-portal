@@ -1,10 +1,8 @@
 import { BASE_URL } from "../../constants";
 
-import {  useMemo } from "react";
-
+import { useMemo } from "react";
 
 import "../table.css";
-
 
 import { COLUMNS } from "./columns";
 
@@ -20,7 +18,7 @@ const CompanyTable = () => {
     return res.data?.data;
   };
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["company"],
     queryFn: getCompanyData,
     staleTime: Infinity,
@@ -28,11 +26,11 @@ const CompanyTable = () => {
 
   return (
     <div className=" max-h-[90vh] max-w-[1000px]  bg-background2 dark:bg-primary1 py-2 pr-2">
-
       <TableWrapper
         data={data || []}
         columns={columns}
         loading={isLoading}
+        refetch={refetch}
         description="Here's a list of Companies."
         title="Companies"
       />

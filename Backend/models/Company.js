@@ -2,17 +2,17 @@ const mongoose = require('mongoose')
 const { z } = require('zod')
 
 const CompanySchema = new mongoose.Schema({
-    fromdate:String,
-    todate:String,
-    fullname:String,
+    fromDate:String,
+    toDate:String,
+    ownerName:String,
     email:String,
-    MobileNo:String,
-    Gender:String,
-    AadharNumber:Number,
-    PanNumber:String,
-    CompanyName:String,
-    CompanyPrefix:String,
-    NoofEmployee:Number,
+    mobileNo:String,
+    gender:String,
+    aadharNumber:Number,
+    panNumber:String,
+    companyName:String,
+    companyPrefix:String,
+    noOfEmployee:Number,
     city:String,
     state:String,
     country:String,
@@ -34,7 +34,7 @@ const CompanyModel = mongoose.model("Company",CompanySchema )
 const CompanyZodSchema = z.object({
     fromdate: z.string(),
     todate: z.string(),
-    fullname: z.string(),
+    ownerName: z.string(),
     email: z.string().email(),
     MobileNo: z.string().min(10).max(15), // adjust based on expected format
     Gender: z.string(),
