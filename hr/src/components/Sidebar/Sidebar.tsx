@@ -168,6 +168,11 @@ const MasterAdminNavData = [
     link: "/masteradmin/company/add",
   },
   {
+    name: "Menu Master",
+    icon: <FaBuilding />,
+    link: "/menu",
+  },
+  {
     name: "HelpDesk",
     icon: <SiHelpdesk />,
     link: "/helpDesk",

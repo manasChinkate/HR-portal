@@ -36,6 +36,7 @@ const TaskModel = require("./models/Task");
 const Timesheetmodel = require("./models/Timesheet");
 const LoginSchema = require("./models/Login");
 const { CompanyModel } = require("./models/Company");
+const { menuRouter } = require("./routes/Menu.Routes");
 const router = express.Router();
 // const GetDesignation = require('./controller/DesignationController')
 
@@ -77,7 +78,7 @@ mongoose
     // CompanyModel.deleteMany({ _id:companyId }),
     // ]);
 
-    console.log("All related data deleted for company ID:", companyId);
+    // console.log("All related data deleted for company ID:", companyId);
   })
   .catch((err) => console.log("Failed to connect to the database", err));
 
@@ -100,6 +101,7 @@ app.use("/api/v0/company", companyRouter);
 app.use("/api/v0/attendance", attendanceRouter);
 app.use("/api/v0/auth", authRouter);
 app.use("/api/v0/notification", notificationRouter);
+app.use("/api/v0/menu", menuRouter);
 
 // await Company.deleteOne({ _id: companyId });
 

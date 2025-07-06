@@ -27,18 +27,16 @@ import ViewTasks from "./components/ProjectMaster/ProjectTask/ViewTasks";
 import { SidebarProvider } from "./components/ui/sidebar";
 import AppSidebar from "./components/Sidebar/AppSidebar";
 import { ThemeProvider } from "./components/Theme-Provider";
-import {
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import MenuMaster from "./components/MenuMaster/menu-master";
 
 const App = () => {
   const queryClient = new QueryClient({
-    defaultOptions:{
-      queries:{
-        retry:false
-      }
-    }
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
   });
   const Layout = () => {
     axios.interceptors.request.use(
@@ -62,7 +60,7 @@ const App = () => {
               <AppSidebar />
 
               <main className="flex flex-col flex-1 h-full overflow-hidden">
-                <Navbar  />
+                <Navbar />
                 <div className="flex-1 overflow-auto ">
                   <Outlet />
                 </div>
@@ -103,6 +101,10 @@ const App = () => {
         {
           path: "/company/view",
           element: <CompanyTable />,
+        },
+        {
+          path: "/menu",
+          element: <MenuMaster />,
         },
         {
           path: "/employees/new",

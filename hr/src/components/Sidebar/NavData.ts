@@ -1,6 +1,3 @@
-
-
-
 export const AdminNavData = [
   {
     title: "Home",
@@ -117,6 +114,11 @@ export const MasterAdminNavData = [
     link: "/company/new",
   },
   {
+    title: "Menu Master",
+    icon: "FaBuilding",
+    link: "/menu",
+  },
+  {
     title: "HelpDesk",
     icon: "SiHelpdesk",
     link: "/helpDesk",
@@ -150,7 +152,6 @@ export const EmployeeNavData = [
         icon: "MdMergeType",
         link: "/ongoing_projects/view",
       },
-     
     ],
   },
   {
@@ -164,7 +165,7 @@ export const EmployeeNavData = [
       },
     ],
   },
-  
+
   {
     title: "TimeSheet",
     icon: "RiProjectorLine",
