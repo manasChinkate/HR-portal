@@ -28,13 +28,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { addMenu, fetchMenu } from "./services";
+import { COLUMNS } from "./columns";
+import { iconMapping } from "../Sidebar/AppSidebar";
 
 export type Inputs = z.infer<typeof MenuSchema>;
 const MenuSchema = z.object({
   menuName: z.string().min(1, { message: "Menu Name is required" }),
   parentId: z.string().nullable(),
-  logo: z.string().min(1, { message: "logo is required" }),
-  path: z.string().min(1, { message: "path is required" }),
+  logo: z.string().trim().min(1, { message: "logo is required" }),
+  path: z.string(),
 });
 
 const MenuMaster = () => {
@@ -53,7 +55,8 @@ const MenuMaster = () => {
     formState: { errors },
   } = form;
 
-//   const columns: any = useMemo(() => COLUMNS, []);
+  // Memoize column definitions to avoid unnecessary re-renders
+  const columns: any = useMemo(() => COLUMNS, []);
 
   const queryClient = useQueryClient();
 
@@ -130,15 +133,25 @@ const MenuMaster = () => {
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Project Manager" />
+                          <SelectValue placeholder="Select Parent Menu" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {menuData.map(
-                          (e: { menuName: string; _id: string }) => {
+                          (e: {
+                            menuName: string;
+                            _id: string;
+                            logo: string;
+                          }) => {
+                            const Logo =
+                              iconMapping[e.logo as keyof typeof iconMapping];
                             return (
-                              <SelectItem value={e._id}>
+                              <SelectItem value={e._id} className=" flex">
+                                <div className=" flex gap-4 items-center justify-between">
+
+                                {Logo && <Logo className="w-5 h-5 " />}
                                 {e.menuName}
+                                </div>
                               </SelectItem>
                             );
                           }
@@ -191,16 +204,14 @@ const MenuMaster = () => {
           </form>
         </Form>
       </div>
-
-      {/* <TableWrapper
-        columns={columns}
-        data={data || []}
-        description="Here's a list of Departments."
-        title="Departments"
+      <TableWrapper
+        data={menuData || []}
         loading={isLoading}
+        columns={columns}
+        description="Here's a list of Menus."
+        title="Menus"
         refetch={refetch}
-      /> */}
-      {/* <DataTable columns={columns} data={data || []} /> */}
+      />
     </div>
   );
 };

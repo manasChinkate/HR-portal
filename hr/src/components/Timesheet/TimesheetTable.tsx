@@ -29,7 +29,7 @@ const TimesheetTable = () => {
       <div className=" flex items-center ">
         {authority !== "Admin" && (
           <div>
-            <BackButton backnavigation="/employee/timesheet/new" />
+            <BackButton backnavigation="//timesheet/new" />
           </div>
         )}
       </div>

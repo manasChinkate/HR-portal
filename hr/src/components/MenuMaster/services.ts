@@ -7,5 +7,5 @@ export const addMenu = async (data: Inputs) => {
 };
 export const fetchMenu = async () => {
   const response = await axios.get(`${BASE_URL}/menu`);
-  return response.data;
+  return response.data?.data;
 };

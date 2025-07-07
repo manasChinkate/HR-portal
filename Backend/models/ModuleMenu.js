@@ -3,11 +3,15 @@ const { default: mongoose } = require("mongoose");
 const MenuSchema = new mongoose.Schema(
   {
     menuName: String,
-    link: String,
+    path: String,
     logo: String,
     parentId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: ModuleMenu,
+      ref: "Menu",
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
     },
   },
   { collection: "Menu" }

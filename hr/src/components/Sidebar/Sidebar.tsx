@@ -191,17 +191,17 @@ const AdminNavData = [
       {
         name: "Add Designation",
         icon: <GrUserWorker />,
-        link: "admin/designation/new",
+        link: "/designation/new",
       },
       {
         name: "Add Holiday",
         icon: <FaRegCalendarCheck />,
-        link: "admin/holiday/new",
+        link: "/holiday/new",
       },
       {
         name: "Add Client",
         icon: <LuAppWindow />,
-        link: "admin/client/new",
+        link: "/client/new",
       },
       {
         name: "Add Department",
@@ -311,7 +311,7 @@ const HRNavData = [
       {
         name: "Fill Timesheet  ",
         icon: <MdMergeType />,
-        link: "employee/timesheet/new",
+        link: "/timesheet/new",
       },
       {
         name: "Timesheet Details",
@@ -378,7 +378,7 @@ const EmployeeNavData = [
       {
         name: "Fill Timesheet  ",
         icon: <MdMergeType />,
-        link: "employee/timesheet/new",
+        link: "/timesheet/new",
       },
     ],
   },
@@ -446,7 +446,7 @@ const ProjectManagerNavData = [
       {
         name: "Fill Timesheet  ",
         icon: <MdMergeType />,
-        link: "employee/timesheet/new",
+        link: "/timesheet/new",
       },
       {
         name: "Timesheet Details",

@@ -2,8 +2,7 @@ import { useMemo } from "react";
 
 import { useForm } from "react-hook-form";
 
-import "react-quill/dist/quill.snow.css";
-
+import 'react-quill-new/dist/quill.snow.css';
 import "../../table.css";
 
 import { COLUMNS } from "./columns";

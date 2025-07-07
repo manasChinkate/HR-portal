@@ -11,22 +11,22 @@ export const AdminNavData = [
       {
         title: "Add Designation",
         icon: "GrUserWorker",
-        link: "admin/designation/new",
+        link: "/designation/new",
       },
       {
         title: "Add Holiday",
         icon: "FaRegCalendarCheck",
-        link: "admin/holiday/new",
+        link: "/holiday/new",
       },
       {
         title: "Add Client",
         icon: "LuAppWindow",
-        link: "admin/client/new",
+        link: "/client/new",
       },
       {
         title: "Add Department",
         icon: "PiBuildingOfficeLight",
-        link: "admin/department/new",
+        link: "/department/new",
       },
     ],
   },
@@ -37,12 +37,12 @@ export const AdminNavData = [
       {
         title: "Leave Type",
         icon: "MdMergeType",
-        link: "admin/leavetype/new",
+        link: "/leavetype/new",
       },
       {
         title: "Manage Leave",
         icon: "MdManageHistory",
-        link: "admin/manageleave",
+        link: "/manageleave",
       },
     ],
   },
@@ -139,7 +139,7 @@ export const EmployeeNavData = [
       {
         title: "Apply Leave ",
         icon: "MdMergeType",
-        link: "/employee/leave/new",
+        link: "/leave/new",
       },
     ],
   },
@@ -172,8 +172,8 @@ export const EmployeeNavData = [
     children: [
       {
         title: "Fill Timesheet  ",
-        icon: "MdMergeType",
-        link: "employee/timesheet/new",
+        icon: "BookText",
+        link: "/timesheet/new",
       },
     ],
   },

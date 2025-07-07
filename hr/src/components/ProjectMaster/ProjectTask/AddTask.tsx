@@ -3,9 +3,8 @@ import { Button } from "../../ui/button";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-
+import ReactQuill from "react-quill-new";
+import 'react-quill-new/dist/quill.snow.css';
 import MultiSelectComboBox from "@/components/ui/MultiSelectCombobox";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

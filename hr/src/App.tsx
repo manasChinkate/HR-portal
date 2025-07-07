@@ -120,7 +120,7 @@ const App = () => {
         },
 
         {
-          path: "admin/designation/new",
+          path: "/designation/new",
           element: (
             <Protected>
               <AddDesignation />
@@ -128,7 +128,7 @@ const App = () => {
           ),
         },
         {
-          path: "admin/holiday/new",
+          path: "/holiday/new",
           element: (
             <Protected>
               <AddHoliday />
@@ -136,7 +136,7 @@ const App = () => {
           ),
         },
         {
-          path: "admin/client/new",
+          path: "/client/new",
           element: (
             <Protected>
               <AddClient />
@@ -144,7 +144,7 @@ const App = () => {
           ),
         },
         {
-          path: "admin/department/new",
+          path: "/department/new",
           element: (
             <Protected>
               <AddDepartment />
@@ -152,7 +152,7 @@ const App = () => {
           ),
         },
         {
-          path: "admin/leavetype/new",
+          path: "/leavetype/new",
           element: (
             <Protected>
               <LeaveType />
@@ -160,7 +160,7 @@ const App = () => {
           ),
         },
         {
-          path: "admin/manageleave/",
+          path: "/manageleave",
           element: (
             <Protected>
               <ManageLeave />
@@ -168,7 +168,7 @@ const App = () => {
           ),
         },
         {
-          path: "employee/leave/new",
+          path: "/leave/new",
           element: (
             <Protected>
               <ApplyLeave />
@@ -193,7 +193,7 @@ const App = () => {
           ),
         },
         {
-          path: "employee/timesheet/new",
+          path: "/timesheet/new",
           element: (
             <Protected>
               <Filltimesheet />

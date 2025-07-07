@@ -19,11 +19,29 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../ui/collapsible";
-import { ChevronDown } from "lucide-react";
+import {
+  BookText,
+  ChevronDown,
+  ClipboardList,
+  ClipboardType,
+  ClockArrowUp,
+  FilePlus,
+  FilePlus2,
+  FolderKanban,
+  ListChecks,
+  ListEnd,
+  MessageCircleQuestionMark,
+  ReceiptText,
+} from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "app/store";
 import { IoHome } from "react-icons/io5";
-import { MdMailOutline, MdManageHistory, MdMergeType, MdOutlineTimeToLeave } from "react-icons/md";
+import {
+  MdMailOutline,
+  MdManageHistory,
+  MdMergeType,
+  MdOutlineTimeToLeave,
+} from "react-icons/md";
 import { GrDomain, GrUserWorker } from "react-icons/gr";
 import { FaBuilding, FaRegCalendarCheck, FaUser } from "react-icons/fa";
 import { LuAppWindow } from "react-icons/lu";
@@ -32,13 +50,24 @@ import { RiProjectorLine } from "react-icons/ri";
 import { BsPersonWorkspace } from "react-icons/bs";
 import { SiHelpdesk } from "react-icons/si";
 import { AdminNavData, EmployeeNavData, MasterAdminNavData } from "./NavData";
-const iconMapping = {
+export const iconMapping = {
   IoHome,
   MdMergeType,
   MdOutlineTimeToLeave,
   MdManageHistory,
   GrDomain,
+  ClipboardType,
+  FilePlus,
+  ListChecks,
+  MessageCircleQuestionMark,
+  ListEnd,
+  ClockArrowUp,
+  FolderKanban,
+  ClipboardList,
+  FilePlus2,
   GrUserWorker,
+  ReceiptText,
+  BookText,
   FaRegCalendarCheck,
   LuAppWindow,
   PiBuildingOfficeLight,
@@ -47,7 +76,7 @@ const iconMapping = {
   SiHelpdesk,
   FaUser,
   MdMailOutline,
-  FaBuilding
+  FaBuilding,
 };
 
 const AppSidebar = () => {
@@ -62,11 +91,11 @@ const AppSidebar = () => {
       ? AdminNavData
       : Role === "Employee"
       ? EmployeeNavData
-      // : Role === "HiringManager"
-      // ? HRNavData
-      // : Role === "ProjectManager"
-      // ? ProjectManagerNavData
-      : [];
+      : // : Role === "HiringManager"
+        // ? HRNavData
+        // : Role === "ProjectManager"
+        // ? ProjectManagerNavData
+        [];
 
   return (
     <Sidebar variant="floating">
@@ -179,6 +208,5 @@ const AppSidebar = () => {
     </Sidebar>
   );
 };
-
 
 export default AppSidebar;
