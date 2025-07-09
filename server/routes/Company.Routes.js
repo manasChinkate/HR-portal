@@ -1,5 +1,5 @@
 const express = require("express")
-const { handleGetCompanies, handleCreateCompany } = require("../controller/NewCompanyController")
+const { handleGetCompanies, handleCreateCompany } = require("../controller/CompanyController")
 
 
 const companyRouter = express.Router()

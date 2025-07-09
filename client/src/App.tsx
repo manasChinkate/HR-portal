@@ -1,7 +1,5 @@
-import React, { useState } from "react";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
-import AddnewCompany from "./components/AddnewCompany/AddnewCompany";
-import Login from "./Pages/Login/Login";
+import Login from "@/Pages/login/Login";
 import Protected from "../src/Protected";
 import SessionOut from "./Pages/SessionOut/SessionOut";
 import AddnewEmployee from "./components/AddnewEmployee/AddnewEmployee";
@@ -9,7 +7,7 @@ import AddDesignation from "./components/MainMaster/AddDesignation/AddDesignatio
 import AddHoliday from "./components/MainMaster/AddHoliday/AddHoliday";
 import EmployeeTable from "./components/AddnewEmployee/EmployeeTable";
 import axios from "axios";
-import CompanyTable from "./components/AddnewCompany/CompanyTable";
+import CompanyTable from "@/features/company/CompanyTable";
 import AddClient from "./components/MainMaster/AddClient/AddClient";
 import LeaveType from "./components/LeaveManagement/LeaveType/LeaveType";
 import ManageLeave from "./components/LeaveManagement/ManageLeave/ManageLeave";
@@ -29,6 +27,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MenuMaster from "./components/MenuMaster/menu-master";
 import Header from "./components/header/Header";
 import Dashboard from "./Pages/dashboard/Dashboard";
+import CompanyForm from "./features/company/CompanyForm";
 
 const App = () => {
   const queryClient = new QueryClient({
@@ -59,7 +58,7 @@ const App = () => {
             <SidebarProvider className="flex   bg-background2 dark:bg-primary1">
               <AppSidebar />
 
-              <main className="flex flex-col flex-1 h-full overflow-hidden">
+              <main className="flex flex-col flex-1 h-full overflow-hidden ">
                 <Header />
                 <div className="flex-1 overflow-auto ">
                   <Outlet />
@@ -89,7 +88,7 @@ const App = () => {
 
         {
           path: "/company/new",
-          element: <AddnewCompany />,
+          element: <CompanyForm />,
         },
         {
           path: "/company/view",

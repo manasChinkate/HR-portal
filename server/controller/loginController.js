@@ -2,25 +2,6 @@ const mongoose = require("mongoose");
 const LoginSchema = require("../models/Login");
 const jwt = require("jsonwebtoken");
 
-// Sidebar data moved outside the function
-const adminData = [
-  { name: "Home", icon: "IoHome ", link: "/" },
-  { name: "Add New Company", icon: "FaBuilding ", link: "/add-new-company" },
-  { name: "Main master", icon: "GrDomain ", link: "/main-master" },
-  {
-    name: "Project master",
-    icon: "<RiProjectorLine />",
-    link: "/project-master",
-  },
-  { name: "HelpDesk", icon: "SiHelpdesk ", link: "/helpDesk" },
-];
-
-const MasteradminData = [
-  { name: "Home", icon: "IoHome ", link: "/" },
-  { name: "Add New Company", icon: "FaBuilding ", link: "/add-new-company" },
-  { name: "HelpDesk", icon: "SiHelpdesk ", link: "/helpDesk" },
-];
-
 const handleLogin = async (req, res) => {
   const { email, password } = req.body;
 

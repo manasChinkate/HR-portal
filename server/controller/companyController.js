@@ -1,12 +1,12 @@
 const { CompanyModel, CompanyZodSchema } = require("../models/Company");
 const LoginSchema = require("../models/Login");
-const { generateUserId } = require("./NewEmployeeController");
 
 const handleCreateCompany = async (req, res) => {
   try {
     const Companydata = {
       ...req.body,
       authority: "Admin",
+      status: true,
     };
     const parsed = CompanyZodSchema.safeParse(Companydata);
     if (!parsed.success) {
@@ -22,7 +22,7 @@ const handleCreateCompany = async (req, res) => {
       email: req.body.email,
       authority: "Admin",
       password: "admin",
-      companyName: req.body.CompanyName,
+      companyName: req.body.companyName,
       companyId: createdCompany._id,
     };
     await LoginSchema.create(LoginData);

@@ -1,5 +1,4 @@
 const express = require("express")
-const handleLogin = require("../controller/logincontrol")
 const { handleGetNotification } = require("../controller/NotificationController")
 
 
