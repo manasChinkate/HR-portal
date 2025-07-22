@@ -1,4 +1,4 @@
-import { Inputs } from "@/components/AddnewEmployee/AddnewEmployee";
+import { Inputs } from "@/features/employee/EmployeeForm";
 import { BASE_URL } from "@/constants";
 import axios from "axios";
 import { projectInputs } from "./ProjectDetails";

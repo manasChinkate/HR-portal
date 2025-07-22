@@ -1,11 +1,7 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Login from "@/Pages/login/Login";
-import Protected from "../src/Protected";
 import SessionOut from "./Pages/SessionOut/SessionOut";
-import AddnewEmployee from "./components/AddnewEmployee/AddnewEmployee";
-import AddDesignation from "./components/MainMaster/AddDesignation/AddDesignation";
 import AddHoliday from "./components/MainMaster/AddHoliday/AddHoliday";
-import EmployeeTable from "./components/AddnewEmployee/EmployeeTable";
 import axios from "axios";
 import CompanyTable from "@/features/company/CompanyTable";
 import AddClient from "./components/MainMaster/AddClient/AddClient";
@@ -24,10 +20,16 @@ import { SidebarProvider } from "./components/ui/sidebar";
 import AppSidebar from "./components/Sidebar/AppSidebar";
 import { ThemeProvider } from "./components/Theme-Provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import MenuMaster from "./components/MenuMaster/menu-master";
+import MenuMaster from "./components/MenuMaster/MenuMaster";
 import Header from "./components/header/Header";
 import Dashboard from "./Pages/dashboard/Dashboard";
 import CompanyForm from "./features/company/CompanyForm";
+import RefreshToken from "./RefreshToken";
+import DesignationForm from "./features/designation/DesignationForm";
+import './app.css';
+import EmployeeForm from "./features/employee/EmployeeForm";
+import EmployeeTable from "./features/employee/EmployeeTable";
+
 
 const App = () => {
   const queryClient = new QueryClient({
@@ -53,20 +55,22 @@ const App = () => {
 
     return (
       <>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-            <SidebarProvider className="flex   bg-background2 dark:bg-primary1">
-              <AppSidebar />
+        <RefreshToken>
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+              <SidebarProvider className="flex custom-scrollbar  bg-background2 dark:bg-primary1">
+                <AppSidebar />
 
-              <main className="flex flex-col flex-1 h-full overflow-hidden ">
-                <Header />
-                <div className="flex-1 overflow-auto ">
-                  <Outlet />
-                </div>
-              </main>
-            </SidebarProvider>
-          </ThemeProvider>
-        </QueryClientProvider>
+                <main className="flex flex-col flex-1 h-full overflow-hidden ">
+                  <Header />
+                  <div className="flex-1 overflow-auto ">
+                    <Outlet />
+                  </div>
+                </main>
+              </SidebarProvider>
+            </ThemeProvider>
+          </QueryClientProvider>
+        </RefreshToken>
       </>
     );
   };
@@ -79,11 +83,7 @@ const App = () => {
       children: [
         {
           path: "/",
-          element: (
-            <Protected>
-              <Dashboard />
-            </Protected>
-          ),
+          element: <Dashboard />,
         },
 
         {
@@ -100,11 +100,7 @@ const App = () => {
         },
         {
           path: "/employees/new",
-          element: (
-            <Protected>
-              <AddnewEmployee />
-            </Protected>
-          ),
+          element: <EmployeeForm />,
         },
         {
           path: "/employees/view",
@@ -113,116 +109,60 @@ const App = () => {
 
         {
           path: "/designation/new",
-          element: (
-            <Protected>
-              <AddDesignation />
-            </Protected>
-          ),
+          element: <DesignationForm />,
         },
         {
           path: "/holiday/new",
-          element: (
-            <Protected>
-              <AddHoliday />
-            </Protected>
-          ),
+          element: <AddHoliday />,
         },
         {
           path: "/client/new",
-          element: (
-            <Protected>
-              <AddClient />
-            </Protected>
-          ),
+          element: <AddClient />,
         },
         {
           path: "/department/new",
-          element: (
-            <Protected>
-              <AddDepartment />
-            </Protected>
-          ),
+          element: <AddDepartment />,
         },
         {
           path: "/leavetype/new",
-          element: (
-            <Protected>
-              <LeaveType />
-            </Protected>
-          ),
+          element: <LeaveType />,
         },
         {
           path: "/manageleave",
-          element: (
-            <Protected>
-              <ManageLeave />
-            </Protected>
-          ),
+          element: <ManageLeave />,
         },
         {
           path: "/leave/new",
-          element: (
-            <Protected>
-              <ApplyLeave />
-            </Protected>
-          ),
+          element: <ApplyLeave />,
         },
 
         {
           path: "/project/new",
-          element: (
-            <Protected>
-              <ProjectDetails />
-            </Protected>
-          ),
+          element: <ProjectDetails />,
         },
         {
           path: "/ongoing_projects/view",
-          element: (
-            <Protected>
-              <OngoingProjects />
-            </Protected>
-          ),
+          element: <OngoingProjects />,
         },
         {
           path: "/timesheet/new",
-          element: (
-            <Protected>
-              <Filltimesheet />
-            </Protected>
-          ),
+          element: <Filltimesheet />,
         },
         {
           path: "/timesheet/view",
-          element: (
-            <Protected>
-              <TimesheetTable />
-            </Protected>
-          ),
+          element: <TimesheetTable />,
         },
         {
           path: "/mark-attendance",
-          element: (
-            <Protected>
-              <AttendanceMark />
-            </Protected>
-          ),
+          element: <AttendanceMark />,
         },
         {
           path: "/add-task",
-          element: (
-            <Protected>
-              <AddTask />
-            </Protected>
-          ),
+          element: <AddTask />,
         },
         {
           path: "/view-task",
-          element: (
-            <Protected>
-              <ViewTasks />
-            </Protected>
-          ),
+          element: <ViewTasks />,
         },
       ],
     },

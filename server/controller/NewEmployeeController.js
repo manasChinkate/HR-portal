@@ -1,9 +1,9 @@
 const { EmployeeModel } = require("../models/NewEmployee");
 const LoginSchema = require("../models/Login");
 const jwt = require("jsonwebtoken");
-const extractToken = require("../db");
 const pendingLeavesModel = require("../models/PendingLeaves");
 const { leaveTypeModel } = require("../models/LeaveType");
+const extractToken = require("../utils/ExtractToken");
 
 const handleCreateEmployee = async (req, res) => {
   // const userId = await generateUserId(req.body.companyName)

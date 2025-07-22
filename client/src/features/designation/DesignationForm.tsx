@@ -1,9 +1,9 @@
-import { Button } from "../../ui/button";
+import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { BASE_URL } from "../../../constants";
+import { BASE_URL } from "@/constants";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../../app/store";
+
 import { useMemo } from "react";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/form";
 import { fetchDesignation } from "@/components/MainMaster/services/masterServices";
 import { Input } from "@/components/ui/input";
+import { RootState } from "app/store";
 
 const DesignationSchema = z.object({
   designation: z.string().min(1, { message: "Designation is required" }),
@@ -28,65 +29,63 @@ const DesignationSchema = z.object({
 type Inputs = {
   designation: string;
 };
+const DesignationForm = () => {
+  // Initialize form instance using React Hook Form and Zod schema validation
+  const form = useForm<Inputs>({
+    resolver: zodResolver(DesignationSchema), // Validates form with Zod schema
+    defaultValues: {
+      designation: "", // Default field value
+    },
+  });
 
-const AddDesignation = () => {
-// Initialize form instance using React Hook Form and Zod schema validation
-const form = useForm<Inputs>({
-  resolver: zodResolver(DesignationSchema), // Validates form with Zod schema
-  defaultValues: {
-    designation: "", // Default field value
-  },
-});
+  // Destructure utilities from form
+  const {
+    reset, // Resets the form to default values
+    handleSubmit, // Handles form submission
+    formState: { errors }, // Access validation errors
+  } = form;
 
-// Destructure utilities from form
-const {
-  reset, // Resets the form to default values
-  handleSubmit, // Handles form submission
-  formState: { errors }, // Access validation errors
-} = form;
+  // Get QueryClient instance to manually trigger query refetches or invalidation
+  const queryClient = useQueryClient();
 
-// Get QueryClient instance to manually trigger query refetches or invalidation
-const queryClient = useQueryClient();
+  // Fetch existing designations from the server
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["designation"], // Unique key for caching
+    queryFn: fetchDesignation, // Function to call for data
+    staleTime: Infinity, // Prevents auto-refetch unless manually triggered
+  });
 
-// Fetch existing designations from the server
-const { data, isLoading, refetch } = useQuery({
-  queryKey: ["designation"], // Unique key for caching
-  queryFn: fetchDesignation, // Function to call for data
-  staleTime: Infinity, // Prevents auto-refetch unless manually triggered
-});
-
-// POST request to add a new designation
-const addDesignation = async (data: any) => {
-  return axios.post(`${BASE_URL}/designation`, data);
-};
-
-// Mutation for adding designation, and updating cache on success
-const mutation = useMutation({
-  mutationFn: addDesignation,
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ["designation"] }); // Refetch updated list
-    toast.success("Created Successfully"); // Show success toast
-    reset(); // Clear form fields
-  },
-});
-
-// Get the company name from Redux store
-const companyName = useSelector((state: RootState) => state.auth.companyName);
-
-// Memoize column definitions to avoid unnecessary re-renders
-const columns: any = useMemo(() => COLUMNS, []);
-
-// Handle form submission
-const onSubmit: SubmitHandler<Inputs> = async (data) => {
-  const formData = {
-    ...data,
-    companyName, // Attach companyName from Redux
+  // POST request to add a new designation
+  const addDesignation = async (data: any) => {
+    return axios.post(`${BASE_URL}/designation`, data);
   };
-  mutation.mutate(formData); // Trigger the mutation
-};
 
-console.log(errors); // Log form validation errors for debugging
+  // Mutation for adding designation, and updating cache on success
+  const mutation = useMutation({
+    mutationFn: addDesignation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["designation"] }); // Refetch updated list
+      toast.success("Created Successfully"); // Show success toast
+      reset(); // Clear form fields
+    },
+  });
 
+  // Get the company name from Redux store
+  const companyName = useSelector((state: RootState) => state.auth.companyName);
+
+  // Memoize column definitions to avoid unnecessary re-renders
+  const columns: any = useMemo(() => COLUMNS, []);
+
+  // Handle form submission
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const formData = {
+      ...data,
+      companyName, // Attach companyName from Redux
+    };
+    mutation.mutate(formData); // Trigger the mutation
+  };
+
+  console.log(errors); // Log form validation errors for debugging
 
   return (
     <div className="w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-primary1 py-2 pr-2 overflow-y-auto">
@@ -142,4 +141,4 @@ console.log(errors); // Log form validation errors for debugging
   );
 };
 
-export default AddDesignation;
+export default DesignationForm;

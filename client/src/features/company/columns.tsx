@@ -1,27 +1,7 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { convertDate } from "@/utils/dateHelper";
-import { SquarePen, Trash2 } from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import axios from "axios";
-import { BASE_URL } from "@/constants";
-import toast from "react-hot-toast";
-import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
+import { SquarePen } from "lucide-react";
+
 import { CellContext } from "@tanstack/react-table";
 
 export type Company = {

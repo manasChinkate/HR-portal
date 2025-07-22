@@ -83,29 +83,11 @@
   body {
     @apply bg-background text-foreground;
     background-color: #f0ebe3;
-    scrollbar-width: thin;
-    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+
   }
 
   .dark body {
     background-color: #000;
   }
 
-  body::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  body::-webkit-scrollbar-track {
-    background: var(--scrollbar-track);
-  }
-
-  body::-webkit-scrollbar-thumb {
-    background-color: var(--scrollbar-thumb);
-    border-radius: 9999px;
-    border: 2px solid var(--scrollbar-track);
-  }
-
-  body::-webkit-scrollbar-thumb:hover {
-    background-color: var(--scrollbar-thumb-hover);
-  }
 }

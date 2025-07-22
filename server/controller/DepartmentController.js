@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const DepartmentModel = require("../models/Department");
 const jwt = require("jsonwebtoken");
-const extractToken = require("../db");
 const { DepartmentSchema } = require("../Validations/ValidationSchema");
+const extractToken = require("../utils/ExtractToken");
 
 const handleCreateDepartment = async (req, res) => {
   const decodedToken = extractToken(req); // Assuming you have a function to extract and verify the token

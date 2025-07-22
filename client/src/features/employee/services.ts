@@ -1,6 +1,6 @@
 import { BASE_URL } from "@/constants";
 import axios from "axios";
-import { Inputs } from "./AddnewEmployee";
+import { Inputs } from "./EmployeeForm";
 
 export const fetchEmployees = async () => {
   const res = await axios.get(`${BASE_URL}/employee`);

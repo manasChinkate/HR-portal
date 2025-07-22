@@ -2,7 +2,7 @@ const { leaveTypeModel, leaveTypeZodSchema } = require("../models/LeaveType");
 const jwt = require("jsonwebtoken");
 const { EmployeeModel } = require("../models/NewEmployee");
 const pendingLeavesModel = require("../models/PendingLeaves");
-const extractToken = require("../db");
+const extractToken = require("../utils/ExtractToken");
 
 // @desc     Create LeaveTypes for company and each employee of companies
 // @route    POST /addleavetype

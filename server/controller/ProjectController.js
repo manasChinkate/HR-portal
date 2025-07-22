@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 const ProjectModel = require("../models/Project");
 const { sendNotifications } = require("./NotificationController");
-const extractToken = require("../db");
 const TaskModel = require("../models/Task");
+const extractToken = require("../utils/ExtractToken");
 
 const handleCreateProject = async (req, res) => {
   try {

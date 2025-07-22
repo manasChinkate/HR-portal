@@ -1,6 +1,6 @@
 import { BASE_URL } from "@/constants";
 import axios from "axios";
-import { Inputs } from "./menu-master";
+import { Inputs } from "./MenuMaster";
 
 export const addMenu = async (data: Inputs) => {
   return await axios.post(`${BASE_URL}/menu`, data);

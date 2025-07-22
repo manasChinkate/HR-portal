@@ -1,16 +1,18 @@
 const { CompanyModel } = require("../models/Company");
 const LoginSchema = require("../models/Login");
+const extractToken = require("../utils/extractToken");
 
 const checkCompanySubsciption = async (req, res, next) => {
   try {
     console.log("MiddleWare Called");
-    const { email } = req.body;
+    const decodedToken = extractToken(req);
+    const { email, authority } = decodedToken;
     const user = await LoginSchema.findOne({ email }).populate("companyId");
     console.log("USER", user);
 
-    if (user.authority == "MasterAdmin") {
+    if (authority == "MasterAdmin") {
       next();
-      return
+      return;
     }
 
     if (!user || !user.companyId._id) {

@@ -16,14 +16,14 @@ type ProtectedChild = {
   children: ReactNode;
 };
 
-const Protected = ({ children }: ProtectedChild) => {
+const RefreshToken = ({ children }: ProtectedChild) => {
   const navigate = useNavigate();
   const authority = localStorage.getItem("authority");
   const dispatch = useDispatch();
 
   const checking = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/auth/checking`);
+      const res = await axios.get(`${BASE_URL}/auth/refresh`);
 
       if (res.status === 200) {
         dispatch(setauthority(res.data.Checked.authority));
@@ -42,10 +42,10 @@ const Protected = ({ children }: ProtectedChild) => {
   };
 
   useEffect(() => {
-    authority !== "MasterAdmin" && checking();
+    checking();
   }, [children]);
 
   return <>{children}</>;
 };
 
-export default Protected;
+export default RefreshToken;

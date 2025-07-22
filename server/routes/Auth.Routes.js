@@ -1,13 +1,14 @@
 const express = require("express");
 const handleLogin = require("../controller/loginController");
-const handleChecking = require("../controller/Checking");
 const {
   checkCompanySubsciption,
 } = require("../middlewares/checkCompanySubscription");
+const handleRefresh = require("../controller/RefreshController");
 
 const authRouter = express.Router();
 
-authRouter.post("/login", checkCompanySubsciption, handleLogin);
-authRouter.get("/checking", handleChecking);
+authRouter.post("/login", handleLogin);
+authRouter.get("/refresh", checkCompanySubsciption, handleRefresh);
+// authRouter.get("/checking", handleChecking);
 
 module.exports = { authRouter };

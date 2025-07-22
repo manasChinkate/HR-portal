@@ -2,13 +2,13 @@ const { toZonedTime } = require("date-fns-tz");
 const { format, differenceInMinutes } = require("date-fns");
 const { parse } = require("date-fns");
 
-const extractToken = require("../db");
 const {
   AttendanceModel,
   getAttendanceById,
   getAttendanceByEmployeeId,
 } = require("../models/Attendance");
 const jwt = require("jsonwebtoken");
+const extractToken = require("../utils/ExtractToken");
 
 const IST_TIMEZONE = "Asia/Kolkata";
 

@@ -1,11 +1,11 @@
-const extractToken = require("../db");
 const LoginSchema = require("../models/Login");
-const {CompanyModel} = require("../models/Company");
+const { CompanyModel } = require("../models/Company");
+const extractToken = require("../utils/extractToken");
 
-// @desc    Authorization of user
+// @desc    Refresh
 // @route   POST /checking
 // access   private
-const handleChecking = async (req, res) => {
+const handleRefresh = async (req, res) => {
   try {
     const decodedToken = extractToken(req);
     console.log("Decoded Token:", decodedToken);
@@ -16,6 +16,22 @@ const handleChecking = async (req, res) => {
 
     const { companyId, userId: employeeId, authority } = decodedToken;
 
+    if (authority === "MasterAdmin") {
+      const masterAdmin = await LoginSchema.findOne({ authority });
+      if (!masterAdmin) {
+        return res.status(401).json({ message: "Unauthorized Admin" });
+      }
+
+      return res.status(200).json({
+        message: "Successfully Checked",
+        Checked: {
+          email: masterAdmin.email,
+          username: masterAdmin.fullname,
+          authority: masterAdmin.authority,
+          companyId: masterAdmin._id,
+        },
+      });
+    }
     if (authority === "Admin") {
       const admin = await CompanyModel.findOne({ _id: companyId });
       if (!admin) {
@@ -31,7 +47,8 @@ const handleChecking = async (req, res) => {
           companyId: admin._id,
         },
       });
-    } else if (authority === "Employee") {
+    }
+    if (authority === "Employee") {
       const employee = await LoginSchema.findOne({ employeeId }).populate(
         "employeeId"
       );
@@ -50,13 +67,13 @@ const handleChecking = async (req, res) => {
           companyId: employee.companyId,
         },
       });
-    } else {
-      return res.status(400).json({ message: "Invalid authority" });
     }
+
+    return res.status(400).json({ message: "Invalid authority" });
   } catch (error) {
     console.error("Error processing request:", error);
     return res.status(500).json({ message: "Error getting Info" });
   }
 };
 
-module.exports = handleChecking;
+module.exports = handleRefresh;
