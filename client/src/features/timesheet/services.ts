@@ -1,7 +1,7 @@
 import { BASE_URL } from "@/constants";
 import { convertTo12HourFormat } from "@/utils/dateHelper";
 import axios from "axios";
-import { Inputs } from "./Filltimesheet";
+import { Inputs } from "./TimesheetForm";
 
 export const fetchTimesheet = async () => {
   const res = await axios.get(`${BASE_URL}/timesheet`);

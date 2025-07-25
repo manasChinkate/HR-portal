@@ -1,6 +1,6 @@
 const { LeaveModel, LeaveZodSchema } = require("../models/Leave");
 const jwt = require("jsonwebtoken");
-require("../models/NewEmployee");
+require("../models/Employee");
 const pendingLeavesModel = require("../models/PendingLeaves");
 const { leaveTypeModel } = require("../models/LeaveType");
 const extractToken = require("../utils/ExtractToken");
@@ -87,7 +87,7 @@ const handleGetManageLeaves = async (req, res) => {
     const decodedToken = extractToken(req);
     const companyId = decodedToken.companyId;
     const leaveData = await LeaveModel.find({ companyId })
-      .populate("employeeId", "fullname")
+      .populate("employeeId", "fullName")
       .populate("leaveType", "leaveType");
     console.log("LEAVES DATA", leaveData);
 
@@ -171,15 +171,15 @@ const handleDecreaseLeaveCount = async (employeeId, count, leaveType) => {
     console.log("No leave found");
   }
   const newCount = +leave.leaveType.count - +count;
-  console.log("newcount",newCount)
+  console.log("newcount", newCount);
 
   if (newCount < 0) {
     console.log("Not enough Leaves");
   }
-  const id = leave.leaveType._id
+  const id = leave.leaveType._id;
   const result = await pendingLeavesModel.findOneAndUpdate(
     { employeeId, "pendingLeaves.leaveType": id },
-    {              
+    {
       $set: {
         "pendingLeaves.$.count": newCount,
       },
@@ -187,7 +187,7 @@ const handleDecreaseLeaveCount = async (employeeId, count, leaveType) => {
     { new: true }
   );
   if (!result) {
-    console.log("FAIELDED",result);
+    console.log("FAIELDED", result);
   }
 };
 

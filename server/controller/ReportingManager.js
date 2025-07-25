@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');  // Ensure jwt is required
 const LoginSchema = require('../models/Login');
-const {EmployeeModel} = require('../models/NewEmployee');
+const {EmployeeModel} = require('../models/Employee');
 const extractToken = require('../utils/ExtractToken');
 
 const handleReportingPerson = async (req, res) => {

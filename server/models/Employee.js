@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const EmployeeSchema = new mongoose.Schema(
   {
     //Personal Details
-    fullname: String,
+    fullName: String,
     email: String,
     mobileNo: String,
     gender: String,
@@ -15,8 +15,14 @@ const EmployeeSchema = new mongoose.Schema(
     joiningDate: String,
     probationPeriod: String,
     authority: String,
-    designation: String,
-    reportingManager: String,
+    designation: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Designation",
+    },
+    reportingManager: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employee",
+    },
 
     //Address Details
     city: String,
@@ -24,12 +30,10 @@ const EmployeeSchema = new mongoose.Schema(
     country: String,
     pincode: Number,
     address: String,
-    companyName: String,
     companyId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
     },
-
     createdDate: {
       type: Date,
       default: Date.now,

@@ -1,4 +1,4 @@
-const EmployeeModel = require("../models/NewEmployee")
+const EmployeeModel = require("../models/Employee")
 
 
 const getProfileDetails = async()=>{

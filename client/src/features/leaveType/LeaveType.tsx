@@ -1,4 +1,4 @@
-import { Button } from "../../ui/button";
+import { Button } from "@/components/ui/button";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useMemo } from "react";
 
@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Loader2, Plus } from "lucide-react";
 
 export type Inputs = z.infer<typeof leaveTypeZodSchema>;
 const leaveTypeZodSchema = z.object({
@@ -29,12 +30,16 @@ const leaveTypeZodSchema = z.object({
 const LeaveType = () => {
   const form = useForm({
     resolver: zodResolver(leaveTypeZodSchema),
+    defaultValues: {
+      leaveType: "",
+      count: "",
+    },
   });
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = form;
 
   const columns: any = useMemo(() => COLUMNS, []);
@@ -57,7 +62,7 @@ const LeaveType = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    mutation.mutate(data);
+    await mutation.mutateAsync(data);
   };
 
   return (
@@ -74,7 +79,7 @@ const LeaveType = () => {
             className=" flex flex-col gap-3 py-3"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className="grid grid-cols-3 gap-3">
+            <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-4 mb-5 ">
               <FormField
                 control={form.control}
                 name="leaveType"
@@ -105,11 +110,19 @@ const LeaveType = () => {
               />
             </div>
 
-               <Button
-              className="dark:bg-black dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
+            <Button
               type="submit"
+              className="flex items-center gap-2 dark:bg-black dark:text-white dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
+              disabled={isSubmitting}
             >
-              Add
+              <>
+                {isSubmitting ? (
+                  <Loader2 className="animate-spin h-4 w-4" />
+                ) : (
+                  <Plus className="h-4 w-4" />
+                )}
+                Add
+              </>
             </Button>
           </form>
         </Form>

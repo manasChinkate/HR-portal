@@ -19,9 +19,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { fetchDesignation } from "@/components/MainMaster/services/masterServices";
+import { fetchDesignation } from "@/services/masterServices";
 import { Input } from "@/components/ui/input";
 import { RootState } from "app/store";
+import { Loader2, Plus } from "lucide-react";
 
 const DesignationSchema = z.object({
   designation: z.string().min(1, { message: "Designation is required" }),
@@ -29,7 +30,7 @@ const DesignationSchema = z.object({
 type Inputs = {
   designation: string;
 };
-const DesignationForm = () => {
+const Designation = () => {
   // Initialize form instance using React Hook Form and Zod schema validation
   const form = useForm<Inputs>({
     resolver: zodResolver(DesignationSchema), // Validates form with Zod schema
@@ -42,7 +43,7 @@ const DesignationForm = () => {
   const {
     reset, // Resets the form to default values
     handleSubmit, // Handles form submission
-    formState: { errors }, // Access validation errors
+    formState: { errors, isSubmitting }, // Access validation errors
   } = form;
 
   // Get QueryClient instance to manually trigger query refetches or invalidation
@@ -89,8 +90,8 @@ const DesignationForm = () => {
 
   return (
     <div className="w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-primary1 py-2 pr-2 overflow-y-auto">
-      <div className=" bg-background1 dark:bg-secondary1  rounded-lg w-full p-4 text-sm">
-        <div className=" border-b border-gray-200 dark:border-0 pb-2">
+      <div className="bg-background1 divide-y divide-gray-200 dark:divide-gray-600 dark:bg-secondary1 rounded-lg w-full p-4 text-sm">
+        <div className=" pb-2">
           <h1 className=" text-2xl font-bold dark:text-gray-100     ">
             Add Designation
           </h1>
@@ -103,7 +104,7 @@ const DesignationForm = () => {
             onSubmit={handleSubmit(onSubmit)}
             className=" flex flex-col gap-3 py-3"
           >
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-3">
               <FormField
                 control={form.control}
                 name="designation"
@@ -121,10 +122,18 @@ const DesignationForm = () => {
             </div>
 
             <Button
-              className="dark:bg-black dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
               type="submit"
+              className="flex items-center gap-2 dark:bg-black dark:text-white dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
+              disabled={isSubmitting}
             >
-              Add
+              <>
+                {isSubmitting ? (
+                  <Loader2 className="animate-spin h-4 w-4" />
+                ) : (
+                  <Plus className="h-4 w-4" />
+                )}
+                Add
+              </>
             </Button>
           </form>
         </Form>
@@ -141,4 +150,4 @@ const DesignationForm = () => {
   );
 };
 
-export default DesignationForm;
+export default Designation;

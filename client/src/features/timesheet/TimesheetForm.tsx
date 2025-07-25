@@ -1,5 +1,5 @@
 //@collapse
-import { Button } from "../ui/button";
+import { Button } from "../../components/ui/button";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { fetchProjects } from "@/components/ProjectMaster/OngoingProjects/services";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addTimesheet } from "./services";
-import { fetchTasks } from "../ProjectMaster/ProjectTask/services";
+import { fetchTasks } from "../../components/ProjectMaster/ProjectTask/services";
 
 import {
   Popover,
@@ -35,11 +35,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2, Plus } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
-import { getTotalTime } from "../ProjectMaster/OngoingProjects/helper";
+import { getTotalTime } from "../../components/ProjectMaster/OngoingProjects/helper";
 
 export type Inputs = z.infer<typeof TimesheetSchema>;
 
@@ -53,7 +53,7 @@ const TimesheetSchema = z.object({
   totalTime: z.string(),
 });
 
-const Filltimesheet = () => {
+const TimesheetForm = () => {
   const form = useForm<Inputs>({
     resolver: zodResolver(TimesheetSchema),
     defaultValues: {
@@ -67,7 +67,13 @@ const Filltimesheet = () => {
     },
   });
 
-  const { handleSubmit, watch, reset, setValue } = form;
+  const {
+    handleSubmit,
+    watch,
+    reset,
+    setValue,
+    formState: { isSubmitting },
+  } = form;
 
   const startTime = watch("startTime");
   const endTime = watch("endTime");
@@ -102,7 +108,7 @@ const Filltimesheet = () => {
       totalTime: getTotalTime(data.startTime, data.endTime),
     };
 
-    mutation.mutate(finalData);
+    await mutation.mutateAsync(finalData);
   };
 
   useEffect(() => {
@@ -122,14 +128,14 @@ const Filltimesheet = () => {
             <p className=" text-gray-500 text-sm">Add your daily activity</p>
           </div>
           <div className="flex justify-end mt-4">
-            <Link to={"/timesheet/view"}>
+            {/* <Link to={"/timesheet/view"}>
               <Button
-                className="dark:bg-black dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
                 type="button"
+                className="flex items-center gap-2 dark:bg-black dark:text-white dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
               >
-                Timesheet History
+                Back
               </Button>
-            </Link>
+            </Link> */}
           </div>
         </div>
         <Form {...form}>
@@ -311,7 +317,7 @@ const Filltimesheet = () => {
                 control={form.control}
                 name="taskDesc"
                 render={({ field }) => (
-                  <FormItem className="space-y-2 col-span-3">
+                  <FormItem className="space-y-2 col-span-full">
                     <FormLabel>What you performed today? </FormLabel>
                     <FormControl>
                       <Textarea
@@ -327,10 +333,18 @@ const Filltimesheet = () => {
               />
             </div>
             <Button
-              className="dark:bg-black dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
               type="submit"
+              className="flex items-center gap-2 dark:bg-black dark:text-white dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
+              disabled={isSubmitting}
             >
-              Add
+              <>
+                {isSubmitting ? (
+                  <Loader2 className="animate-spin h-4 w-4" />
+                ) : (
+                  <Plus className="h-4 w-4" />
+                )}
+                Add
+              </>
             </Button>
           </form>
         </Form>
@@ -339,4 +353,4 @@ const Filltimesheet = () => {
   );
 };
 
-export default Filltimesheet;
+export default TimesheetForm;

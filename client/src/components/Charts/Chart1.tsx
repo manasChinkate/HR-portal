@@ -15,7 +15,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useQuery } from "@tanstack/react-query";
-import { fetchHoliday } from "../MainMaster/services/masterServices";
+import { fetchHoliday } from "../../services/masterServices";
 import { Calendar } from "lucide-react";
 import { Badge } from "../ui/badge";
 

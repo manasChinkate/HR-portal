@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchClient } from "@/components/MainMaster/services/masterServices";
+import { fetchClient } from "@/services/masterServices";
 import { addProject, fetchProjectManager } from "./services";
 import {
   Popover,

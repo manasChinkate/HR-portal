@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const HolidayModel = require("../models/Holiday");
 const jwt = require("jsonwebtoken");
-const { EmployeeModel } = require("../models/NewEmployee");
+const { EmployeeModel } = require("../models/Employee");
 const NotificationModel = require("../models/Notifications");
 const LoginSchema = require("../models/Login");
 const { sendNotifications } = require("./NotificationController");

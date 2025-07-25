@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const NotificationModel = require("../models/Notifications");
 const LoginSchema = require("../models/Login"); // Assuming this is your employee model
 const extractToken = require("../utils/ExtractToken");
-const { EmployeeModel } = require("../models/NewEmployee");
+const { EmployeeModel } = require("../models/Employee");
 
 const handleGetNotification = async (req, res) => {
   try {
@@ -19,7 +19,7 @@ const handleGetNotification = async (req, res) => {
 
     if (notifications.length === 0) {
       return res
-        .status(404)
+        .status(200)
         .json({ message: "No notifications found for the user." });
     }
 

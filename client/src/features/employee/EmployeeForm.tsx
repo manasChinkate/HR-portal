@@ -5,7 +5,7 @@ import { RootState } from "../../../app/store";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchDesignation } from "@/components/MainMaster/services/masterServices";
+import { fetchDesignation } from "@/services/masterServices";
 import { addEmployee, fetchEmployees, getCountries } from "./services";
 
 import {
@@ -69,8 +69,33 @@ export type Inputs = z.infer<typeof EmployeeSchema>;
 const EmployeeForm = () => {
   const form = useForm<Inputs>({
     resolver: zodResolver(EmployeeSchema),
+    defaultValues: {
+      // Personal Details
+      fullname: "",
+      email: "",
+      mobileNo: "",
+      gender: "",
+      maritialStatus: "",
+      adhaarNo: "",
+      panNo: "", // optional
+      dob: "",
+
+      // Employment Details
+      joiningDate: "",
+      probationPeriod: "", // optional
+      authority: "",
+      designation: "",
+      reportingManager: "", // optional
+
+      // Address
+      city: "",
+      state: "",
+      country: "",
+      pincode: "",
+      address: "", // optional
+    },
   });
-  const { handleSubmit, reset } = form;
+  const { handleSubmit, reset, watch } = form;
 
   const companyName = useSelector((state: RootState) => state.auth.companyName);
   const queryClient = useQueryClient();
@@ -78,7 +103,6 @@ const EmployeeForm = () => {
     mutationFn: addEmployee,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employees"] });
-      queryClient.invalidateQueries({ queryKey: ["departments"] });
       toast.success("Created Successfully");
       reset();
     },
@@ -107,6 +131,8 @@ const EmployeeForm = () => {
     };
     mutation.mutate(formData);
   };
+
+  console.log(watch());
 
   return (
     <div className="w-full h-full  bg-background2 flex flex-col gap-2 dark:bg-primary1 py-2 pr-2 ">
@@ -137,7 +163,7 @@ const EmployeeForm = () => {
             className=" flex flex-col gap-3 py-3"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-6 mb-5 ">
+            <div className=" grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1  gap-4 mt-6 mb-5 ">
               <p className=" col-span-full border-b-2 pb-1 font-semibold">
                 Personal Details
               </p>
@@ -318,7 +344,7 @@ const EmployeeForm = () => {
                 )}
               />
             </div>
-            <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-6 mb-5 ">
+            <div className=" grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 mt-6 mb-5 ">
               <p className=" col-span-full border-b-2 pb-1 font-semibold">
                 Employeement Details
               </p>
@@ -420,11 +446,8 @@ const EmployeeForm = () => {
                 name="designation"
                 render={({ field }) => (
                   <FormItem className=" space-y-2">
-                    <FormLabel>Project</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <FormLabel>Designation</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select Designation" />
@@ -434,7 +457,7 @@ const EmployeeForm = () => {
                         {designations.map(
                           (e: { designation: string; _id: string }) => {
                             return (
-                              <SelectItem value={e.designation}>
+                              <SelectItem value={e._id}>
                                 {e.designation}
                               </SelectItem>
                             );
@@ -455,10 +478,7 @@ const EmployeeForm = () => {
                 render={({ field }) => (
                   <FormItem className=" space-y-2">
                     <FormLabel>Reporting Manager</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select Reporting Manager" />
@@ -468,7 +488,7 @@ const EmployeeForm = () => {
                         {reportingManager.map(
                           (e: { fullname: string; _id: string }) => {
                             return (
-                              <SelectItem value={e.fullname}>
+                              <SelectItem value={e._id}>
                                 {e.fullname}
                               </SelectItem>
                             );
@@ -482,7 +502,7 @@ const EmployeeForm = () => {
                 )}
               />
             </div>
-            <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-6 mb-5 ">
+            <div className=" grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 mt-6 mb-5 ">
               <p className=" col-span-full border-b-2 pb-1 font-semibold">
                 Address Details
               </p>
@@ -569,7 +589,7 @@ const EmployeeForm = () => {
                 control={form.control}
                 name="address"
                 render={({ field }) => (
-                  <FormItem className="space-y-2 col-span-3">
+                  <FormItem className="space-y-2 col-span-full">
                     <FormLabel>Address</FormLabel>
                     <FormControl>
                       <Textarea

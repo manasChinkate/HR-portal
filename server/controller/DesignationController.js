@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const DesignationModel = require("../models/Designation");
 const jwt = require("jsonwebtoken");
 const { z } = require("zod");
-const  extractToken  = require("../utils/extractToken");
+const extractToken = require("../utils/ExtractToken");
 
 const handleCreateDesignation = async (req, res) => {
   const token = req.headers.token;

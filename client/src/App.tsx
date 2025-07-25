@@ -1,18 +1,17 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Login from "@/Pages/login/Login";
 import SessionOut from "./Pages/SessionOut/SessionOut";
-import AddHoliday from "./components/MainMaster/AddHoliday/AddHoliday";
+import HolidayForm from "./features/holiday/HolidayForm";
 import axios from "axios";
 import CompanyTable from "@/features/company/CompanyTable";
-import AddClient from "./components/MainMaster/AddClient/AddClient";
-import LeaveType from "./components/LeaveManagement/LeaveType/LeaveType";
+import Client from "@/features/client/Client";
+import LeaveType from "@/features/leaveType/LeaveType";
 import ManageLeave from "./components/LeaveManagement/ManageLeave/ManageLeave";
-import ApplyLeave from "./components/LeaveManagement/ApplyLeave/ApplyLeave";
-import AddDepartment from "./components/MainMaster/AddDepartment/AddDepartment";
+import ApplyLeave from "@/features/applyLeave/ApplyLeave";
 import ProjectDetails from "./components/ProjectMaster/ProjectDetails/ProjectDetails";
 import OngoingProjects from "./components/ProjectMaster/OngoingProjects/OngoingProjects";
-import Filltimesheet from "./components/Timesheet/Filltimesheet";
-import TimesheetTable from "./components/Timesheet/TimesheetTable";
+import TimesheetForm from "./features/timesheet/TimesheetForm";
+import TimesheetTable from "./features/timesheet/TimesheetTable";
 import AttendanceMark from "./components/Attendance/AttendanceMark";
 import AddTask from "./components/ProjectMaster/ProjectTask/AddTask";
 import ViewTasks from "./components/ProjectMaster/ProjectTask/ViewTasks";
@@ -25,11 +24,11 @@ import Header from "./components/header/Header";
 import Dashboard from "./Pages/dashboard/Dashboard";
 import CompanyForm from "./features/company/CompanyForm";
 import RefreshToken from "./RefreshToken";
-import DesignationForm from "./features/designation/DesignationForm";
-import './app.css';
+import Designation from "./features/designation/Designation";
+import "./app.css";
 import EmployeeForm from "./features/employee/EmployeeForm";
 import EmployeeTable from "./features/employee/EmployeeTable";
-
+import Department from "./features/department/Department";
 
 const App = () => {
   const queryClient = new QueryClient({
@@ -109,19 +108,19 @@ const App = () => {
 
         {
           path: "/designation/new",
-          element: <DesignationForm />,
+          element: <Designation />,
         },
         {
           path: "/holiday/new",
-          element: <AddHoliday />,
+          element: <HolidayForm />,
         },
         {
           path: "/client/new",
-          element: <AddClient />,
+          element: <Client />,
         },
         {
           path: "/department/new",
-          element: <AddDepartment />,
+          element: <Department />,
         },
         {
           path: "/leavetype/new",
@@ -146,7 +145,7 @@ const App = () => {
         },
         {
           path: "/timesheet/new",
-          element: <Filltimesheet />,
+          element: <TimesheetForm />,
         },
         {
           path: "/timesheet/view",

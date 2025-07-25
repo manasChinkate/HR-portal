@@ -1,6 +1,6 @@
 const { leaveTypeModel, leaveTypeZodSchema } = require("../models/LeaveType");
 const jwt = require("jsonwebtoken");
-const { EmployeeModel } = require("../models/NewEmployee");
+const { EmployeeModel } = require("../models/Employee");
 const pendingLeavesModel = require("../models/PendingLeaves");
 const extractToken = require("../utils/ExtractToken");
 

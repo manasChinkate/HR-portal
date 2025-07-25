@@ -1,7 +1,7 @@
-import { Button } from "../../ui/button";
+import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { BASE_URL } from "../../../constants";
+import { BASE_URL } from "@/constants";
 import { useEffect, useMemo } from "react";
 import { COLUMNS } from "./columns";
 import toast from "react-hot-toast";
@@ -9,7 +9,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TableWrapper from "@/components/ui/TableWrapper";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchHoliday } from "@/components/MainMaster/services/masterServices";
+import { fetchHoliday } from "@/services/masterServices";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Form,
@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2, Plus } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 
 type Inputs = {
@@ -71,17 +71,25 @@ const HolidaySchema = z
     }
   );
 
-const AddHoliday = () => {
+const HolidayForm = () => {
   const form = useForm<Inputs>({
     resolver: zodResolver(HolidaySchema),
     defaultValues: {
+      holiday: "",
+      fromDate: "",
+      toDate: "",
       holidayType: "single",
     },
   });
 
   const { setValue } = form;
 
-  const { handleSubmit, reset, watch } = form;
+  const {
+    handleSubmit,
+    reset,
+    watch,
+    formState: { isSubmitting },
+  } = form;
 
   const holidayType = watch("holidayType");
   const queryClient = useQueryClient();
@@ -120,9 +128,9 @@ const AddHoliday = () => {
   }, [watch("holidayType")]);
 
   return (
-    <div className="w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-primary1 py-2 pr-2 overflow-y-auto">
-      <div className="bg-background1 dark:bg-secondary1 rounded-lg w-full p-4 text-sm">
-        <div className="border-b border-gray-200 pb-2">
+    <div className="w-full max-h-[90vh] bg-background2 flex flex-col gap-2 dark:bg-primary1 py-2 pr-2 overflow-auto">
+      <div className="bg-background1 divide-y divide-gray-200 dark:divide-gray-600 dark:bg-secondary1 rounded-lg w-full p-4 text-sm">
+        <div className=" pb-2">
           <h1 className="text-2xl font-bold">Add Holiday</h1>
           <p className="text-gray-500 text-sm">
             Add new Holiday for your employees
@@ -169,7 +177,7 @@ const AddHoliday = () => {
                 </FormItem>
               )}
             />
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-3">
               <FormField
                 control={form.control}
                 name="holiday"
@@ -283,10 +291,18 @@ const AddHoliday = () => {
             {/* </div> */}
 
             <Button
-              className="dark:bg-black dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
               type="submit"
+              className="flex items-center gap-2 dark:bg-black dark:text-white dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
+              disabled={isSubmitting}
             >
-              Add
+              <>
+                {isSubmitting ? (
+                  <Loader2 className="animate-spin h-4 w-4" />
+                ) : (
+                  <Plus className="h-4 w-4" />
+                )}
+                Add
+              </>
             </Button>
           </form>
         </Form>
@@ -304,4 +320,4 @@ const AddHoliday = () => {
   );
 };
 
-export default AddHoliday;
+export default HolidayForm;
