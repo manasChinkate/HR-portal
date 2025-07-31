@@ -2,13 +2,13 @@ import { useMemo } from "react";
 
 import { useForm } from "react-hook-form";
 
-import 'react-quill-new/dist/quill.snow.css';
+import "react-quill-new/dist/quill.snow.css";
 
 import { COLUMNS } from "./columns";
 
 import TableWrapper from "@/components/ui/TableWrapper";
 import { useQuery } from "@tanstack/react-query";
-import { fetchProjects } from "../OngoingProjects/services";
+import { fetchProjects } from "../../../features/project/ongoingProject/services";
 import { fetchTasks } from "./services";
 import {
   Form,
@@ -30,15 +30,13 @@ type Inputs = {
   projectId: string;
 };
 
-const ViewTasks = () => {
+const TaskTable = () => {
   const form = useForm<Inputs>({
     defaultValues: {
       projectId: "",
     },
   });
-  const {
-    watch,
-  } = form;
+  const { watch } = form;
 
   const columns: any = useMemo(() => COLUMNS, []);
 
@@ -113,4 +111,4 @@ const ViewTasks = () => {
   );
 };
 
-export default ViewTasks;
+export default TaskTable;

@@ -2,6 +2,12 @@ import Chart1 from "@/components/Charts/Chart1";
 import Chart2 from "@/components/Charts/Chart2";
 import Chart3 from "@/components/Charts/Chart3";
 import Chart4 from "@/components/Charts/Chart4";
+import {
+  Tabs,
+  TabsContent,
+  TabTrigger,
+  TabTriggerContainer,
+} from "@/components/custom/tabs";
 
 const Dashboard = () => {
   return (
@@ -15,12 +21,25 @@ const Dashboard = () => {
           <div className="dark:bg-secondary1 col-span-2   rounded-xl bg-background1">
             <Chart1 />
           </div>
-
-          {/* <Chart3 /> */}
+          <div>
+            <Tabs defaultValue="home">
+              <TabTriggerContainer className="">
+                <TabTrigger value="Home">HOme</TabTrigger>
+                <TabTrigger value="Setting">Setting</TabTrigger>
+                <TabTrigger value="Profile">Profile</TabTrigger>
+              </TabTriggerContainer>
+              <TabsContent  value="Home">
+                <p>Home</p>
+              </TabsContent>
+              <TabsContent value="Setting">
+                <p>Setting</p>
+              </TabsContent>
+              <TabsContent value="Profile">
+                <p>Profile</p>
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
-        {/* <div className="dark:bg-secondary1  rounded-xl bg-background1"> */}
-          {/* <Chart2 /> */}
-        {/* </div> */}
       </div>
     </>
   );

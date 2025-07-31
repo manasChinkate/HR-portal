@@ -1,7 +1,4 @@
-
-import {  useMemo } from "react";
-
-
+import { useMemo } from "react";
 
 import { COLUMNS } from "./columns";
 
@@ -9,16 +6,13 @@ import TableWrapper from "@/components/ui/TableWrapper";
 import { useQuery } from "@tanstack/react-query";
 import { fetchManageleaves } from "./services";
 
-
-
-
-const ManageLeave = () => {
+const ManageLeaveTable = () => {
   const columns: any = useMemo(() => COLUMNS, []);
 
-  const { data, isLoading,refetch } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["manageleave"],
     queryFn: fetchManageleaves,
-    staleTime:Infinity
+    staleTime: Infinity,
   });
 
   return (
@@ -35,4 +29,4 @@ const ManageLeave = () => {
   );
 };
 
-export default ManageLeave;
+export default ManageLeaveTable;

@@ -1,7 +1,7 @@
 import { Inputs } from "@/features/employee/EmployeeForm";
 import { BASE_URL } from "@/constants";
 import axios from "axios";
-import { TaskInputs } from "./AddTask";
+import { TaskInputs } from "./TaskForm";
 
 interface StatusChange {
   projectId: string;

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { fetchProjects } from "@/components/ProjectMaster/OngoingProjects/services";
+import { fetchProjects } from "@/features/project/ongoingProject/services";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addTimesheet } from "./services";
 import { fetchTasks } from "../../components/ProjectMaster/ProjectTask/services";
@@ -39,7 +39,7 @@ import { CalendarIcon, Loader2, Plus } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
-import { getTotalTime } from "../../components/ProjectMaster/OngoingProjects/helper";
+import { getTotalTime } from "../project/ongoingProject/helper";
 
 export type Inputs = z.infer<typeof TimesheetSchema>;
 

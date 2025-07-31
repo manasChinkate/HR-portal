@@ -40,7 +40,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 const EmployeeSchema = z.object({
   // Personal Details
-  fullname: z.string().min(1, "Employee name is required"),
+  fullName: z.string().min(1, "Employee name is required"),
   email: z.string().email().min(1, "Email is required"),
   mobileNo: z.string().min(1, "Mobile No. is required"),
   gender: z.string().min(1, "gender is required"),
@@ -54,7 +54,7 @@ const EmployeeSchema = z.object({
   probationPeriod: z.string().optional(),
   authority: z.string().min(1, "authority is required"),
   designation: z.string().min(1, "designation is required"),
-  reportingManager: z.string().optional(),
+  reportingManager: z.string().nullable().optional(),
 
   //Address
   city: z.string().min(1, "City is required"),
@@ -71,7 +71,7 @@ const EmployeeForm = () => {
     resolver: zodResolver(EmployeeSchema),
     defaultValues: {
       // Personal Details
-      fullname: "",
+      fullName: "",
       email: "",
       mobileNo: "",
       gender: "",
@@ -85,7 +85,7 @@ const EmployeeForm = () => {
       probationPeriod: "", // optional
       authority: "",
       designation: "",
-      reportingManager: "", // optional
+      reportingManager: null, // optional
 
       // Address
       city: "",
@@ -132,7 +132,7 @@ const EmployeeForm = () => {
     mutation.mutate(formData);
   };
 
-  console.log(watch());
+  // console.log(watch());
 
   return (
     <div className="w-full h-full  bg-background2 flex flex-col gap-2 dark:bg-primary1 py-2 pr-2 ">
@@ -170,7 +170,7 @@ const EmployeeForm = () => {
               {/* Name */}
               <FormField
                 control={form.control}
-                name="fullname"
+                name="fullName"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel>Full name</FormLabel>
@@ -486,10 +486,10 @@ const EmployeeForm = () => {
                       </FormControl>
                       <SelectContent>
                         {reportingManager.map(
-                          (e: { fullname: string; _id: string }) => {
+                          (e: { fullName: string; _id: string }) => {
                             return (
                               <SelectItem value={e._id}>
-                                {e.fullname}
+                                {e.fullName}
                               </SelectItem>
                             );
                           }

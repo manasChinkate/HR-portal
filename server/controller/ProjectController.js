@@ -32,13 +32,13 @@ const handleGetProjects = async (req, res) => {
     const decodedToken = extractToken(req);
     const companyId = decodedToken.companyId;
 
-    const Projects = await ProjectModel.find({ companyId }).populate(
-      "projectManager"
-    ).populate("clientName");
+    const Projects = await ProjectModel.find({ companyId })
+      .populate("projectManager")
+      .populate("clientName");
     if (Projects.length === 0) {
       return res
-        .status(404)
-        .json({ message: "No projects found for this company." });
+        .status(200)
+        .json({ message: "No projects found for this company.", data: [] });
     }
 
     res.status(200).json({ data: Projects, message: "Fetched Successfully" });

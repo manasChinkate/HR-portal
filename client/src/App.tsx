@@ -5,16 +5,16 @@ import HolidayForm from "./features/holiday/HolidayForm";
 import axios from "axios";
 import CompanyTable from "@/features/company/CompanyTable";
 import Client from "@/features/client/Client";
-import LeaveType from "@/features/leaveType/LeaveType";
-import ManageLeave from "./components/LeaveManagement/ManageLeave/ManageLeave";
-import ApplyLeave from "@/features/applyLeave/ApplyLeave";
-import ProjectDetails from "./components/ProjectMaster/ProjectDetails/ProjectDetails";
-import OngoingProjects from "./components/ProjectMaster/OngoingProjects/OngoingProjects";
+import LeaveType from "@/features/leave/leaveType/LeaveType";
+import ManageLeaveTable from "./features/leave/manageLeave/ManageLeaveTable";
+import ApplyLeave from "@/features/leave/applyLeave/ApplyLeave";
+import ProjectForm from "./features/project/createProject/ProjectForm";
+import OngoingProjects from "./features/project/ongoingProject/OngoingProjects";
 import TimesheetForm from "./features/timesheet/TimesheetForm";
 import TimesheetTable from "./features/timesheet/TimesheetTable";
 import AttendanceMark from "./components/Attendance/AttendanceMark";
-import AddTask from "./components/ProjectMaster/ProjectTask/AddTask";
-import ViewTasks from "./components/ProjectMaster/ProjectTask/ViewTasks";
+import AddTask from "./components/ProjectMaster/ProjectTask/TaskForm";
+import ViewTasks from "./components/ProjectMaster/ProjectTask/TaskTable";
 import { SidebarProvider } from "./components/ui/sidebar";
 import AppSidebar from "./components/Sidebar/AppSidebar";
 import { ThemeProvider } from "./components/Theme-Provider";
@@ -128,7 +128,7 @@ const App = () => {
         },
         {
           path: "/manageleave",
-          element: <ManageLeave />,
+          element: <ManageLeaveTable />,
         },
         {
           path: "/leave/new",
@@ -137,7 +137,7 @@ const App = () => {
 
         {
           path: "/project/new",
-          element: <ProjectDetails />,
+          element: <ProjectForm />,
         },
         {
           path: "/ongoing_projects/view",

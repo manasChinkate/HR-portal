@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 
 export type Option = {
   _id: string;
-  fullname: string;
+  fullName: string;
 };
 
 type MultiSelectComboBoxProps = {
@@ -72,7 +72,7 @@ export default function MultiSelectComboBox({
           {selectedValues.length > 0
             ? options
                 .filter((o) => selectedValues.includes(o._id))
-                .map((o) => o.fullname)
+                .map((o) => o.fullName)
                 .join(", ")
             : placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -102,7 +102,7 @@ export default function MultiSelectComboBox({
                       <Check className="h-4 w-4" />
                     )}
                   </div>
-                  {option.fullname}
+                  {option.fullName}
                 </CommandItem>
               ))}
             </CommandGroup>

@@ -1,4 +1,4 @@
-import { Button } from "../../ui/button";
+import { Button } from "../../../components/ui/button";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -31,7 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2, Plus } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
@@ -59,11 +59,15 @@ const ProjectSchema = z
     }
   );
 
-const ProjectDetails = () => {
+const ProjectForm = () => {
   const form = useForm({
     resolver: zodResolver(ProjectSchema),
   });
-  const { handleSubmit, reset } = form;
+  const {
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = form;
 
   const queryClient = useQueryClient();
 
@@ -88,7 +92,7 @@ const ProjectDetails = () => {
   });
 
   const onSubmit: SubmitHandler<projectInputs> = async (data) => {
-    mutation.mutate(data);
+    await mutation.mutateAsync(data);
   };
 
   return (
@@ -103,7 +107,7 @@ const ProjectDetails = () => {
             className=" flex flex-col gap-3 py-3"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className=" grid md:grid-cols-3 sm:grid-cols-2  gap-4 mt-4 mb-5 ">
+            <div className=" grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1  gap-4 mt-4 mb-5 ">
               {/* Project Name */}
               <FormField
                 control={form.control}
@@ -170,10 +174,10 @@ const ProjectDetails = () => {
                       </FormControl>
                       <SelectContent>
                         {projectManagerData.map(
-                          (e: { fullname: string; _id: string }) => {
+                          (e: { fullName: string; _id: string }) => {
                             return (
                               <SelectItem value={e._id}>
-                                {e.fullname}
+                                {e.fullName}
                               </SelectItem>
                             );
                           }
@@ -307,7 +311,7 @@ const ProjectDetails = () => {
                 control={form.control}
                 name="description"
                 render={({ field }) => (
-                  <FormItem className="space-y-2 col-span-3">
+                  <FormItem className="space-y-2 col-span-full">
                     <FormLabel>Project Description</FormLabel>
                     <FormControl>
                       <Textarea
@@ -323,11 +327,19 @@ const ProjectDetails = () => {
               />
             </div>
             {/* Submit Button */}
-           <Button
-              className="dark:bg-black dark:text-[#ffffff] dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
+            <Button
               type="submit"
+              className="flex items-center gap-2 dark:bg-black dark:text-white dark:shadow-[#1f1f1f] dark:shadow-md w-fit"
+              disabled={isSubmitting}
             >
-              Add
+              <>
+                {isSubmitting ? (
+                  <Loader2 className="animate-spin h-4 w-4" />
+                ) : (
+                  <Plus className="h-4 w-4" />
+                )}
+                Add
+              </>
             </Button>
           </form>
         </Form>
@@ -336,4 +348,4 @@ const ProjectDetails = () => {
   );
 };
 
-export default ProjectDetails;
+export default ProjectForm;

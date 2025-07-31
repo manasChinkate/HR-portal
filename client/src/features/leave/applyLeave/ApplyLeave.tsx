@@ -19,7 +19,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import TableWrapper from "@/components/ui/TableWrapper";
 import { applyLeave, fetchLeaves } from "./services";
 import { fetchDepartment } from "@/services/masterServices";
-import { fetchLeaveType } from "@/features/leaveType/services";
+import { fetchLeaveType } from "@/features/leave/leaveType/services";
 import { useMemo } from "react";
 import { Loader2, Plus } from "lucide-react";
 import {

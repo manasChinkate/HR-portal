@@ -10,9 +10,33 @@ import { Ellipsis } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { handleAcceptLeave, handleRejectLeave } from "./services";
 import { convertDate } from "@/utils/dateHelper";
-import { LeaveData } from "./types"; // Assuming you export LeaveData from a types file
 
-export const COLUMNS: ColumnDef<LeaveData>[] = [
+export interface LeaveType {
+  _id: string;
+  leaveType: string;
+}
+
+export interface Employee {
+  _id: string;
+  fullName: string;
+}
+
+export interface Leave {
+  _id: string;
+  leaveType: LeaveType;
+  count: string; // Consider changing to number if it will always be numeric
+  department: string;
+  fromDate: string; // ISO date string
+  toDate: string; // ISO date string
+  reason: string;
+  status: "pending" | "accepted" | "rejected"; // assuming only these values
+  companyId: string;
+  employeeId: Employee;
+  createdAt: string; // ISO timestamp
+  __v: number;
+}
+
+export const COLUMNS: ColumnDef<Leave>[] = [
   {
     header: "Employee Name",
     accessorFn: (row) => row.employeeId?.fullName,
@@ -49,7 +73,7 @@ export const COLUMNS: ColumnDef<LeaveData>[] = [
       const baseClass =
         "mx-auto cursor-pointer font-semibold text-center py-0 px-1 lg:py-0.5 lg:px-2 rounded-lg w-fit text-xs";
 
-      if (status === "Accepted") {
+      if (status === "accepted") {
         return (
           <p
             className={`${baseClass} bg-cyan-100 dark:bg-secondary1 dark:border-blue-600 dark:border text-blue-600`}
@@ -57,7 +81,7 @@ export const COLUMNS: ColumnDef<LeaveData>[] = [
             Accepted
           </p>
         );
-      } else if (status === "Rejected") {
+      } else if (status === "rejected") {
         return (
           <p
             className={`${baseClass} bg-cyan-100 dark:bg-secondary1 dark:border-red-600 dark:border text-red-600`}

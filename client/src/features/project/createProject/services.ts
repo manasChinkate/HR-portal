@@ -1,7 +1,7 @@
 import { Inputs } from "@/features/employee/EmployeeForm";
 import { BASE_URL } from "@/constants";
 import axios from "axios";
-import { projectInputs } from "./ProjectDetails";
+import { projectInputs } from "./ProjectForm";
 
 export const fetchProjectManager = async () => {
   const res = await axios.get(`${BASE_URL}/employee/reporting`);

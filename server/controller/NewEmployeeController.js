@@ -4,11 +4,11 @@ const jwt = require("jsonwebtoken");
 const pendingLeavesModel = require("../models/PendingLeaves");
 const { leaveTypeModel } = require("../models/LeaveType");
 const extractToken = require("../utils/ExtractToken");
-require("../models/Designation")
+require("../models/Designation");
 
 const handleCreateEmployee = async (req, res) => {
   // const userId = await generateUserId(req.body.companyName)
-  const { fullname } = req.body;
+  const { fullName } = req.body;
   const decodedToken = extractToken(req);
   const companyId = decodedToken.companyId;
 
@@ -25,7 +25,7 @@ const handleCreateEmployee = async (req, res) => {
       email: req.body.email,
       password:
         req.body.authority === "ProjectManager"
-          ? `${fullname.slice(0, 3)}@123`
+          ? `${fullName.slice(0, 3)}@123`
           : "123456",
       employeeId: newEmployee._id,
       companyId: decodedToken.companyId,
@@ -63,8 +63,10 @@ const handleGetEmployees = async (req, res) => {
     const decodedToken = extractToken(req);
     const companyId = decodedToken.companyId;
     // Query the database to find reporting managers for the given company€
-    const Employee = await EmployeeModel.find({ companyId }).populate("designation");
-    console.log("Employee",Employee);
+    const Employee = await EmployeeModel.find({ companyId }).populate(
+      "designation"
+    );
+    console.log("Employee", Employee);
 
     if (Employee.length === 0) {
       return res
@@ -76,7 +78,7 @@ const handleGetEmployees = async (req, res) => {
     res.status(200).json({ data: Employee, message: "Fetched Succesfully" });
   } catch (error) {
     // Handle any errors that occur during the query
-    console.log(error)
+    console.log(error);
     res
       .status(500)
       .json({ message: "Error fetching Employees", error: error.message });
