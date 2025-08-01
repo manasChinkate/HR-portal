@@ -8,8 +8,10 @@ import {
   TabTrigger,
   TabTriggerContainer,
 } from "@/components/custom/tabs";
+import { useState } from "react";
 
 const Dashboard = () => {
+  const [value, setValue] = useState("");
   return (
     <>
       <div className=" dark:bg-primary1 flex flex-1 bg-background2 overflow-scroll flex-col gap-4 pt-2 pr-2 ">
@@ -22,13 +24,13 @@ const Dashboard = () => {
             <Chart1 />
           </div>
           <div>
-            <Tabs defaultValue="home">
+            <Tabs tabValue={value} onTabChange={setValue}>
               <TabTriggerContainer className="">
-                <TabTrigger value="Home">HOme</TabTrigger>
+                <TabTrigger value="Home">Home</TabTrigger>
                 <TabTrigger value="Setting">Setting</TabTrigger>
                 <TabTrigger value="Profile">Profile</TabTrigger>
               </TabTriggerContainer>
-              <TabsContent  value="Home">
+              <TabsContent value="Home">
                 <p>Home</p>
               </TabsContent>
               <TabsContent value="Setting">
