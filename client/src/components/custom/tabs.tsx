@@ -3,25 +3,22 @@ import {
   createContext,
   ReactNode,
   useContext,
-  useEffect,
   useState,
 } from "react";
 interface TabsContextProps {
   value: string;
   setValue: (value: string) => void;
 }
-
 interface Tabs {
   defaultValue?: string;
-  tabValue?: string; // Controlled value
-  onTabChange?: (value: string) => void; // Controlled change handler
+  tabValue?: string; 
+  onTabChange?: (value: string) => void; 
   children: React.ReactNode;
 }
 interface TabTriggerContainer {
   className?: string;
   children: ReactNode;
 }
-
 interface TabTrigger {
   value: string;
   className?: string;
@@ -44,13 +41,11 @@ export const useTabs = () => {
 };
 
 const Tabs = ({ defaultValue, children, tabValue, onTabChange }: Tabs) => {
-  console.log(defaultValue);
-  const [internalValue, setInternalValue] = useState("");
+  const [internalValue, setInternalValue] = useState(defaultValue ?? "");
   const isControlled = tabValue !== undefined || onTabChange !== undefined;
 
   const value = (isControlled ? tabValue : internalValue) ?? "";
   const setValue = isControlled ? onTabChange ?? (() => {}) : setInternalValue;
-  console.log(value, setValue);
   return (
     <TabContext.Provider value={{ value, setValue }}>
       <div className=" w-full">{children}</div>

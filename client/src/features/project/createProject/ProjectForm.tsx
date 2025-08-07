@@ -129,7 +129,7 @@ const ProjectForm = () => {
                 name="clientName"
                 render={({ field }) => (
                   <FormItem className=" space-y-2">
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Client</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
